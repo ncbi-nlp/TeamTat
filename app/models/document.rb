@@ -31,6 +31,15 @@ class Document < ApplicationRecord
     return assign.present? && assign.curatable
   end
 
+  def curatable_value
+    return "no" if self.assigns.blank?
+    no_yes = self.assigns.where('curatable=true').count
+    no_no = self.assigns.where('curatable=no').count
+    return "yes" if self.assigns.size == no_yes
+    return "no" if self.assigns.size == no_no
+    return "undecided"
+  end
+
   def assigns_done_count
     return self.assigns.where('done=true').count
   end
@@ -701,6 +710,7 @@ class Document < ApplicationRecord
     end
     self.bioc_doc.relations
     self.adjust_offset(true)
+    self.bioc_doc.infons['curatable'] = self.curatable_value
     SimpleBioC.to_xml(bioc)
   end
 

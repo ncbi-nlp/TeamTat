@@ -9,7 +9,8 @@
       <li>Source: <%=@document.bioc.source %></li>
       <li>Date: <%=@document.bioc.date %></li>
       <li>Key: <%=@document.bioc.key %></li>
-      <li>Document's Infon (<%=@document.bioc_doc.infons.size %>)
+      <li>
+        Document's Infon (<%=@document.bioc_doc.infons.size %>)
         <ul class="ui list body">
           <% @document.bioc_doc.infons.each do |key, value| %>
             <li>
