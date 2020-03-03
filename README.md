@@ -36,7 +36,7 @@ apt-get install -y pdftk
 
 1. Download the source code from the Git repository. Currently the repository is private. So you need a permission to access it. Soon, it will be transferred to a public repository such as NCBI GitHub repository.
 ```
-  git clone git@gitlab.com:ranzzy/pubqrator.git
+  git clone git@github.com:ncbi-nlp/TeamTat.git
 ```
 
 2. Configure config/database.yml 
