@@ -1,0 +1,96 @@
+<script async defer src='https://www.google.com/recaptcha/api.js'></script>
+<style>
+.ui.grid>.column+.divider, .ui.grid>.row>.column+.divider {
+    left: 50%;
+}
+.bb {
+  font-weight: bold;
+  color: #00b5ad;
+  text-decoration: underline;
+}
+.cc {
+  font-weight: normal;
+}
+</style>
+<div class="ui two column centered grid" style="padding-top: 2em;">
+  <div class="ui segment " >
+    <div class="ui <%= 'two' if params[:mode] == "ncbi-inner" %> column centered relaxed grid">
+      <div class="column" style="padding: 2em 3em 2em 2em;">
+        <b><i class="icon heart pink"></i> 
+        TeamTat is free and open to all users and there is no login requirement.</b>
+        <h2 class="ui header blue">
+          Please tell us that you are not a robot
+        </h2>
+        <h4 class="ui text information">
+          <span class='bb'>LOGIN IS NOT REQUIRED</span> to use TeamTat.
+        </h4>
+        <p>
+          Every user will receive a unique and secret URL to access their projects and annotations. 
+        </p>
+        <div class="ui segment">
+          <p>
+            We use reCAPTCHA to protect our website from spam and abuse. Thank you.
+          </p>
+          <%= form_tag(generate_users_path, method: "POST", class:"ui form") do %>
+            <%= recaptcha_tags %>
+            <br>
+            <button class="ui button fluid large pink">
+              <i class='icon heart'></i>
+              Continue
+            </button>
+          <% end %>
+        </div>
+      </div>
+      <% if params[:mode] == "ncbi-inner" %> 
+        <div class="column" style="padding: 2em 2em 2em 3em;">
+          <p>
+            You may choose to create an account for your convenience or use google login.
+          </p>
+          <div class="ui segment">
+            <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: 'ui form'}) do |f| %>
+              <div class="field">
+                <%= f.label :email %>
+                <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+              </div>
+
+              <div class="field">
+                <%= f.label :password %>
+                <%= f.password_field :password, autocomplete: "off" %>
+              </div>
+
+              <div class="actions">
+                <button class='ui fluid large button primary'>
+                  <i class="icon sign in"></i> Log in with your email and password
+                </button>
+              </div>
+            <% end %>
+            <div style='margin-top: 1em;'>
+              <%= link_to new_registration_path(resource_name), class: 'ui button' do %>
+                <i class="icon envelope"></i> Sign up with email & password
+              <% end %>
+              <%= link_to new_password_path(resource_name), class: 'ui basic button' do %>
+                <i class="icon question"></i> Forgot your password?
+              <% end %>
+            </div>
+          </div>
+
+          <div class="ui divider"></div>
+
+
+          <%- resource_class.omniauth_providers.each do |provider| %>
+            <%= link_to omniauth_authorize_path(resource_name, provider), class: 'ui fluid red large button' do %>
+              <i class="icon google"></i> 
+              Log in with Google
+            <% end %>
+          <% end -%>
+        </div>
+      <% end %>
+    </div>
+    <% if params[:mode] == "ncbi-inner" %> 
+
+      <div class="ui vertical divider">
+        or
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @relation_type.name %>
+</p>
+
+<p>
+  <strong>Color:</strong>
+  <%= @relation_type.color %>
+</p>
+
+<p>
+  <strong>Num nodes:</strong>
+  <%= @relation_type.num_nodes %>
+</p>
+
+<p>
+  <strong>Entity type:</strong>
+  <%= @relation_type.entity_type %>
+</p>
+
+<p>
+  <strong>Project:</strong>
+  <%= @relation_type.project %>
+</p>
+
+<%= link_to 'Edit', edit_relation_type_path(@relation_type) %> |
+<%= link_to 'Back', relation_types_path %>

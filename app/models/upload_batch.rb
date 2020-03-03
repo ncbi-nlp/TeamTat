@@ -1,0 +1,2 @@
+class UploadBatch < ApplicationRecord
+end

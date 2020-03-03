@@ -1,0 +1,1 @@
+json.partial! "lexicon_groups/lexicon_group", lexicon_group: @lexicon_group

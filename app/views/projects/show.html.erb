@@ -1,0 +1,54 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @project.name %>
+</p>
+
+<p>
+  <strong>Desc:</strong>
+  <%= @project.desc %>
+</p>
+
+<p>
+  <strong>Round:</strong>
+  <%= @project.round %>
+</p>
+
+<p>
+  <strong>Documents count:</strong>
+  <%= @project.documents_count %>
+</p>
+
+<p>
+  <strong>Cdate:</strong>
+  <%= @project.cdate %>
+</p>
+
+<p>
+  <strong>Key:</strong>
+  <%= @project.key %>
+</p>
+
+<p>
+  <strong>Source:</strong>
+  <%= @project.source %>
+</p>
+
+<p>
+  <strong>Xml url:</strong>
+  <%= @project.xml_url %>
+</p>
+
+<p>
+  <strong>Annotations count:</strong>
+  <%= @project.annotations_count %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @project.status %>
+</p>
+
+<%= link_to 'Edit', edit_project_path(@project) %> |
+<%= link_to 'Back', projects_path %>

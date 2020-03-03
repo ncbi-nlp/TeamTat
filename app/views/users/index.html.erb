@@ -1,0 +1,58 @@
+<h1 class="ui header">Users</h1>
+
+<div class="ui  right aligned grid">
+  <div class="page-info left floated left aligned six wide column">
+    Total <b><%=@users.total_count %></b> users
+  </div>
+</div>
+<table class="ui table table-bordered">
+  <thead>
+    <tr>
+      <th><%=sortable 'email'%></th>
+      <th><%=sortable 'name'%></th>
+      <th><%=sortable 'ip'%></th>
+      <th>#. projects</th>
+      <th><%=sortable 'created_at'%></th>
+      <th><%=sortable 'last_sign_in_at'%></th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td>
+          <%=image_tag(user.image_or_default, class: "ui avatar image") %>
+          <% if user.valid_email? %>
+            <%=link_to user.email, user %>
+          <% elsif user.email.present? %>
+            <span style='color:silver;'>N/A</span>
+          <% end %>  
+          <% if user.super_admin? %>
+            <i class="icon user secret"></i>
+          <% end %>
+        </td>
+        <td><%= user.name %>
+        <td><%= user.current_sign_in_ip %></td>
+        <td><%=link_to user.projects.size, user_projects_path(user) %></td>
+        <td><%=time_ago_in_words(user.created_at) %></td>
+        <td><%=time_ago_in_words(user.last_sign_in_at) if user.last_sign_in_at.present? %></td>
+        <td><%=link_to "Login as", become_user_path(user) %></td>
+        <td><%= link_to 'Edit', edit_user_path(user) %></td>
+        <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div class="ui center aligned grid">
+  <div class="row">
+    <%= paginate @users %>
+  </div>
+</div>
+<%=link_to '/users', class: 'ui button green' do %>
+  List
+<% end %>
+<%=link_to '/users/new', class: 'ui button blue' do %>
+  New User
+<% end %>

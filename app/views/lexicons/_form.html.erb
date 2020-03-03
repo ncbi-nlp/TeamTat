@@ -1,0 +1,33 @@
+<%= form_for([@lexicon_group, lexicon], html: {class: "ui form"}) do |f| %>
+  <% if lexicon.errors.any? %>
+    <div id="error_explanation" class="ui message red">
+      <div class="header"><%= pluralize(lexicon.errors.count, "error") %> prohibited this lexicon from being saved:</div>
+
+      <ul class="list">
+      <% lexicon.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :ltype %>
+    <%= f.text_field :ltype, placeholder: "Please enter an entity type, e.g. Disease" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :lexicon_id %>
+    <%= f.text_field :lexicon_id, placeholder: "Please enter a concept ID of the name below"%>
+  </div>
+
+  <div class="field">
+    <%= f.label :name %>
+    <%= f.text_field :name, placeholder: "Please enter an entity name, e.g. Influenza" %>
+  </div>
+
+  <div class="actions">
+    <%= link_to 'Back', lexicon_group_lexicons_path(@lexicon_group), class: "ui button" %>
+    <%= f.submit "Save", class: "ui button primary" %>
+  </div>
+<% end %>

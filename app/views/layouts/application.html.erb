@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>TeamTat</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="litannotator" />
+    <meta name="description" content="LitAnnotator" />
+
+    <%= stylesheet_link_tag    'application', media: 'all' %>
+    <%= yield :recaptcha_js %>
+  </head>
+
+  <body class="<%=params[:controller]%>-<%=params[:action]%>" data-no-turbolink>
+    <div id="drawing"></div>
+    <nav class="ui fixed menu inverted navbar" id="main-nav">
+      <div class="ui container clearing">
+        <%= link_to root_path, class:"brand item" do %>
+          <span class='brand-initial'>TeamTat</span>
+        <% end %>
+        <%= link_to "Projects", '/projects', class: "item #{'active' if @top_menu == 'projects'}" %>
+        <%= link_to "#", onclick: "window.open('https://sites.google.com/view/teamtat-tutorial/', 'teamtat-tutorial', 'width=850,height=800,menubar=no,location=no,scrollbars=yes,toolbar=no,status=no,resizable=yes');return false;", class: "item" do %>
+          Tutorial
+        <% end %>
+        <%= link_to "About", '/about', class: "item #{'active' if @top_menu == 'about'}" %>
+        <% if current_user.present? && current_user.super_admin? %>
+          <div class="ui dropdown item">
+            <i class="icon user secret"></i> Admin
+            <i class="dropdown icon"></i>
+            <div class="menu">
+              <%= link_to "Users", users_path, class: "item" %>
+              <%= link_to "API Keys", api_keys_path, class: "item" %>
+            </div>
+          </div>
+        <% end %>
+        <% if session[:return_super_user].present? %>
+          <%= link_to session[:return_super_user], class:"item" do %>
+            <i class="icon user secret"></i>Back to Admin
+          <% end %>
+        <% end %>
+        <div class="right floated menu">
+          <% if current_user.present? %>
+            <%= link_to "/users/#{current_user.id}", class: "item" do %>
+              <i class="icon user"></i>
+              <% if current_user.valid_email? %>
+                <%= current_user.name_or_email_or_id %>
+              <% elsif current_user.name.present? %>
+                <%= "Show my access URL (#{current_user.name})" %>
+              <% else %>
+                <%= "Show my access URL (#{current_user.session_tail})" %>
+              <% end %>
+            <% end %>
+          <% else %>
+            <%= link_to "/users/sign_in", class: "item" do %>
+              Click here to Start
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </nav> <!-- end nav -->
+    <% if params[:controller] == "home" && params[:action] == "index" %>
+      <div class='hero'>
+        <div class="ui container clearing">
+          <h1 class="ui header">
+            <span>Team</span><span class='tag'>Tat</span><br>
+            <div class="sub header">
+              A Text Annotation Tool for Team Collaboration <br>
+            </div>
+          </h1>
+        </div>
+      </div>
+    <% end %>
+    <div class='main-container'>
+      <div class="ui main container">
+        <% if params[:controller] != "documents" || params[:action] != "show" %>
+          <%= semantic_breadcrumbs %>
+          <%= semantic_flash %>
+        <% end %>
+        <div class="ui inverted dimmer" id="main-loader">
+          <div class="ui text loader">Loading</div>
+        </div>
+
+        <%= yield %>
+      </div>
+    </div>
+    <% if params[:controller] != "documents" || params[:action] != "show" %>
+      <div class="footer" id="main-footer">
+        <div class="ui container">
+          Copyright © 2019 TeamTat, Contact us: <a href="mailto:Rezarta.Islamaj@nih.gov">Rezarta.Islamaj@nih.gov</a>, <a href="mailto:dongseop@mju.ac.kr">dongseop@mju.ac.kr</a>, <a href="mailto:Zhiyong.Lu@nih.gov">Zhiyong.Lu@nih.gov</a><br>
+        </div>
+      </div> 
+    <% end %>
+  </body>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111986512-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-111986512-1');
+</script> -->
+
+
+<%= javascript_include_tag 'application' %>
+
+<!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous"> -->
+<script>
+  window.onload = function() {
+    toastr.options = {
+      "closeButton": true,
+      "debug": false,
+      "newestOnTop": true,
+      "progressBar": false,
+      "positionClass": "toast-bottom-full-width",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "2500",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+    $('.message .close').on('click', function() {
+      $(this).closest('.message').slideUp();
+    });
+    setTimeout(function() {
+      $('.main.container > .ui.message .close').click();
+    }, 3000);
+    $('.ui.dropdown').dropdown();
+    $(".need-popup").popup({inline: true});
+
+    <%= yield :defer_js %>
+  };
+</script>
+</html>
+
+<!--
+======================================================================
+  Browser Name : <%= browser.name %> 
+  Browser full version : <%= browser.full_version %>
+  Browser Modern? : <%= browser.modern? %>
+  Browser IE version: <%= browser.msie_full_version %>
+  Browser Compatibility View? : <%=browser.compatibility_view? %>
+======================================================================
+-->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-144266318-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-144266318-1');
+</script>
+

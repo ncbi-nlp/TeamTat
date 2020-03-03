@@ -1,0 +1,45 @@
+<link rel="stylesheet"
+      href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/styles/vs2015.min.css">
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%=image_tag(@audit.user.image_or_default, class: "ui avatar image", title: @audit.user.email_or_session_tail) %>
+  <%= @audit.user.name_or_email_or_id %>
+</p>
+
+<p>
+  <strong>Document:</strong>
+  <%=link_to "[#{@audit.document.did}] #{@audit.document.title}", @audit.document %>
+</p>
+
+<p>
+  <strong>Message:</strong>
+  <%= @audit.message %>
+</p>
+
+<p>
+  <strong>Request:</strong>
+  <pre><code class="json">
+<%= JSON.pretty_generate(JSON.parse(@audit.request)) %>
+  </code></pre>
+</p>
+
+<p>
+  <strong>Result:</strong>
+  <pre><code class="json">
+<%= JSON.pretty_generate(JSON.parse(@audit.result)) %>
+  </code></pre>
+</p>
+
+<p>
+  <strong>Created At:</strong>
+  <%= @audit.created_at.localtime %>
+</p>
+
+
+
+<%= link_to 'Back', audits_path %>

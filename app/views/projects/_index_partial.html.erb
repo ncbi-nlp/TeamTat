@@ -1,0 +1,55 @@
+<% @projects.each do |project| %>
+  <% 
+  documents_count = project.documents.all.size
+  if documents_count != project.documents_count 
+    Project.reset_counters project.id, :documents
+  end
+  %>
+  <tr>
+    <td><%=link_to project.name, project %></td>
+    <td>
+      <%=image_tag(project.manager.user.image_or_default, class: "ui avatar image") %>
+      <%= project.manager.user.name_or_email_or_id %>
+    </td>
+    <td><%= documents_count %></td>
+    <td><%= project.project_users_count - 1 %></td>
+    <td><%= project.round %></td>
+    <td><%= project.status_with_icon %>
+      <% if project.manager?(@user) && project.done %>
+        <span class='ui label green'>Done</span>
+      <% end %>
+    </td>
+    <!-- <td class="ellipsis w150"><%= project.desc %></td> -->
+    <% if project.manager?(@user) %>
+      <td class="center aligned">
+        <div class="ui top right pointing dropdown">
+          <i class="setting icon blue"></i>
+          <div class="menu">
+            <div class="item">
+              <%= link_to 'Edit Project Name', edit_project_path(project) %>
+            </div>
+            <div class="item">
+              <%= link_to 'Delete All Annotations', delete_all_annotations_project_path(project, {from: "list"}), method: :post, data: { confirm: 'Are you sure?' } %>
+            </div>
+            <div class="item">
+              <%= link_to 'Delete Project', project, method: :delete, data: { confirm: 'Are you sure?' } %>
+            </div>
+          </div>
+        </div>
+      </td>
+    <% else %>
+      <td>
+        <% if project.round_begin? %>
+          <% if project.user_done?(@user) %>
+            Done: <b><%= project.user_documents_count(@user) %></b> documents annotated
+          <% else %>
+              Need annotate <b><%= project.user_undone_count(@user) %></b> / 
+              Assigned <b><%= project.user_documents_count(@user) %></b> documents
+          <% end %>
+        <% else %>
+          Not ready for annotations yet
+        <% end %>
+      </td>
+    <% end %>
+  </tr>
+<% end %>

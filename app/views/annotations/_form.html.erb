@@ -1,0 +1,67 @@
+<%= form_with(model: annotation, local: true) do |form| %>
+  <% if annotation.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(annotation.errors.count, "error") %> prohibited this annotation from being saved:</h2>
+
+      <ul>
+      <% annotation.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :a_id %>
+    <%= form.text_field :a_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :a_type %>
+    <%= form.text_field :a_type %>
+  </div>
+
+  <div class="field">
+    <%= form.label :concept %>
+    <%= form.text_field :concept %>
+  </div>
+
+  <div class="field">
+    <%= form.label :user_id %>
+    <%= form.text_field :user_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :content %>
+    <%= form.text_field :content %>
+  </div>
+
+  <div class="field">
+    <%= form.label :note %>
+    <%= form.text_field :note %>
+  </div>
+
+  <div class="field">
+    <%= form.label :offset %>
+    <%= form.number_field :offset %>
+  </div>
+
+  <div class="field">
+    <%= form.label :passage %>
+    <%= form.text_field :passage %>
+  </div>
+
+  <div class="field">
+    <%= form.label :assign %>
+    <%= form.text_field :assign %>
+  </div>
+
+  <div class="field">
+    <%= form.label :source %>
+    <%= form.number_field :source %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

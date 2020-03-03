@@ -1,0 +1,26 @@
+<h1 class="ui dividing header">
+<%=@lexicon.lexicon_group.name %>
+  -
+<%= @lexicon.lexicon_id %>
+</h1>
+
+<table class="ui definition table table-bordered">
+  <tr>
+    <td class="header">Type</td>
+    <td> <%= @lexicon.ltype %></td>
+  </tr>
+  <tr>
+    <td class="header">ID</td>
+    <td> <%= @lexicon.lexicon_id %>
+    </td>
+  </tr>
+  <tr>
+    <td class="header">Name</td>
+    <td><%= @lexicon.name%> 
+    </td>
+  </tr>
+</table>
+<% if @project.manager?(current_user) %>
+  <%= link_to 'Edit', edit_lexicon_path(@lexicon), class: "ui button" %>
+<% end %>
+<%= link_to 'Back', lexicon_group_lexicons_path(@lexicon_group), class: "ui button" %>

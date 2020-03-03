@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE collection SYSTEM "BioC.dtd">
+<collection>
+  <source>PubMed</source>
+  <date>20171218</date>
+  <key>collection.key</key>
+  <document>
+    <id>18093912</id>
+    <passage>
+      <infon key="type">title</infon>
+      <offset>0</offset>
+      <text>Mutation of an A-kinase-anchoring protein causes long-QT syndrome.</text>
+      <annotation id="1">
+        <infon key="type">Disease</infon>
+        <infon key="identifier">MESH:D008133</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T04:53:07Z</infon>
+        <location offset="49" length="16"/>
+        <text>long-QT syndrome</text>
+      </annotation>
+    </passage>
+    <passage>
+      <infon key="type">abstract</infon>
+      <offset>67</offset>
+      <text>A-kinase anchoring proteins (AKAPs) recruit signaling molecules and present them to downstream targets to achieve efficient spatial and temporal control of their phosphorylation state. In the heart, sympathetic nervous system (SNS) regulation of cardiac action potential duration (APD), mediated by beta-adrenergic receptor (betaAR) activation, requires assembly of AKAP9 (Yotiao) with the I(Ks) potassium channel alpha subunit (KCNQ1). KCNQ1 mutations that disrupt this complex cause type 1 long-QT syndrome (LQT1), one of the potentially lethal heritable arrhythmia syndromes. Here, we report identification of (i) regions on Yotiao critical to its binding to KCNQ1 and (ii) a single putative LQTS-causing mutation (S1570L) in AKAP9 (Yotiao) localized to the KCNQ1 binding domain in 1/50 (2%) subjects with a clinically robust phenotype for LQTS but absent in 1,320 reference alleles. The inherited S1570L mutation reduces the interaction between KCNQ1 and Yotiao, reduces the cAMP-induced phosphorylation of the channel, eliminates the functional response of the I(Ks) channel to cAMP, and prolongs the action potential in a computational model of the ventricular cardiocyte. These reconstituted cellular consequences of the inherited S1570L-Yotiao mutation are consistent with delayed repolarization of the ventricular action potential observed in the affected siblings. Thus, we have demonstrated a link between genetic perturbations in AKAP and human disease in general and AKAP9 and LQTS in particular.</text>
+      <annotation id="3">
+        <infon key="type">GENE</infon>
+        <infon key="identifier">GENE:10142</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T04:54:26Z</infon>
+        <location offset="433" length="5"/>
+        <text>AKAP9</text>
+      </annotation>
+      <annotation id="15">
+        <infon key="type">GENE</infon>
+        <infon key="identifier">GENE:10142</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T04:54:26Z</infon>
+        <location offset="440" length="6"/>
+        <text>Yotiao</text>
+      </annotation>
+      <annotation id="20">
+        <infon key="type">GENE</infon>
+        <infon key="identifier">GENE:3784</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T04:55:06Z</infon>
+        <location offset="457" length="37"/>
+        <text>I(Ks) potassium channel alpha subunit</text>
+      </annotation>
+      <annotation id="7">
+        <infon key="type">GENE</infon>
+        <infon key="identifier">GENE:3784</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T04:51:48Z</infon>
+        <location offset="496" length="5"/>
+        <text>KCNQ1</text>
+      </annotation>
+      <annotation id="8">
+        <infon key="type">GENE</infon>
+        <infon key="identifier">GENE:3784</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T04:51:48Z</infon>
+        <location offset="504" length="5"/>
+        <text>KCNQ1</text>
+      </annotation>
+      <annotation id="2">
+        <infon key="type">Disease</infon>
+        <infon key="identifier">MESH:D008133</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T04:53:07Z</infon>
+        <location offset="559" length="16"/>
+        <text>long-QT syndrome</text>
+      </annotation>
+      <annotation id="16">
+        <infon key="type">GENE</infon>
+        <infon key="identifier">GENE:10142</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T04:54:26Z</infon>
+        <location offset="695" length="6"/>
+        <text>Yotiao</text>
+      </annotation>
+      <annotation id="6">
+        <infon key="type">GENE</infon>
+        <infon key="identifier">GENE:3784</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T04:51:49Z</infon>
+        <location offset="729" length="5"/>
+        <text>KCNQ1</text>
+      </annotation>
+      <annotation id="11">
+        <infon key="type">Disease</infon>
+        <infon key="identifier">MESH:D008133</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T04:53:07Z</infon>
+        <location offset="762" length="4"/>
+        <text>LQTS</text>
+      </annotation>
+      <annotation id="21">
+        <infon key="type">Mutation</infon>
+        <infon key="identifier"></infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T04:56:09Z</infon>
+        <location offset="785" length="6"/>
+        <text>S1570L</text>
+      </annotation>
+      <annotation id="22">
+        <infon key="type">Mutation</infon>
+        <infon key="identifier"></infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T04:56:09Z</infon>
+        <location offset="785" length="6"/>
+        <text>S1570L</text>
+      </annotation>
+      <annotation id="4">
+        <infon key="type">GENE</infon>
+        <infon key="identifier">GENE:10142</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T04:54:26Z</infon>
+        <location offset="796" length="5"/>
+        <text>AKAP9</text>
+      </annotation>
+      <annotation id="17">
+        <infon key="type">GENE</infon>
+        <infon key="identifier">GENE:10142</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T04:54:26Z</infon>
+        <location offset="803" length="6"/>
+        <text>Yotiao</text>
+      </annotation>
+      <annotation id="9">
+        <infon key="type">GENE</infon>
+        <infon key="identifier">GENE:3784</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T04:51:48Z</infon>
+        <location offset="828" length="5"/>
+        <text>KCNQ1</text>
+      </annotation>
+      <annotation id="12">
+        <infon key="type">Disease</infon>
+        <infon key="identifier">MESH:D008133</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T04:53:07Z</infon>
+        <location offset="910" length="4"/>
+        <text>LQTS</text>
+      </annotation>
+      <annotation id="14">
+        <infon key="type">Mutation</infon>
+        <infon key="identifier"></infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T04:56:09Z</infon>
+        <location offset="968" length="6"/>
+        <text>S1570L</text>
+      </annotation>
+      <annotation id="10">
+        <infon key="type">GENE</infon>
+        <infon key="identifier">GENE:3784</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T04:51:48Z</infon>
+        <location offset="1016" length="5"/>
+        <text>KCNQ1</text>
+      </annotation>
+      <annotation id="18">
+        <infon key="type">GENE</infon>
+        <infon key="identifier">GENE:10142</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T04:54:26Z</infon>
+        <location offset="1026" length="6"/>
+        <text>Yotiao</text>
+      </annotation>
+      <annotation id="19">
+        <infon key="type">GENE</infon>
+        <infon key="identifier">GENE:10142</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T04:54:26Z</infon>
+        <location offset="1312" length="6"/>
+        <text>Yotiao</text>
+      </annotation>
+      <annotation id="5">
+        <infon key="type">GENE</infon>
+        <infon key="identifier">GENE:10142</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T04:54:26Z</infon>
+        <location offset="1547" length="5"/>
+        <text>AKAP9</text>
+      </annotation>
+      <annotation id="13">
+        <infon key="type">Disease</infon>
+        <infon key="identifier">MESH:D008133</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T04:53:07Z</infon>
+        <location offset="1557" length="4"/>
+        <text>LQTS</text>
+      </annotation>
+      <relation id="R1">
+        <infon key="type">GeneGene_Interaction</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T04:57:33Z</infon>
+        <node refid="10" role=""/>
+        <node refid="18" role=""/>
+      </relation>
+    </passage>
+  </document>
+</collection>

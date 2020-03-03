@@ -1,0 +1,2 @@
+json.extract! task, :id, :user_id, :collection_id, :tagger, :task_type, :pre_trained_model, :status, :model_url, :xml_url, :begin_at, :end_at, :created_at, :updated_at
+json.url task_url(task, format: :json)

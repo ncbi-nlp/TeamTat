@@ -1,0 +1,102 @@
+<div class="ui small modal" id="relationModal">
+  <div class="header">
+  </div>
+  <div class="content">
+    <div class="ui inverted dimmer">
+      <div class="ui text loader">Loading</div>
+    </div>
+    <%=form_tag(document_relations_path(@document), method: "POST", class:"ui form") do %>
+      <div class="field">
+        <label>Note
+        </label>
+        <input type="text" name="note" maxlength='50'>
+      </div>
+      <div class="field">
+        <label>Relation Type</label>
+        <select type="text" name="type" class="ui fluid normal dropdown" autofocus="off">
+          <% @document.project.relation_types.each do |t| %>
+            <option value="<%= t.name %>"><%=t.name %></option>
+          <% end %>
+        </select>
+        <% if @project.round_begin? %>
+          <%=link_to "#", class: "add-new-relation-type" do %>
+            <i class="icon plus"></i> Add New Relation Type</a>
+          <% end %>
+        <% end %>
+      </div>
+      <div class="field">
+        <label>Nodes
+          <div class="helper-msg">
+            You can change the order by dragging
+          </div>
+        </label>
+        <table class="ui very compact table ref-nodes" style="margin: 0;">
+          <thead>
+            <th></th>
+            <th>Type</th>
+            <th>Concept</th>
+            <th class="ellipsis w150">Text</th>
+            <th>Offset</th>
+            <th>Role</th>
+            <th></th>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+        <a href="#" class="add-node action-button">
+          <i class='icon plus'></i> Add reference node</a>        
+      </div>
+      <div class="inline field" id="refSelector" style='display: none;'>
+        <div class="ui selection dropdown" style="width:85%" >
+          <input type="hidden" name="ref_id">
+          <i class="dropdown icon"></i>
+          <div class="default text">Add reference node</div>
+          <div class="menu">
+          </div>
+        </div>
+        <button type="button" class="ui button primary" >Add</button>
+      </div>
+    <% end %>
+    <div class="update_log"></div>
+  </div>
+  <div class="actions">
+    <div class="ui button cancel">Cancel</div>
+    <div class="ui blue button positive action-button hide-for-add"><i class="checkmark icon"></i> <span class='btn-update-text'>Update</span></div>
+    <div class="ui button top left pointing red deny delete-relation action-button hide-for-add" style="float:left">
+      <i class="remove icon"></i> Delete
+    </div>
+  </div>
+</div>
+
+<script type="text/template" id="annotationInRelationModal">
+  <tr class='ref-node' data-id='{{ref_id}}' data-annotation_id='{{a.annotation_id}}' data-relation-id='{{r.relation_id}}'>
+    {{#if r}}
+      <td>R</td>
+      <td>{{r.type}}</td>
+      <td>{{r.id}}</td>
+      <td class="ellipsis w150"></td>
+      <td></td>
+    {{ else }}
+      <td>A</td>
+      <td>{{a.type}}</td>
+      <td>{{a.concept}}</td>
+      <td class="ellipsis w150">{{a.text}}</td>
+      <td>{{a.offset}}</td>
+    {{/if}}
+    <td><input type="text" name="role" value="{{role}}"></td>
+    <td>
+      <a href="#" class='remove-node action-button' title='remove node'><i class='red icon trash alternate outline'></i></a>
+    </td>
+  </tr>
+</script>
+
+<script type="text/template" id="refSelectorItemA">
+  <div class="item" data-value="{{id}}">
+    Annotation - [{{type}}/{{concept}}] {{text}} ({{offset}})
+  </div>
+</script>
+<script type="text/template" id="refSelectorItemR">
+  <div class="item" data-value="{{id}}">
+    Relation - [{{type}}/{{id}}] 
+  </div>
+</script>

@@ -1,0 +1,15 @@
+<ul class="">
+  <% nodes.each do |item| %>
+    <li> 
+      <%=link_to "#passage-#{item[:id]}", class: "item outline-link" do %>
+        <% if item[:text] == "front" %>
+          Title
+        <% elsif item[:text] =="title" %>
+          <%= item[:description] %>
+        <% else %>
+          <%= item[:text].capitalize %>
+        <% end %>
+      <% end %>
+    </li>
+  <% end %>
+</ul>

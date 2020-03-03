@@ -1,0 +1,93 @@
+<%= render partial: "/projects/project_header"%>
+<%= render partial: "/projects/project_buttons" %> 
+<%= render partial: "/projects/project_tab" %>
+
+<div class="ui bottom attached active tab segment">
+  <div class="ui  right aligned grid">
+    <div class="page-info left floated left aligned six wide column">
+      Total <b><%=@num_documents %></b> documents
+    </div>
+    <div class="ui search right floated right aligned six wide column">
+      <div class="ui item basic button dropdown">
+        <i class="icon history"></i> Version <%= @version %> <i class="dropdown icon"></i>
+        <div class="menu">
+          <% (0..@project.round).each do |version| %>
+            <%= link_to "Version #{version}", project_statistics_path(@project, {version: version}), class: "item" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ui secondary pointing menu">
+    <a class="active item">
+      Number of Annotations per Entity Types
+    </a>
+  </div>
+  <% if @documents.empty? %>
+    <dic class='ui message info'>
+      This project is empty. Please upload documents first from Documents tab.
+    </dic>
+  <% else %>
+    <table class="ui table sortable table-bordered celled" id="statTable">
+      <thead>
+        <tr>
+          <th class='sortable'>Entity Type</th>
+          <th class='sortable right aligned'>Total</th>
+          <th class='sortable right aligned'>Uniq. Mentions</th>
+          <th class='sortable right aligned'>Uniq. IDs</th>
+          <th class='sortable right aligned'>No-ID Mentions</th>
+          <th class='sortable right aligned'>Avg.</th>
+          <th class='sortable right aligned'>Avg. Uniq. Mentions</th>
+          <th class='sortable right aligned'>Avg. Uniq. IDs</th>
+          <th class='sortable right aligned'>Avg. No-ID Mentions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% total = {total: 0, uniq_str: 0, uniq_ids: 0, no_ids: 0} %>
+        <% @project.entity_types.each do |e| %>
+          <% 
+          stat = @result[e.name] 
+          total[:total] += stat[:total]
+          total[:uniq_str] += stat[:uniq_str]
+          total[:uniq_ids] += stat[:uniq_ids]
+          total[:no_ids] += stat[:no_ids]
+          %>
+          <tr>
+            <td><%= e.name %></td>
+            <td class='right aligned'><%=stat[:total] %></td>
+            <td class='right aligned'><%=stat[:uniq_str] %></td>
+            <td class='right aligned'><%=stat[:uniq_ids] %></td>
+            <td class='right aligned'><%=stat[:no_ids] %></td>
+            <td class='right aligned'><%=(stat[:total].to_f / @num_documents.to_f).round(2) %></td>
+            <td class='right aligned'><%=(stat[:uniq_str].to_f / @num_documents.to_f).round(2) %></td>
+            <td class='right aligned'><%=(stat[:uniq_ids].to_f / @num_documents.to_f).round(2) %></td>
+            <td class='right aligned'><%=(stat[:no_ids].to_f / @num_documents.to_f).round(2) %></td>
+          </tr>
+        <% end %>            
+      </tbody>
+      <tfoot>
+        <tr>
+          <th>Total</th>
+          <th class='right aligned'><%=total[:total] %></th>
+          <th class='right aligned'><%=total[:uniq_str] %></th>
+          <th class='right aligned'><%=total[:uniq_ids] %></th>
+          <th class='right aligned'><%=total[:no_ids] %></th>
+          <th class='right aligned'><%=(total[:total].to_f / @num_documents.to_f).round(2) %></th>
+          <th class='right aligned'><%=(total[:uniq_str].to_f / @num_documents.to_f).round(2) %></th>
+          <th class='right aligned'><%=(total[:uniq_ids].to_f / @num_documents.to_f).round(2) %></th>
+          <th class='right aligned'><%=(total[:no_ids].to_f / @num_documents.to_f).round(2) %></th>
+        </tr>
+      </tfoot>
+    </table>
+  <% end %>
+</div>
+<style type='text/css'>
+  sup { color: royalblue; }
+
+</style>
+
+<script>
+<%= content_for :defer_js do -%>
+  $("#statTable").tablesort();
+<% end %>
+</script>

@@ -1,0 +1,78 @@
+// Place all the styles related to the annotations controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.annotation-tr {
+  // position: relative;
+  .collapse-btn {
+    // position: absolute;
+    // top: 0;
+    // right: 0;
+    display: none;
+    cursor: pointer;
+    margin-top: -1.5em;
+  }
+  &.need-collapse {
+    .collapse-btn {
+      cursor: pointer;
+      display: inline-block;
+      // position: absolute;
+      // float:right;
+      .minus.square {display: inline-block;}
+      .plus.square {display: none;}
+    }
+  }
+
+  &.collapsed {
+    .sub-row {display: none;}
+
+    .collapse-btn {
+      .minus.square {display: none;}
+      .plus.square {display: inline-block;}
+    }
+  }
+
+  .td-annotation-text.selected {
+    background-color: #63a7ab;
+  }
+
+  .td-annotation-text {
+    position: relative;
+    
+  }
+  .review-not-determined, .review-agreed, .review-disagreed, .review-skipped {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 2px;
+    display: none;
+    background-color: rgba(255, 255, 255, 0.5);
+    width: 1.4em;
+    height: 1.4em;
+    border-radius: 0.7em;
+  }
+  &.review-not_determined .review-not-determined { display: inline-block; }
+  &.review-agreed .review-agreed { display: inline-block; }
+  &.review-disagreed .review-disagreed { display: inline-block; }
+  &.review-skipped .review-skipped { display: inline-block; }
+}
+
+#annotationModal {
+  .icon.checkmark { display: inline-block; }
+  .icon.thumbs.up { display: none; }
+  .skip-button { display: none; }
+  &.reviewing .icon.checkmark { display: none; }
+  &.reviewing .ui.button.cancel { display: none; }
+  &.reviewing .icon.thumbs.up { display: inline-block; }
+  &.reviewing .skip-button { display: inline-block; }
+}
+#annotationListModal {
+  width: 90%;
+}
+
+.user-row {
+  &.annotation-hide {
+    text-decoration: line-through;
+    opacity: 0.3;
+  }
+}

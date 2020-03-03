@@ -1,0 +1,134 @@
+
+<%= form_for([@project, task], html: {class: "ui form #{task.type_cls}"}) do |f| %>
+  <%= f.hidden_field :task_type %>
+  <% if task.errors.any? %>
+    <div id="error_explanation" class="ui message red">
+      <div class="header"><%= pluralize(task.errors.count, "error") %> occurred:</div>
+
+      <ul class="list">
+      <% task.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="field for-train required">
+    <%= f.label :output_model %>
+    <%= text_field_tag :output_model_name, "", placeholder: "Please enter a name of the tagging model after training. A lexicon must be chosen for learning concept IDs as well" %>
+  </div>
+  <div class="inline fields for-annotate">
+    <label for="fruit">Annotate with: </label>
+    <div class="field need-popup" data-content="Check this to annotate the project using the lexicon selected below.">
+      <div class="ui radio checkbox with-check" data-value="lexicon">
+        <input type="radio" name="with" tabindex="0" class="hidden" value="lexicon" checked>
+        <label>Lexicon</label>
+      </div>
+    </div>
+    <div class="field need-popup" data-content="Check this to annotate the project using the tagging model selected below.">
+      <div class="ui radio checkbox with-check" data-value="model">
+        <input type="radio" name="with" tabindex="0" class="hidden" value="model">
+        <label>Model</label>
+      </div>
+    </div>
+  </div>
+  <div class="field field-lexicon">
+    <%= f.label :lexicon_group %>
+    <%= f.select :lexicon_group_id, [["Please select a lexicon", -1]] + @lexicon_options , {},  {class: 'ui fluid dropdown lexicon'} %>
+  </div>
+  <div class="field for-annotate field-model disabled">
+    <%= f.label :model %>
+    <%= f.select :model, [
+              ["Please select a pre-trained model", "--none--"],
+              ["[from TaggerOne] Chemical", "Chemical"],
+              ["[from TaggerOne] Disease", "Disease"],
+              ["[from TaggerOne] Chemical/Disease", "Chemical/Disease"],
+              ["[from GNormPlus] Gene/Species", "Gene"],
+              ["[from tmVar] Variation", "Variation"],
+              ["[from TaggerOne/GNormPlus/tmVar] Chemical/Disease/Gene/Species/Variation", "All"]
+    ] + @models.map{|l| l.option_item} , {},  {class: 'ui fluid dropdown model'} %>
+  </div>
+
+  <ul class='field for-annotate footnote'>
+    <li>
+      This step annotates documents using a lexicon or a pre-trained tagging model, which can be followed by manual annotation (i.e. refinement).
+    </li>
+    <li>
+      Annotate with a lexicon: To add a lexicon, please go to <%= link_to "Lexicons", lexicon_groups_path %> in the top menu.
+    </li>
+    <li>
+      Annotate with a tagging model: TaggerOne (chemical and diseases), GNormPlus (gene and species) and tmVar (sequence variations) are provided in default.
+    </li>
+  </ul>
+  <ul class='field for-train footnote'>
+    <li>
+      This step trains TaggerOne on the current project. The resulting model can be used for pre-annotation (i.e. Auto Annotate).
+    </li>
+    <li>
+      A lexicon must be chosen for learning concept IDs as well. To add a lexicon, please go to <%= link_to "Lexicons", lexicon_groups_path %> in the project page.
+    </li>
+  </ul>
+
+  <div class="actions">
+    <%= link_to 'Back', "#", onclick: "history.back(); return false;", class: "ui button" %>
+    <button type="button" id="createTaskButton" class="ui primary button">Create Task</button>
+  </div>
+<% end %>
+<style>
+  form.annotate .for-annotate {display: block;}
+  form.annotate .for-train {display: none;}
+  form.train .for-annotate {display: none;}
+  form.train.ui.form .fields.for-annotate {display: none;}
+  form.train .for-train {display: block;}
+</style>
+<script>
+  function checkSubmitButton() {
+    var enabled;
+    if ($('form').hasClass('annotate')) {
+      var selected = $(".with-check.checked").data("value") || $("input[name='with']").val();
+      // annotate task
+      if (selected === 'lexicon') {
+        // with lexicon
+        enabled = (parseInt($("#task_lexicon_group_id").val(), 10) > -1);
+      } else {
+        // with a model
+        enabled = ($("#task_model").val() !== "--none--");
+      }
+    } else {
+      // train task
+      enabled = ($("#output_model_name").val().trim() && parseInt($("#task_lexicon_group_id").val(), 10) > -1);
+    }
+    $("#createTaskButton").prop("disabled", !enabled);
+  }
+  <%= content_for :defer_js do %>
+  $(function() {
+    $('.ui.radio.checkbox').checkbox({
+      onChange: function() {
+        var value = $(".with-check.checked").data("value");
+        console.log(value);
+        $(".field-model").toggleClass("disabled", value === "lexicon");
+        $(".field-lexicon").toggleClass("disabled", value !== "lexicon");
+      }
+    });
+    checkSubmitButton();
+    $("select, input").change(checkSubmitButton);
+    $("#output_model_name").keyup(checkSubmitButton);
+    $("input").keydown(function(event){
+      if(event.keyCode == 13) {
+        event.preventDefault();
+        if (!($("#createTaskButton").prop("disabled"))) {
+          $("#createTaskButton").click();
+        }
+        return false;
+      }
+    });
+    $("#createTaskButton").click(function(e) {
+      e.preventDefault();
+
+      var manager = new ProjectActionManager();
+      manager.createTask($("#new_task"));
+
+      return false;
+    });
+  });
+  <%-end-%>
+</script>

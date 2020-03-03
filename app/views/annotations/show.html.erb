@@ -1,0 +1,54 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>A:</strong>
+  <%= @annotation.a_id %>
+</p>
+
+<p>
+  <strong>A type:</strong>
+  <%= @annotation.a_type %>
+</p>
+
+<p>
+  <strong>Concept:</strong>
+  <%= @annotation.concept %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @annotation.user %>
+</p>
+
+<p>
+  <strong>Content:</strong>
+  <%= @annotation.content %>
+</p>
+
+<p>
+  <strong>Note:</strong>
+  <%= @annotation.note %>
+</p>
+
+<p>
+  <strong>Offset:</strong>
+  <%= @annotation.offset %>
+</p>
+
+<p>
+  <strong>Passage:</strong>
+  <%= @annotation.passage %>
+</p>
+
+<p>
+  <strong>Assign:</strong>
+  <%= @annotation.assign %>
+</p>
+
+<p>
+  <strong>Source:</strong>
+  <%= @annotation.source %>
+</p>
+
+<%= link_to 'Edit', edit_annotation_path(@annotation) %> |
+<%= link_to 'Back', annotations_path %>

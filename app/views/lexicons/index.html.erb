@@ -1,0 +1,99 @@
+<h1 class="ui header"><%=@lexicon_group.name %></h1>
+
+<div class="page-info">
+  Total <b><%=@lexicons.total_count %></b> items
+</div>
+  <% if @lexicons.empty? %>
+    <div class="ui message info">
+      This lexicon is empty.
+        <p>
+          <ul>
+            <li>Please add an item using the New Item button below OR upload a lexicon file using Upload &amp; Replace.</li>
+            <li>A lexicon file must have one item per line: three columns (entity type, ID and name) separated by tabs (i.e. tsv).</li>
+          </ul>
+        </p>
+    </div>
+  <% else %>
+  <table class="ui table table-bordered celled sortable">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>ID</th>
+        <th>Name</th>
+        <% if @project.manager?(current_user) %>
+          <th colspan="2"></th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <% @lexicons.each do |lexicon| %>
+        <tr>
+          <td><%= lexicon.ltype %></td>
+          <td><%=link_to lexicon.lexicon_id, lexicon %></td>
+          <td class="ellipsis w400"><%= lexicon.name %></td>
+          <% if @project.manager?(current_user) %>
+            <td class="center aligned"><%= link_to 'Edit', edit_lexicon_path(lexicon) %></td>
+            <td class="center aligned"><%= link_to 'Delete', lexicon, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <% end %>
+<div class="ui center aligned grid">
+  <div class="row">
+    <%= paginate @lexicons %>
+  </div>
+</div>
+<div class="ui grid">
+  <div class="row">
+    <div class="column">
+      <% if @project.manager?(current_user) %>
+        <%= link_to new_lexicon_group_lexicon_path(@lexicon_group), class: "ui button primary" do %>
+          <i class="icon plus"></i> New Item
+        <% end %>
+        <button type="button" class="ui button upload-button teal">
+          <i class="icon upload"></i> Upload &amp; Replace
+        </button>
+      <% end %>
+      <%= link_to lexicon_group_lexicons_path(@lexicon_group, format: 'csv'), class: "ui button green #{'disabled' if @lexicon_group.lexicons.empty?}" do %>
+        <i class="icon download"></i> Download
+      <% end %>
+    </div>
+  </div>
+</div>
+<br>
+
+<div class="ui small modal" id="fileModal">
+  <i class="close icon"></i>
+  <div class="header">
+    Uploading a new file will delete all existing concepts. Are you sure?
+  </div>
+  <div class="content">
+    <%=form_tag(upload_lexicon_group_lexicons_path(@lexicon_group),  method:"POST",  multipart: true, id:"lexiconForm", class:"ui form") do %>
+      <div class="field for-lexicon">
+        <label>Lexicon file</label>
+        <input type="file" name="file">
+      </div>
+    <% end %>
+  </div>
+  <div class="actions">
+    <div class="ui blue button ok"><i class="checkmark icon"></i>Upload</div>
+  </div>
+</div>
+<script>
+<%= content_for :defer_js do %>
+  $(function() {
+    $(".upload-button").click(function(e) {
+      $("#fileModal input[type='file']").val("");
+      $("#fileModal")
+        .modal({
+          onApprove: function() {
+            $("#fileModal form").submit();
+          }
+        })
+        .modal('show');  
+    });
+  });
+<% end %>
+</script>

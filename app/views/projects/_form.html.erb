@@ -1,0 +1,39 @@
+<%= form_with(model: project, local: true, html: {class: "ui form"}) do |form| %>
+  <% if project.errors.any? %>
+    <div id="error_explanation" class="ui message red">
+      <div class="header"><%= pluralize(project.errors.count, "error") %> prohibited this project from being saved:</div>
+
+      <ul class="list">
+      <% project.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field required">
+    <%= form.label :name %>
+    <%= form.text_field :name, placeholder: "Please enter a name of the project. A project is the basic unit for concept tagging and training" %>
+  </div>
+
+  <div class="field">
+    <%= form.label :desc %>
+    <%= form.text_field :desc, placeholder: "Please add a note for a more detailed description" %>
+  </div>
+
+  <% if current_user.super_admin? %>
+    <div class="field">
+      <%= form.label :enable_audit %>
+      <%= form.check_box :enable_audit %>
+    </div>
+  <% end %>
+  <!-- <div class="field required">
+    <%= form.label :round %>
+    <%= form.select :round, (0..10), {}, {class: 'ui fluid dropdown model'} %>
+  </div> -->
+
+  <div class="actions">
+    <%= link_to 'Back', projects_path, class: "ui button" %>
+    <%= form.submit "Save", class: "ui button primary" %>
+  </div>
+<% end %>

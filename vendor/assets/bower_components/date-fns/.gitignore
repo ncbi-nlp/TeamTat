@@ -1,0 +1,9 @@
+node_modules
+npm-debug.log
+tmp
+dist/compressed
+test.espowered.js
+.envrc
+.idea/
+.vscode
+examples/*/dist

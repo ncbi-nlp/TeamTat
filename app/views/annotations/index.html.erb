@@ -1,0 +1,37 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Annotations</h1>
+
+<table class="ui table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Type</th>
+      <th>Concept</th>
+      <th>Annotator</th>
+      <th>Text</th>
+      <th>Note</th>
+      <th>Offset</th>
+      <th>Passage</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @annotations.each do |annotation| %>
+      <tr>
+        <td><%= annotation.a_id %></td>
+        <td><%= annotation.a_type %></td>
+        <td><%= annotation.concept %></td>
+        <td><%= annotation.annotator %></td>
+        <td><%= annotation.content %></td>
+        <td><%= annotation.note %></td>
+        <td><%= annotation.offset %></td>
+        <td><%= annotation.passage %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Annotation', new_annotation_path %>

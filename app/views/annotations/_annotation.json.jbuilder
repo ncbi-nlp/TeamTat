@@ -1,0 +1,12 @@
+json.id annotation.a_id
+json.type annotation.a_type
+json.concept annotation.concept
+json.offset annotation.offset
+json.text annotation.content
+json.passage annotation.passage
+json.note annotation.note
+json.annotator annotation.annotator
+json.updated_at annotation.updated_at.utc.iso8601
+json.user_id annotation.user_id
+json.annotation_id annotation.id
+json.review_result annotation.review_result

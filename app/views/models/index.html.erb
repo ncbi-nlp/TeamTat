@@ -1,0 +1,76 @@
+<%= render partial: "/projects/project_header"%>
+<%= render partial: "/projects/project_buttons" %> 
+<%= render partial: "/projects/project_tab" %>
+
+<div class="ui bottom attached active tab segment">
+  <div class="ui secondary pointing menu">
+    <a class="item" href="<%=project_lexicon_groups_path(@project) %>">
+      Lexicons (<%= @project.lexicon_groups_count %>)
+    </a>
+    <% if @project.manager?(current_user) %>
+      <a class="active item" href="<%=project_models_path(@project)%>">
+        Models (<%= @project.models_count %>)
+      </a>
+      <a class="item" href="<%=project_tasks_path(@project)%>">
+        Tasks (<%= @project.tasks_count %>)
+      </a>
+    <% end %>
+  </div>
+  
+  <div class="page-info">
+    Total <b><%=@models.size %></b> models
+  </div>
+
+  <% if @models.blank? %>
+    <div class='ui icon info message'>
+      <i class="info circle icon"></i>
+      <div class='content'>
+        <div class="header">
+          Tagging Models not Available
+        </div>
+        <p>
+        Customized concept tagging models are listed here. Use the "Train" button in a collection for learning annotated text.
+        </p>
+      </div>
+    </div>
+  <% else %>
+    <table class="ui table table-bordered">
+      <thead>
+        <tr>
+          <th>Name (select a name to see how to use API)</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @models.each do |model| %>
+          <tr>
+            <td><%=link_to model.name, model %></td>
+            <td><%= model.status %></td>
+            <td>
+              <div class="ui right pointing dropdown">
+                <i class="setting icon blue"></i>
+                <div class="menu">
+                  <div class="item">
+                    <%= link_to 'Edit Name', edit_model_path(model) %>
+                  </div>
+                  <div class="item">
+                    <%= link_to 'Delete Model', model, method: :delete, data: { confirm: 'Are you sure?' } %>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <div class="ui center aligned grid">
+      <div class="row">
+        <%= paginate @models %>
+      </div>
+    </div>
+  <% end %>
+</div>
+<br>
+

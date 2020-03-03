@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Assignments are done for Project <%= @project.name %></h1>
+
+    <ul>
+      <li>Project ID : <%= @project.id %></li>
+      <li>Project Name : <%= @project.name %></li>
+      <li>Number of documents: <%= @project.documents.all.size %></li>
+      <li>Number of assignments: <%= @project.assigns.all.size %></li>
+    </ul>
+    <p>
+      All annotation assignments are successfully done. <br>
+      To show the project, just follow this link: <%=link_to @url, @url %>
+    </p>
+    <p>
+      Have a great day!
+    </p>
+  </body>
+</html>

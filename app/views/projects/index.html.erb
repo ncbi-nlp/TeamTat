@@ -1,0 +1,74 @@
+<h1 class="ui header">Projects</h1>
+
+<% if @projects.blank? %>
+  <div class='ui icon info message'>
+    <i class="info circle icon"></i>
+    <div class='content'>
+      <div class="header">
+        No Project. Try Sample Projects 
+      </div>
+      <p>
+      You can use sample projects by clicking the green button below.
+        <ul>
+          <li>Gene-Disease project (sample): 2 annotators, 3 documents with 602 annotations before a round</li>
+          <li>PMC-article (sample): 2 annotators, 2 documents with 868 annotations at round #1</li>
+        </ul>
+      </p>
+    </div>
+  </div>
+<% else %>
+  Total <b><%=@projects.size %></b> projects
+  <table class="ui table table-bordered celled">
+    <thead>
+      <tr>
+        <th><%= sortable 'name'%></th>
+        <th>Manager</th>
+        <th><%= sortable 'documents_count', 'Articles'%></th>
+        <th>Annotators</th>
+        <th>Round</th>
+        <th>Status</th>
+        <!-- <th>Note</th> -->
+        <th class="center aligned"><i class="setting icon grey"></i></th>
+      </tr>
+    </thead>
+
+    <tbody class="project-list">
+      <%= render partial: "index_partial" %>
+    </tbody>
+  </table>
+  <ul class='footnote'>
+    <!-- <li>
+      <b>Auto Annotate</b>: Annotate documents using a lexicon or a pre-trained concept tagging model.
+    </li>
+    <li>
+      <b>Train</b>: Obtain a customized tagging model from a given project. Annotated documents in the project are used for training TaggerOne.
+    </li>
+    <li>
+      <b>Show</b>: Show the list of documents in a project. Here you can perform manual annotation for each document.
+    </li> -->
+    <li>
+      Click setting icons (<i class="setting icon"></i>) for more options.
+    </li>
+  </ul>
+<% end %>
+<%=render partial: "/projects/annotator_modal" %>
+<br>
+
+<%= link_to 'New Project', new_project_path, class: "ui button primary"  %>
+<% if !current_user.has_samples? %>
+  <%= link_to 'Try Sample Projects', load_samples_projects_path, class: 'ui button green', method: :post, data: { disable_with: "<i class='notched circle loading icon'></i> Please wait..." } %>
+<% end %>
+
+<script>
+  function updateViews2() {
+    $(".project-list").load('<%= partial_projects_path({sort: sort_column, direction: sort_direction}) %>', function() {
+      $(".ui.dropdown").dropdown();
+    });
+  }
+  <%= content_for :defer_js do %>
+    $(function() {
+      updateViews2();
+      // setInterval(updateViews2, 10000);    
+    });
+  <% end %>
+</script>

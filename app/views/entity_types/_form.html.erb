@@ -1,0 +1,56 @@
+<%= form_for([@project, entity_type], html: {class: "ui form"}) do |f| %>
+  <% if entity_type.errors.any? %>
+    <div id="error_explanation" class="ui message red">
+      <div class="header"><%= pluralize(entity_type.errors.count, "error") %> prohibited this entity_type from being saved:</div>
+
+      <ul class="list">
+      <% entity_type.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %>
+    <%= f.text_field :name, placeholder: "Please enter a concept name, e.g. Gene. Alphanumeric characters and '_' are only allowed" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :prefix %>
+    <%= f.select :prefix, @options , {},  {class: 'ui fluid search dropdown '}%>
+  </div>
+  <div class="field">
+    <%= f.label :color %>
+    <%= f.text_field :color, class: "jscolor {hash: true}"  %>
+  </div>
+  <div class="ui field segment">
+    <%= f.label "Sample Colors" %>
+    <%
+    EntityType::COLORS.each do |c|
+      %>
+      <button type="button" data-color="<%=c%>" class="color-button mini ui button" style="background-color: <%=c%>;color:#000; margin-bottom: 0.5em;"><%=c%></button>
+    <% end %>
+  </div>
+
+  <div class="actions">
+    <%= link_to "Back", project_entity_types_path(@project), class: "ui button" %>
+    <%= f.submit "Save", class: "ui button primary" %>
+  </div>
+<% end %>
+<script>
+<%= content_for :defer_js do -%>
+
+$(function() {
+  $(".color-button").click(function(e) {
+    var $e = $(e.currentTarget);
+    var color = $e.data('color');
+    $("input[name='entity_type[color]']")
+      .val(color)
+      .css("background-color", color);
+    return false;
+  });
+  $(".ui.fluid.dropdown").dropdown({clearable: true, allowAdditions: true});
+});
+<%- end -%>
+</script>

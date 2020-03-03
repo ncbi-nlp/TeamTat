@@ -1,0 +1,1 @@
+json.array! @lexicons, partial: 'lexicons/lexicon', as: :lexicon

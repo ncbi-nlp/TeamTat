@@ -1,0 +1,67 @@
+<p>
+  <% if infons["citation"].present? %>
+    <%=infons["citation"] %>
+  <% else %>
+    <%-
+    i = 0
+    result_names = []
+    while !infons["name_#{i}"].nil? do
+      name = infons["name_#{i}"]
+      parts = name.split(";")
+      sur = parts[0].split(":")
+      if parts.size == 1
+        result_names << sur[1]  
+      else
+        given = parts[1].split(":")
+        if (sur[0] == "surname" && given[0] == "given-names")
+          result_names << "#{sur[1]}, #{given[1]}#{'.' if given[1][-1] != "."}"
+        else 
+          result_names << name
+        end
+      end
+      i = i + 1
+    end 
+    -%>
+    <%=result_names.join(",")%>
+    <%=infons["year"]%>.
+    <% if title.present? %>
+      <b class="text passage-text"><%= p.text %></b>.
+    <% end %>
+    <% if infons["volume"].present? %>
+      Vol. <%=infons["volume"]%>. 
+    <% end %>
+    <% if infons["issue"].present? %>
+      Issue <%=infons["issue"]%>. 
+    <% end %>
+    <% if infons["journal-title"].present? %>
+      <%=infons["journal-title"] %>,
+    <% end %>
+    <% if infons["source"].present? %>
+      <%=infons["source"] %>,
+    <% end %>
+    <%=infons["fpage"]%> - <%=infons["lpage"]%>.
+
+    <% if infons["kwd"].present? %>
+      <br>
+      Keyword: <%=infons["kwd"]%>. 
+    <% end %>
+    <% if infons["article-id_pmc"].present? %>
+      <br>
+      <a href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC<%=infons['article-id_pmc']%>" target="_blank">
+        <i class="icon world"></i>PMC <%=infons["article-id_pmc"]%>
+      </a>
+    <% end %>
+    <% if infons["article-id_pmid"].present? %>
+      <br>
+      <a href="http://www.ncbi.nlm.nih.gov/pubmed/<%=infons['article-id_pmid']%>" target="_blank">
+        <i class="icon world"></i>PMID <%=infons["article-id_pmid"]%>
+      </a>
+    <% end %>
+    <% if infons["pub-id_pmid"].present? %>
+      <br>
+      <a href="http://www.ncbi.nlm.nih.gov/pubmed/<%=infons['pub-id_pmid']%>" target="_blank">
+        <i class="icon world"></i>PMID <%=infons["pub-id_pmid"]%>
+      </a> 
+    <% end %>
+  <% end %>
+</p>

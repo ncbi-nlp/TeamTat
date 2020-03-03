@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @lexicon_group.name %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @lexicon_group.user %>
+</p>
+
+<%= link_to 'Edit', edit_lexicon_group_path(@lexicon_group) %> |
+<%= link_to 'Back', lexicon_groups_path %>

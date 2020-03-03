@@ -1,0 +1,33 @@
+<h1 class="ui header">API Keys</h1>
+
+<table class="ui table table-bordered">
+  <thead>
+    <tr>
+      <th><%=sortable 'key'%></th>
+      <th>User</th>
+      <th><%=sortable 'created_at'%></th>
+      <th><%=sortable 'last_access_at'%></th>
+      <th><%=sortable 'last_access_ip'%></th>
+      <th><%=sortable 'access_count'%></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @api_keys.each do |api_key| %>
+      <tr>
+        <td><%= api_key.key %></td>
+        <td><%=link_to api_key.user.email, api_key.user %></td>
+        <td><%=time_ago_in_words api_key.created_at %></td>
+        <td><%=time_ago_in_words api_key.last_access_at if api_key.last_access_at.present? %></td>
+        <td><%= api_key.last_access_ip %></td>
+        <td><%= api_key.access_count %></td>
+        <td><%= link_to 'Destroy', api_key, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Api Key', new_api_key_path, class: "ui button primary" %>

@@ -1,0 +1,86 @@
+<script type="text/template" id="annotationListViewTemplate1">
+  <tr data-id='{{id}}' data-offset='{{offset}}' class='annotation-tr' data-mode='mention' data-annotation_id='{{annotation_id}}'>
+    <td style='text-align:center;'>
+      <input type='checkbox'>
+    </td>
+    <td class="type">
+      <div class='ui basic segment'>
+        <span class="type-text ellipsis w80">{{type}}</span>
+        <span class="type-edit"></span>
+        <div class='ui inverted dimmer'><div class='ui mini loader'></div></div>
+      </div>
+    </td>
+    <td class="concept w300">
+      <div class='ui basic segment'>
+        <span class="concept-text for-id ellipsis need-popup2">{{concept}}</span>
+        <span class="concept-edit">
+          <input type="text" name="concept" value="{{concept}}" tabindex='1'>
+        </span>
+        <div class='ui inverted dimmer'><div class='ui mini loader'></div></div>
+      </div>
+    </td>
+    <td>
+      <i class="icon show-popup {{iconClass}}" title="edit"></i>
+      <span class='annotation-text-span w300'>{{{text}}}</span>
+    </td>
+    <td>{{offset}}</td>
+    <td class='ellipsis w150' title='{{annotator}}'>{{annotator}}</td>
+    <td class='ellipsis w80' title='{{updated_at}}'>{{yymmdd}}</td>
+  </tr>
+</script>
+<script type="text/template" id="mentionHead">
+  <tr>
+    <th>Offset</th>
+    <th>Type</th>
+    <th class='concept-id-head'>Concept ID</th>
+    <th>Text</th>
+  </tr>
+</script>
+<script type="text/template" id="conceptHead">
+  <tr>
+    <th>Type</th>
+    <th class='concept-id-head'>Concept ID  <span style='color: #aaa'>&dtrif;</span> </th>
+    <th>Text</th>
+  </tr>
+</script>
+<script type="text/template" id="conceptViewTemplate1">
+  <tr data-id="{{id}}" data-passage="{{passage}}" data-offset="{{offset}}" class="concept annotation-tr top-row {{need_collapse}} {{review_state}}" data-annotation_id='{{annotation_id}}' data-size="{{size}}">
+    <td rowspan="{{size}}" class="type">
+      <div class='ui basic segment'>
+      <div class='collapse-btn'><i class='plus square outline icon'></i><i class='minus square outline icon'></i></div>
+        <span class="type-text ellipsis w80">{{type}}</span>
+        <span class="type-edit"></span>
+        <div class='ui dimmer'><div class='ui mini loader'></div></div>
+      </div>
+    </td>
+    <td rowspan="{{size}}" class="concept">
+      <div class='ui basic segment'>
+        <span class="concept-text for-id ellipsis w100 need-popup2 for-{{conceptId}}">{{concept}}</span>
+        <span class="concept-edit">
+          <input type="text" name="concept" value="{{concept}}">
+        </span>
+        <div class='ui dimmer'><div class='ui mini loader'></div></div>
+      </div>
+    </td>
+    <td class='td-annotation-text'>
+      <i class='icon small question red review-not-determined' title='need review'></i> 
+      <i class='icon small check blue review-agreed' title='agreed'></i> 
+      <i class='icon small exclamation red review-disagreed' title='disagreed'></i> 
+      <i class='icon small forward grey review-skipped' title='skipped'></i> 
+      <i class="icon show-popup {{iconClass}}" title="edit"></i>
+      {{{text}}}
+    </td>
+  </tr>
+</script>
+<script type="text/template" id="conceptViewTemplate2">
+  <tr data-id="{{id}}" data-passage="{{passage}}" data-offset="{{offset}}" class="concept annotation-tr sub-row {{review_state}}" data-annotation_id='{{annotation_id}}' data-top_annotation_id='{{top_annotation_id}}'>
+    <td class='td-annotation-text'>
+      <i class='icon small question red review-not-determined' title='need review'></i> 
+      <i class='icon small check blue review-agreed' title='agreed'></i> 
+      <i class='icon small exclamation red review-disagreed' title='disagreed'></i> 
+      <i class='icon small forward grey review-skipped' title='skipped'></i> 
+      <i class="icon show-popup {{iconClass}}" title="edit"></i>
+      {{{text}}}
+    </td>
+  </tr>
+</script>

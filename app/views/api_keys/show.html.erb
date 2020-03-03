@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Key:</strong>
+  <%= @api_key.key %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @api_key.user %>
+</p>
+
+<p>
+  <strong>Last access at:</strong>
+  <%= @api_key.last_access_at %>
+</p>
+
+<p>
+  <strong>Last access ip:</strong>
+  <%= @api_key.last_access_ip %>
+</p>
+
+<p>
+  <strong>Access cpount:</strong>
+  <%= @api_key.access_cpount %>
+</p>
+
+<%= link_to 'Edit', edit_api_key_path(@api_key) %> |
+<%= link_to 'Back', api_keys_path %>

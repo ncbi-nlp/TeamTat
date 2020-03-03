@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE collection SYSTEM "BioC.dtd">
+<collection>
+  <source>PubMed</source>
+  <date>20190604</date>
+  <key>collection.key</key>
+  <document>
+    <id>11773052</id>
+    <passage>
+      <infon key="type">title</infon>
+      <offset>0</offset>
+      <text>Drosophila Ack targets its substrate, the sorting nexin DSH3PX1, to a protein complex involved in axonal guidance.</text>
+      <annotation id="15">
+        <infon key="type">GENE</infon>
+        <infon key="identifier">GENE:38489</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T05:00:15Z</infon>
+        <location offset="11" length="3"/>
+        <text>Ack</text>
+      </annotation>
+      <annotation id="7">
+        <infon key="type">GENE</infon>
+        <infon key="identifier">GENE:39136</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T02:48:30Z</infon>
+        <location offset="56" length="7"/>
+        <text>DSH3PX1</text>
+      </annotation>
+    </passage>
+    <passage>
+      <infon key="type">abstract</infon>
+      <offset>115</offset>
+      <text>Dock, the Drosophila orthologue of Nck, is an adaptor protein that is known to function in axonal guidance paradigms in the fly including proper development of neuronal connections in photoreceptor cells and axonal tracking in Bolwig's organ. To develop a better understanding of axonal guidance at the molecular level, we purified proteins in a complex with the SH2 domain of Dock from fly Schneider 2 cells. A protein designated p145 was identified and shown to be a tyrosine kinase with sequence similarity to mammalian Cdc-42-associated tyrosine kinases. We demonstrate that Drosophila Ack (DAck) can be co-immunoprecipitated with Dock and DSH3PX1 from fly cell extracts. The domains responsible for the in vitro interaction between Drosophila Ack and Dock were identified, and direct protein-protein interactions between complex members were established. We conclude that DSH3PX1 is a substrate for DAck in vivo and in vitro and define one of the major in vitro sites of DSH3PX1 phosphorylation to be Tyr-56. Tyr-56 is located within the SH3 domain of DSH3PX1, placing it in an important position for regulating the binding of proline-rich targets. We demonstrate that Tyr-56 phosphorylation by DAck diminishes the DSH3PX1 SH3 domain interaction with the Wiskott-Aldrich Syndrome protein while enabling DSH3PX1 to associate with Dock. Furthermore, when Tyr-56 is mutated to aspartate or glutamate, the binding to Wiskott-Aldrich Syndrome protein is abrogated. These results suggest that the phosphorylation of DSH3PX1 by DAck targets this sorting nexin to a protein complex that includes Dock, an adaptor protein important for axonal guidance.</text>
+      <annotation id="1">
+        <infon key="type">GENE</infon>
+        <infon key="identifier">GENE:33262</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T02:47:47Z</infon>
+        <location offset="115" length="4"/>
+        <text>Dock</text>
+      </annotation>
+      <annotation id="2">
+        <infon key="type">GENE</infon>
+        <infon key="identifier">GENE:33262</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T02:47:47Z</infon>
+        <location offset="492" length="4"/>
+        <text>Dock</text>
+      </annotation>
+      <annotation id="16">
+        <infon key="type">GENE</infon>
+        <infon key="identifier">GENE:38489</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T05:00:15Z</infon>
+        <location offset="705" length="3"/>
+        <text>Ack</text>
+      </annotation>
+      <annotation id="18">
+        <infon key="type">GENE</infon>
+        <infon key="identifier">GENE:38489</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T05:00:15Z</infon>
+        <location offset="710" length="4"/>
+        <text>DAck</text>
+      </annotation>
+      <annotation id="3">
+        <infon key="type">GENE</infon>
+        <infon key="identifier">GENE:33262</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T02:47:47Z</infon>
+        <location offset="750" length="4"/>
+        <text>Dock</text>
+      </annotation>
+      <annotation id="8">
+        <infon key="type">GENE</infon>
+        <infon key="identifier">GENE:39136</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T02:48:29Z</infon>
+        <location offset="759" length="7"/>
+        <text>DSH3PX1</text>
+      </annotation>
+      <annotation id="17">
+        <infon key="type">GENE</infon>
+        <infon key="identifier">GENE:38489</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T05:00:15Z</infon>
+        <location offset="863" length="3"/>
+        <text>Ack</text>
+      </annotation>
+      <annotation id="4">
+        <infon key="type">GENE</infon>
+        <infon key="identifier">GENE:33262</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T02:47:47Z</infon>
+        <location offset="871" length="4"/>
+        <text>Dock</text>
+      </annotation>
+      <annotation id="9">
+        <infon key="type">GENE</infon>
+        <infon key="identifier">GENE:39136</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T02:48:29Z</infon>
+        <location offset="992" length="7"/>
+        <text>DSH3PX1</text>
+      </annotation>
+      <annotation id="19">
+        <infon key="type">GENE</infon>
+        <infon key="identifier">GENE:38489</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T05:00:15Z</infon>
+        <location offset="1019" length="4"/>
+        <text>DAck</text>
+      </annotation>
+      <annotation id="10">
+        <infon key="type">GENE</infon>
+        <infon key="identifier">GENE:39136</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T02:48:29Z</infon>
+        <location offset="1091" length="7"/>
+        <text>DSH3PX1</text>
+      </annotation>
+      <annotation id="11">
+        <infon key="type">GENE</infon>
+        <infon key="identifier">GENE:39136</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T02:48:29Z</infon>
+        <location offset="1172" length="7"/>
+        <text>DSH3PX1</text>
+      </annotation>
+      <annotation id="20">
+        <infon key="type">GENE</infon>
+        <infon key="identifier">GENE:38489</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T05:00:15Z</infon>
+        <location offset="1315" length="4"/>
+        <text>DAck</text>
+      </annotation>
+      <annotation id="12">
+        <infon key="type">GENE</infon>
+        <infon key="identifier">GENE:39136</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T02:48:29Z</infon>
+        <location offset="1335" length="7"/>
+        <text>DSH3PX1</text>
+      </annotation>
+      <annotation id="22">
+        <infon key="type">GENE</infon>
+        <infon key="identifier">GENE:43402</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T05:02:06Z</infon>
+        <location offset="1375" length="32"/>
+        <text>Wiskott-Aldrich Syndrome protein</text>
+      </annotation>
+      <annotation id="13">
+        <infon key="type">GENE</infon>
+        <infon key="identifier">GENE:39136</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T02:48:29Z</infon>
+        <location offset="1423" length="7"/>
+        <text>DSH3PX1</text>
+      </annotation>
+      <annotation id="5">
+        <infon key="type">GENE</infon>
+        <infon key="identifier">GENE:33262</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T02:47:47Z</infon>
+        <location offset="1449" length="4"/>
+        <text>Dock</text>
+      </annotation>
+      <annotation id="23">
+        <infon key="type">GENE</infon>
+        <infon key="identifier">GENE:43402</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T05:02:05Z</infon>
+        <location offset="1533" length="32"/>
+        <text>Wiskott-Aldrich Syndrome protein</text>
+      </annotation>
+      <annotation id="14">
+        <infon key="type">GENE</infon>
+        <infon key="identifier">GENE:39136</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T02:48:29Z</infon>
+        <location offset="1630" length="7"/>
+        <text>DSH3PX1</text>
+      </annotation>
+      <annotation id="21">
+        <infon key="type">GENE</infon>
+        <infon key="identifier">GENE:38489</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T05:00:15Z</infon>
+        <location offset="1641" length="4"/>
+        <text>DAck</text>
+      </annotation>
+      <annotation id="6">
+        <infon key="type">GENE</infon>
+        <infon key="identifier">GENE:33262</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T02:47:47Z</infon>
+        <location offset="1708" length="4"/>
+        <text>Dock</text>
+      </annotation>
+      <relation id="R1">
+        <infon key="type">GeneGene_Interaction</infon>
+        <infon key="annotator">Initial</infon>
+        <infon key="updated_at">2019-12-18T03:51:51Z</infon>
+        <node refid="3" role=""/>
+        <node refid="8" role=""/>
+      </relation>
+    </passage>
+  </document>
+</collection>

@@ -1,0 +1,89 @@
+<% if @project.manager?(current_user) %>
+<div id="projectButtonArea">
+  <% unless @project.all_assigned? %>
+    <div class="ui tiny message info">
+      <i class='icon exclamation triangle'></i> 
+      You need to assign annotators first before starting a round.
+    </div>
+  <% end %> 
+
+  <div class="ui grid project-buttons">
+    <div class="fourteen wide column">
+      <div class="ui item button dropdown #{'disabled' if @project.documents.empty?}">
+        <i class="icon download"></i> Download <i class="dropdown icon"></i>
+        <div class="menu">
+          <% (0..@project.round).each do |version| %>
+            <%= link_to "Version #{version}", download_project_path(@project, {version: version}), class: "item" %>
+          <% end %>
+        </div>
+      </div>
+      <div class="ui item button dropdown #{'disabled' if @project.documents.empty?}">
+        <i class="icon wizard"></i> AI Tool <i class="dropdown icon"></i>
+        <div class="menu">
+          <%=link_to new_project_task_path(@project, {task_type: 0}), class: "item task-buttons-annotate #{'disabled' unless @project.task_available?}" do %>
+            Auto Annotate
+          <% end %>
+          <%= link_to new_project_task_path(@project, {task_type: 1}), class: "item task-buttons-train #{'disabled' if !@project.task_available? || !@project.has_annotations?}" do %>
+            Train
+          <% end %>
+        </div>
+      </div>
+      <% if @project.round_begin? %>
+        <%= link_to "#", class: "ui button primary #{'disabled' if @project.finalized  }", id: 'stopAnnotationButton' do %>
+          <i class="icon stop"></i>
+          End Round
+        <% end %>
+        <% if !@project.done %> 
+          <span class='ui mini message warning'>
+            <i class='icon exclamation triangle'></i>
+            Not all documents are marked as done
+          </span>
+        <% end %>
+      <% else %>
+        <div class="ui item primary button dropdown #{'disabled' if !@project.round_available? || @project.finalized }">
+          <i class="icon play"></i> Start Round <i class="dropdown icon"></i>
+          <div class="menu">
+            <%=link_to "#", class: "item #{'disabled' if !@project.round_available? || @project.finalized }", id: 'startRoundButton1' do %>
+              <h4 class='ui header'><i class="icon play circle outline"></i> Individual Round</h4>
+              <p>Each annotator performs the task individually. The result of the previous round will be duplicated for each annotator.</p>
+            <% end %>
+            <%=link_to "#", class: "item #{'disabled' if !@project.round_available? || @project.finalized }", id: 'startRoundButton2' do %>
+              <h4 class='ui header'><i class="icon users"></i> Collaborative Round</h4>
+              <p>All assigned annotators share the result of the previous round and perform the task together.</p>
+            <% end %>
+          </div>
+        </div>
+        <% if @project.round > 1 %>
+          <%= link_to '#', class: "ui button black #{'disabled' if !@project.round_available? || @project.finalized }", id: 'finalMergeButton' do %>
+            <i class="icon archive"></i> Generate Final Merge
+          <% end %>
+        <% end %>
+      <% end %>   
+    </div>
+    <div class="two wide column right aligned">
+      <div class="ui icon button dropdown top right pointing ">
+        <i class="settings icon"></i>
+        <div class="menu">
+          <%= link_to 'Edit Project', edit_project_path(@project), class: "item #{'disabled' if @project.busy? }" %> 
+          <%= link_to 'Delete All Annotations', delete_all_annotations_project_path(@project), method: :post, data: { confirm: 'Are you sure?' }, class: "item #{'disabled' if @project.busy? }" %> 
+          <%= link_to 'Delete All Documents', empty_project_path(@project), method: :post, data: { confirm: 'Are you sure?' }, class: "item #{'disabled' if @project.busy? }"%>
+          <%= link_to 'Delete Project', @project, method: :delete, data: { confirm: 'Are you sure?' } , class: "item #{'disabled' if @project.busy? }"%>
+          <div class="divider"></div>
+          <%= link_to lock_project_path(@project), method: :post, data: { confirm: 'Are you sure?' }, class: "item #{'disabled' if @project.locked || @project.finalized }" do %>
+            Lock Project
+          <% end %> 
+          <%= link_to unlock_project_path(@project), method: :post, data: { confirm: 'Are you sure?' }, class: "item #{'disabled' if !@project.locked }" do %>
+            Unlock project
+          <% end %> 
+          <div class="divider"></div>
+          <% if @project.round > 0 %>
+            <%= link_to cancel_round_project_path(@project), method: :post, data: { confirm: 'Are you sure? You will loose all changes!' }, class: "item " do %>
+              Remove Annotations Version
+            <% end %> 
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>

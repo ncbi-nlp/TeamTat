@@ -1,0 +1,27 @@
+// Place all the styles related to the collections controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+.footnote {
+  padding-left: 1.5em;
+  color: #999;
+  b {
+    color: #666;
+  }
+}
+
+.topnote {
+  margin-top: 1em;
+  color: #999;
+  b {
+    color: #666;
+  }
+}
+
+.ui.header i.icon.project-locked-icon {
+  display: inline-block;
+  font-size: 1.1rem;
+  color: silver;
+  vertical-align: text-top;
+}

@@ -1,0 +1,54 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @task.user %>
+</p>
+
+<p>
+  <strong>Collection:</strong>
+  <%= @task.collection %>
+</p>
+
+<p>
+  <strong>Tagger:</strong>
+  <%= @task.tagger %>
+</p>
+
+<p>
+  <strong>Task type:</strong>
+  <%= @task.task_type %>
+</p>
+
+<p>
+  <strong>Pre-trained model:</strong>
+  <%= @task.pre_trained_model %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @task.status %>
+</p>
+
+<p>
+  <strong>Model URL:</strong>
+  <%= @task.model_url %>
+</p>
+
+<p>
+  <strong>Xml url:</strong>
+  <%= @task.xml_url %>
+</p>
+
+<p>
+  <strong>Begin at:</strong>
+  <%= @task.begin_at %>
+</p>
+
+<p>
+  <strong>End at:</strong>
+  <%= @task.end_at %>
+</p>
+
+<%= link_to 'Edit', edit_task_path(@task) %> |
+<%= link_to 'Back', tasks_path %>

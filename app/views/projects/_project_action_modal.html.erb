@@ -1,0 +1,18 @@
+<div class="ui small modal" id="projectActionModal" data-project='<%= @project.id%>' data-version='<%= @project.round %>'>
+  <div class="header">
+    Start Annotation
+  </div>
+  <div class="content">
+    <div class='ui message info'>
+      Please do not close or reload the window until all work is done. 
+      <i class="spinner loading icon"></i>
+
+    </div>
+    <div class="ui teal progress">
+      <div class="bar">
+        <div class="progress"></div>
+      </div>
+      <div class="label">Processing documents</div>
+    </div>
+  </div>
+</div>

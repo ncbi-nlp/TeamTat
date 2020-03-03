@@ -1,0 +1,73 @@
+<%= render partial: "/projects/project_header"%>
+<%= render partial: "/projects/project_buttons" %> 
+<%= render partial: "/projects/project_tab" %>
+
+<div class="ui bottom attached active tab segment">
+  <form class="ui form segment">
+    <div class="field">
+      <label>Document</label>
+      <select class="ui fluid dropdown" name="document_id">
+        <option value="">All</option>
+        <% @project.documents.all.each do |d| %>
+          <option value="<%=d.id%>" <%='selected' if @document.present? && d.id == @document.id %>><%= d.did%> : <%=d.title%></option>
+        <% end %>
+      </select>
+    </div>
+    <div class="field">
+      <label>User</label>
+      <select class="ui fluid dropdown" name="user_id">
+        <option value="">All</option>
+        <% @project.project_users.all.each do |pu| %>
+          <option value="<%=pu.user_id%>" <%='selected' if @user.present? && pu.user_id == @user.id %>><%=pu.user.email_or_session_tail %></option>
+        <% end %>
+      </select>
+    </div>
+    <input type="submit" class="ui button primary" value="Search">
+    <%=link_to "Clear", project_audits_path(@project), class: "ui button default"%>
+  </form>
+
+  <div class="ui  right aligned grid">
+    <div class="page-info left floated left aligned six wide column">
+      Total <b><%=@audits.total_count %></b> audits
+    </div>
+  </div>
+
+  <table class="ui table table-bordered celled ellipsis">
+    <thead>
+      <tr>
+        <th>#</th>        
+        <th>Document</th>
+        <th>User</th>
+        <th>Message</th>
+        <th class="ellipsis w200">Request</th>
+        <th class="ellipsis w200">Result</th>
+        <th>At</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @audits.each do |audit| %>
+        <tr>
+          <td><%=link_to audit.id, audit %></td>
+          <td><%=audit.document.did%></td>
+          <td>
+            <% if audit.user.present? %>
+              <%=image_tag(audit.user.image_or_default, class: "ui avatar image", title: audit.user.email_or_session_tail) %>
+              <%= audit.user.name_or_email_or_id %>
+            <% end %>
+          </td>
+          <td><%= audit.message %></td>
+          <td class="ellipsis w200"><%= audit.request %></td>
+          <td class="ellipsis w200"><%= audit.result %></td>
+          <td><%= audit.created_at %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <div class="ui center aligned grid">
+    <div class="row">
+      <%= paginate @audits %>
+    </div>
+  </div>
+
+</div>

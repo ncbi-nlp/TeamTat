@@ -1,0 +1,88 @@
+<%= render partial: "/projects/project_header"%>
+<%= render partial: "/projects/project_buttons" %> 
+<%= render partial: "/projects/project_tab" %>
+
+<div class="ui bottom attached active tab segment">
+  <div class="ui secondary pointing menu">
+    <a class="active item" href="<%=project_lexicon_groups_path(@project) %>">
+      Lexicons (<%= @project.lexicon_groups_count %>)
+    </a>
+    <% if @project.manager?(current_user) %>
+      <a class="item" href="<%=project_models_path(@project)%>">
+        Models (<%= @project.models_count %>)
+      </a>
+      <a class="item" href="<%=project_tasks_path(@project)%>">
+        Tasks (<%= @project.tasks_count %>)
+      </a>
+    <% end %>
+  </div>
+  
+  <div class="page-info">
+    Total <b><%=@lexicon_groups.size %></b> lexicons
+  </div>
+
+  <% if @lexicon_groups.blank? %>
+    <div class='ui icon info message'>
+      <i class="info circle icon"></i>
+      <div class='content'>
+        <% if @project.manager?(current_user) %>
+          <div class="header">
+            Lexicons not Available. Try Sample Lexicon
+          </div>
+          <p>
+            You can import our sample lexicon by clicking the green button below. The sample lexicon was designed to be used with our sample collections.
+          </p>
+        <% else %>
+          <div class="header">
+            Lexicons not Available.
+          </div>
+          <p>
+            
+          </p>
+        <% end %>
+      </div>
+    </div>
+  <% else %>
+    <table class="ui table table-bordered celled">
+      <thead>
+        <tr>
+          <th>Name (select a name to see/edit the lexicon)</th>
+          <th>Items</th>
+          <% if @project.manager?(current_user) %>
+            <th colspan='2'></th>
+          <% end %>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @lexicon_groups.each do |lexicon_group| %>
+          <tr>
+            <td><%=link_to lexicon_group.name, lexicon_group_lexicons_path(lexicon_group) %></td>
+            <td><%= lexicon_group.lexicons_count %></td>
+            <% if @project.manager?(current_user) %>
+              <td class="center aligned">
+                <%= link_to 'Edit Name', edit_lexicon_group_path(lexicon_group) %>
+              </td>
+              <td class="center aligned">
+                <%= link_to 'Delete', lexicon_group, method: :delete, data: { confirm: 'Are you sure?' } %>
+              </td>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <div class="ui center aligned grid">
+      <div class="row">
+        <%= paginate @lexicon_groups %>
+      </div>
+    </div>
+  <% end %>
+<% if @project.manager?(current_user) %>
+  <%= link_to 'New Lexicon', new_project_lexicon_group_path(@project), class: "ui button primary"  %>
+  <% unless @project.has_sample_lexicons? %>
+    <%= link_to 'Try Sample Lexicon', load_samples_project_lexicon_groups_path(@project), class: 'ui button green', method: :post %>
+  <% end %>
+<% end %>
+</div>
+<br>
+

@@ -1,0 +1,53 @@
+<%= form_for(user, html: {class: 'ui form'}) do |f| %>
+  <% if user.errors.any? %>
+    <div class="ui message negative">
+      <div class="header">
+        <%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:
+      </div>
+
+      <ul class="list">
+      <% user.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <% if current_user.super_admin? || !current_user.valid_email? %>
+    <div class="field">
+      <%= f.label :email %>
+      <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+    </div>
+  <% end %>
+  <div class="field">
+    <%= f.label :name %>
+    <%= f.text_field :name, autocomplete: "name"  %>
+  </div>
+
+    <div class="field">
+      <%= f.label :password %>
+      <%= f.password_field :password, autocomplete: "new-password" %>
+    </div>
+    
+    <div class="field">
+      <%= f.label :password_confirmation %>
+      <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+    </div>
+
+  <% if current_user.super_admin? %>
+    <div class="field">
+      <div class="ui checkbox">
+        <%= f.check_box :super_admin %>
+        <%= f.label :super_admin %>
+      </div>
+    </div>
+  <% end %>
+  <div class="actions">
+    <% if current_user.super_admin? %>
+      <%= link_to 'Back', users_path, class: "ui button" %>
+    <% else %>
+      <%= link_to 'Show Profile', @user, class: 'ui button' %>
+    <% end %>
+    <%= f.submit "Submit", class: 'ui button primary' %>
+  </div>
+<% end %>

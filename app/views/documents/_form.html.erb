@@ -1,0 +1,72 @@
+<%= form_with(model: document, local: true) do |form| %>
+  <% if document.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(document.errors.count, "error") %> prohibited this document from being saved:</h2>
+
+      <ul>
+      <% document.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :project_id %>
+    <%= form.text_field :project_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :did %>
+    <%= form.text_field :did %>
+  </div>
+
+  <div class="field">
+    <%= form.label :user_updated_at %>
+    <%= form.datetime_select :user_updated_at %>
+  </div>
+
+  <div class="field">
+    <%= form.label :tool_updated_at %>
+    <%= form.datetime_select :tool_updated_at %>
+  </div>
+
+  <div class="field">
+    <%= form.label :xml %>
+    <%= form.text_area :xml %>
+  </div>
+
+  <div class="field">
+    <%= form.label :title %>
+    <%= form.text_area :title %>
+  </div>
+
+  <div class="field">
+    <%= form.label :key %>
+    <%= form.text_field :key %>
+  </div>
+
+  <div class="field">
+    <%= form.label :did_no %>
+    <%= form.number_field :did_no %>
+  </div>
+
+  <div class="field">
+    <%= form.label :batch_id %>
+    <%= form.number_field :batch_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :batch_no %>
+    <%= form.number_field :batch_no %>
+  </div>
+
+  <div class="field">
+    <%= form.label :order_no %>
+    <%= form.number_field :order_no %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

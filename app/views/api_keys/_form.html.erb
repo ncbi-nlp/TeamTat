@@ -1,0 +1,22 @@
+<%= form_for(api_key, html: {class: 'ui form'}) do |f| %>
+  <% if api_key.errors.any? %>
+    <div class="ui message negative">
+      <div class="header">
+        <%= pluralize(api_key.errors.count, "error") %> prohibited this api_key from being saved:
+      </div>
+
+      <ul class="list">
+      <% api_key.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="field">
+    <%= f.label :user_email %>
+    <%= f.text_field :user_email, data: { autocomplete_source: users_path}  %>
+  </div>
+  <div class="actions">
+    <%= f.submit "Create", class: "ui button primary" %>
+  </div>
+<% end %>

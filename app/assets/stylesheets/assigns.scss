@@ -1,0 +1,81 @@
+// Place all the styles related to the assigns controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+.assign-button {
+  display: inline-block;
+  color: #ddd;
+  font-size: 1.5em;
+  .icon.circle      { display: none; }
+  .icon.circle.outline       { display: inline-block; }
+  .icon.check.circle { display: none; }
+  &.assigned {
+    color: #888;
+    .icon.circle      { display: inline-block; }
+    .icon.circle.outline       { display: none; }
+    .icon.check.circle { display: none; }
+  }
+
+  &.done {
+    color: #00ab20;
+    .icon.circle      { display: none; }
+    .icon.circle.outline       { display: none; }
+    .icon.check.circle { display: inline-block; }
+  }
+}
+
+.assign-row {
+  &.done {
+    background-color: #eaf7ea;
+  }
+}
+
+td.sum, th.sum {
+  text-align: center !important;
+  color: #888;
+}
+
+.assign-table thead th {
+  position: -webkit-sticky; /* for Safari */
+  position: sticky;
+  top: 46px;
+  background: #000;
+  color: #FFF;
+}
+
+.annotator-checker {
+  top: 82px;
+  right: 0.5em;
+  position: fixed;
+  display: block;
+  z-index: 999;
+  transition: all 0.5s ease-out;
+  box-shadow: 0 0 1em 2px #333;
+
+  .ui.table thead tr th {
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+  }
+  .icon.close {
+    cursor: pointer;
+    color: #fff;
+    margin: 0.5em;
+  }
+
+  &.hidden {
+    right: -600px;
+  }
+  .user-row {
+    padding: 0.5em 1em;
+    // margin-bottom: 1px;
+    // background-color: #eee;
+
+    color: #fff;
+    text-decoration: none;
+    &.annotation-hide {
+      text-decoration: line-through;
+      opacity: 0.3;
+    }
+  }
+}

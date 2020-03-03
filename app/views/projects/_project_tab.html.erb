@@ -1,0 +1,32 @@
+<%= render partial: 'projects/project_action_modal' %>
+
+<div class="ui top attached tabular menu">
+  <div class="<%='active' if params[:controller] == 'documents' %> item need-popup" data-content="Documents that belong to this project"> 
+    <%=link_to_unless params[:controller] == 'projects', "Documents (<span id='tab_header_documents_count'>#{@project.documents_count_for_display(current_user)}</span>)".html_safe, project_documents_path(@project)%>
+  </div>
+  <div class="<%='active' if params[:controller] == 'project_users' %> item need-popup" data-content="Members for this project">
+    <%=link_to_unless params[:controller] == 'project_users', "Members (<span id='tab_header_project_users_count'>#{@project.project_users_count}</span>)".html_safe, project_project_users_path(@project)%>
+  </div>
+  <% if @project.manager?(current_user) %>
+    <div class="<%='active' if params[:controller] == 'assigns' %> item need-popup" data-content="Assign table for annotations">
+      <%=link_to_unless params[:controller] == 'assigns', "Assignments (<span id='tab_header_assigns_count'>#{@project.assigns_count}</span>)".html_safe, project_assigns_path(@project)%>
+    </div>
+  <% end %>
+  <div class="<%='active' if (params[:controller] == 'entity_types' || params[:controller] == 'relation_types') %> item need-popup" data-content="Entity types (i.e. concepts) / Relation types that appear in this project">
+    <%=link_to_unless (params[:controller] == 'entity_types' || params[:controller] == 'relation_types'), "Types", project_entity_types_path(@project)%>
+  </div>
+
+  <% if @project.manager?(current_user) %>
+    <div class="<%='active' if (params[:controller] == 'lexicon_groups' || params[:controller] == 'tasks' || params[:controller] == 'models') %> item need-popup" data-content="Information related to AI Tool for this project">
+      <%=link_to_unless (params[:controller] == 'lexicon_groups' || params[:controller] == 'tasks' || params[:controller] == 'models'), "AI Tool", project_lexicon_groups_path(@project)%>
+    </div>
+    <div class="<%='active' if params[:controller] == 'statistics' %> item need-popup">
+      <%=link_to_unless params[:controller] == 'statistics', "Statistics".html_safe, project_statistics_path(@project)%>
+    </div>
+    <% if @project.enable_audit %>
+      <div class="<%='active' if params[:controller] == 'audits' %> item need-popup">
+        <%=link_to_unless params[:controller] == 'audits', "Audits".html_safe, project_audits_path(@project)%>
+      </div>
+    <% end %>
+  <% end %>
+</div>

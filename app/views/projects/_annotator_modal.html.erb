@@ -1,0 +1,175 @@
+
+<div class="ui small modal" id="annotatorQ1">
+  <i class="close icon"></i>
+  <div class="header">
+    Annotator
+  </div>
+  <div class="content">
+    <div class="description">
+      Are you going to use existing annotations for training?
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui blue button positive"><i class="checkmark icon"></i>Yes</div>
+    <div class="ui red button negative"><i class="remove icon"></i>No</div>
+  </div>
+</div>
+<div class="ui small modal" id="annotatorQ2">
+  <i class="close icon"></i>
+  <div class="header">
+    Annotator
+  </div>
+  <div class="content">
+    <div class="description">
+      Are you going to use your dictionary to annotate entity types?
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui blue button positive"><i class="checkmark icon"></i>Yes</div>
+    <div class="ui red button negative"><i class="remove icon"></i>No</div>
+  </div>
+</div>
+
+<div class="ui small modal" id="annotatorQ3">
+  <i class="close icon"></i>
+  <div class="header">
+    Annotator
+  </div>
+  <div class="content">
+    <div class="description">
+      Are you going to use a pre-trained model?
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui blue button positive"><i class="checkmark icon"></i>Yes</div>
+    <div class="ui red button negative"><i class="remove icon"></i>No</div>
+  </div>
+</div>
+
+<div class="ui small modal" id="submitModal">
+  <i class="close icon"></i>
+  <div class="header">
+    Annotator
+  </div>
+  <div class="content">
+    <div class="confirm">
+      <div class="ui header">
+        Are you sure?
+      </div>
+      <p>
+
+      </p>
+    </div>
+    <%=form_tag("",  method:"POST",  multipart: true, id:"taskForm", class:"ui form") do %>
+      <input type="hidden" name="project_id">
+      <input type="hidden" name="mode">
+      <div class="field for-pre-trained-model">
+        <label>Pre-trained model</label>
+        <div class="two fields">
+          <div class="field">
+            <div class="ui checkbox">
+              <input type="checkbox" tabindex="0" name="models[]" value="Chemical">
+              <label>Chemical</label>
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui checkbox">
+              <input type="checkbox" tabindex="0" name="models[]" value="Disease">
+              <label>Disease</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="field for-lexicon">
+        <label>Lexicon file</label>
+        <input type="file" name="lexicon">
+      </div>
+    <% end %>
+  </div>
+  <div class="actions">
+    <div class="ui blue button ok"><i class="checkmark icon"></i>Submit</div>
+  </div>
+</div>
+
+<br>
+<script type="text/javascript">
+  function q1(project) {
+    $("#annotatorQ1")
+    .modal({
+      onDeny: function() {
+        q2(project);
+      },
+      onApprove: function() {
+        q4(project, 3)
+      }
+    })
+    .modal('show');
+  }
+  function q2(project) {
+    $("#annotatorQ2")
+    .modal({
+      onDeny: function() {
+        q3(project);
+      },
+      onApprove: function() {
+        q4(project, 1);
+      }
+    })
+    .modal('show');
+  }
+  function q3(project) {
+    $("#annotatorQ3")
+    .modal({
+      onDeny: function() {
+        q4(project, 0);
+      },
+      onApprove: function() {
+        q4(project, 2);
+      }
+    })
+    .modal('show');
+  }
+  function q4(project, mode) {
+  if (mode == 1) {
+      $("#submitModal .confirm").hide();
+      $("#submitModal .for-pre-trained-model").hide();
+      $("#submitModal .for-lexicon label").html("Select a lexicon file");
+    } else if (mode == 2) {
+      $("#submitModal .confirm").hide();
+      $("#submitModal .for-pre-trained-model").show();
+      $("#submitModal .for-lexicon label").html("Select a lexicon file for normalization");
+    }
+    $("#submitModal input[name='mode']").val(mode);
+    $("#submitModal input[type='checkbox']").prop('checked', false);
+    $("#submitModal input[type='file']").val("");
+
+    $("#submitModal form").attr("action", "/projects/" + project + "/tasks");
+    if (mode == 1 || mode == 2) {
+      $("#submitModal")
+      .modal({
+        onApprove: function() {
+          $("#submitModal form").submit();
+        }
+      })
+      .modal('show');  
+    } else {
+      $("#submitModal form").submit();
+    }
+  }
+  <%= content_for :defer_js do %>
+    $(function() {
+      $(".annotator").click(function(e) {
+        e.stopPropagation();
+        var $e = $(e.currentTarget);
+        var hasAnnotation = $e.hasClass("has-annotation");
+        if (hasAnnotation) {
+          q1($e.data("id"));
+        } else {
+          q2($e.data("id"));
+        }
+        return false;
+      });
+    });
+  <% end %>
+
+</script>

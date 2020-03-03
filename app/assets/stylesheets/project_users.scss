@@ -1,0 +1,13 @@
+// Place all the styles related to the project_users controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.name-auto-complete {
+  width: 30em;
+  margin-right: 1em;
+  display: inline-flex;
+
+  .ui.input {
+    flex: 1;
+  }
+}

@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Project:</strong>
+  <%= @assign.project %>
+</p>
+
+<p>
+  <strong>Document:</strong>
+  <%= @assign.document %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @assign.user %>
+</p>
+
+<p>
+  <strong>Round:</strong>
+  <%= @assign.round %>
+</p>
+
+<p>
+  <strong>Done:</strong>
+  <%= @assign.done %>
+</p>
+
+<p>
+  <strong>Curatable:</strong>
+  <%= @assign.curatable %>
+</p>
+
+<%= link_to 'Edit', edit_assign_path(@assign) %> |
+<%= link_to 'Back', assigns_path %>

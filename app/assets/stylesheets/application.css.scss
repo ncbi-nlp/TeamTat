@@ -1,0 +1,321 @@
+@import "colors";
+
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+@import "semantic-ui";
+@import "assigns";
+@import "home";
+@import "documents";
+@import "uploadfile";
+@import "toastr";
+@import "range";
+@import "project_users";
+@import "projects";
+@import "relations";
+@import "smartphoto";
+@import "annotations";
+@import "font-awesome";
+
+@import url('https://fonts.googleapis.com/css?family=Exo+2:700|Lato|Raleway:200&display=swap');
+.smartphoto {
+  z-index: 1000;
+}
+.smartphoto-caption {
+  font-size: 16px;
+}
+
+#main-nav {
+  .ui.dropdown .menu { z-index: 1001; }
+  &.ui.menu .item {
+    padding: 0.5em 1.1em;
+    height: 40px;
+    box-sizing: border-box;
+  }
+}
+.brand-initial {
+  font-family: 'Exo 2', sans-serif;
+  color: white;
+  font-size: 16px;
+}
+h1, h1.ui.header {
+  font-family: 'Raleway', sans-serif;
+  .sub.header {
+    font-family: "Lato", "Helvetica Neue", Arial, Helvetica, sans-serif;
+  }
+  .label {
+    font-family: "Lato", "Helvetica Neue", Arial, Helvetica, sans-serif;
+  }
+}
+.ui.breadcrumb {
+  font-family: 'Raleway', sans-serif;
+  .active.section {
+    font-weight: normal;
+    color: #444;
+  }
+  a {
+    color: #41c471;
+  }
+}
+body {
+  font-display: auto;
+}
+a {
+  color: #3176b9;
+}
+.main-container {
+  /*background-color: #fff;*/
+  padding-top: 1px;
+  padding-bottom: 2em;
+}
+.ui.dropdown.right-menu .menu {
+  left: auto;
+  right: 0;
+}
+
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  &.w80 {max-width: 80px; }
+  &.w100 {max-width: 100px; }
+  &.w150 {max-width: 150px; }
+  &.w200 {max-width: 200px; }
+  &.w300 {max-width: 300px; }
+  &.w400 {max-width: 400px; }
+  &.w500 {max-width: 500px; }
+  &.w600 {max-width: 600px; }
+}
+
+.ui.main.container {
+  margin-top: 60px;
+}
+.ui.fixed.menu {
+  background-color: rgba(0, 0, 0, 0.7);  
+} 
+
+.documents-show {
+  .ui.toggle.checkbox input ~ .box:before, .ui.toggle.checkbox input ~ label:before {
+    background-color: #888 !important;
+  }
+  .ui.toggle.checkbox input:checked ~ .box:before, .ui.toggle.checkbox input:checked ~ label:before {
+    background-color: #d021c7 !important;
+  }
+  .curatable-checker .ui.toggle.checkbox input:checked ~ .box:before, 
+  .curatable-checker .ui.toggle.checkbox input:checked ~ label:before {
+    background-color: #00B5AD !important;
+  }
+
+  .navbar .container {
+    width: 100%;
+  }
+  .main.container {
+    padding: 1em 0 0 0;
+    background-color: #fff;
+    margin-top: 73px;
+    background: #eee;
+    width: 100%;
+    border-bottom: 1px solid #ccc;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  .ui.breadcrumb {
+    display: none;
+  }
+
+  .fixed-buttons {
+    position: fixed;
+    top: 40px;
+    left: 0;
+    padding: 0.5em;
+    background: #666;
+    width: 100%;
+    z-index:100;
+    color: #fff;
+    vertical-align: middle;
+    .ui.disabled.button {
+      opacity: 0.5 !important;
+      background-color: #aaa;
+    }
+    .document-done-checker {
+      .ui.toggle.checkbox .box, .ui.toggle.checkbox label {
+        padding-left: 4rem;
+        color: #888 !important;
+      }
+      .ui.toggle.checkbox input:checked ~ label, .ui.toggle.checkbox input:checked ~ label {
+        color: #fff !important;
+      }
+      float: right;
+      z-index: 9999;
+      display: inline-block;
+      min-height: 1em;
+      vertical-align: top;
+      margin: 0em 0.25em 0em 0em;
+      padding: 0.4em 1em;
+      text-transform: none;
+      text-shadow: none;
+      font-weight: bold;
+      line-height: 1em;
+      font-style: normal;
+      text-align: center;
+      text-decoration: none;
+    }
+    .annotation-toggles {
+      z-index: 9999;
+      float: right;
+    }
+  }
+}
+
+.home-body {
+  .superscript {
+    vertical-align:super;
+    font-size:.5em;
+  }
+}
+
+.footer {
+  border-top: 1px solid rgba(128, 128, 128, 0.3);
+  color: #6f6f6f;
+  margin-top: 1em;
+  padding: 1em 0;
+  a {
+    color: #444;
+  }
+}
+
+.ui.inverted.menu .item, .ui.inverted.menu .item > a:not(.ui) {
+    color: rgb(255, 255, 255);
+}
+
+.ui.table th .sort-inactive {
+  color: #000;
+  .fa.fa-sort {
+    color: #bbb;
+  }
+}
+.ref {
+  padding-left: 1.5em;
+  li {
+    line-height: 200%;
+  }
+}
+.sample-download {
+  margin-top: -1em; margin-bottom: 2em; display: block; width: 100%; text-align: right;
+}
+
+
+/* Mobile */
+@media only screen and (max-width: 767px) {
+
+}
+
+/* Tablet / iPad Portrait */
+@media only screen and (max-width: 991px) {
+  td.ellipsis {
+    &.w300 {max-width: 150px; }
+    &.w400 {max-width: 200px; }
+    &.w500 {max-width: 250px; }
+    &.w600 {max-width: 300px; }
+  }
+}
+
+.update_log {
+  color: #ddd;
+  i {
+    color: #ccc;
+  }
+}
+#annotationModal .concept-name {
+  width: 100%;
+  text-align: right;
+  color: #17519e;
+}
+
+#annotationTable.ui.celled.table tr th, 
+#annotationTable.ui.celled.table tr td,
+#annotationTable.ui.inverted.table tr td,
+#annotationTable.ui.inverted.table tr th {
+    border-color: rgba(255, 255, 255, 0.5) !important;
+    border-left: 1px solid rgba(255, 255, 255, 0.5) !important;
+}
+
+.ui[class*="very compact"].table {
+  td.concept, td.type {
+    .ui.basic.segment {
+      padding: 0.4em 0.6em;
+      margin: 0;
+    }
+    padding: 0;
+    margin: 0;
+  } 
+}
+#showMoreBtn {
+  position: absolute;
+  right: 1em;
+  top: 0.67857143em;
+}
+
+// Place all the styles related to the products controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+ul.ui-autocomplete {
+  position: absolute;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: solid 1px #999;
+  cursor: default;
+  li {
+    background-color: #FFF;
+    border-top: solid 1px #DDD;
+    margin: 0;
+    padding: 0;
+    .ui-menu-item-wrapper {
+      color: #000;
+      display: block;
+      padding: 0.5em;
+    }
+    .ui-menu-item-wrapper.ui-state-hover, .ui-menu-item-wrapper.ui-state-active {
+      background-color: #FFFCB2;
+    }
+  }
+}
+.ui-helper-hidden-accessible { display:none; }
+.ui.buttons .disabled.button, .ui.disabled.button, .ui.button:disabled, .ui.disabled.button:hover, .ui.disabled.active.button {
+  background-color: #666;
+  color: white;
+  opacity: 0.2 !important;
+}
+
+@media only screen and (min-width: 768px) {
+  .ui.selection.dropdown .menu {
+      max-height: 18.7rem;
+  } 
+
+}
+
+@media only screen and (min-width: 992px) {
+  .ui.selection.dropdown .menu {
+      max-height: 18.7rem;
+  }
+}
+
+/* Large Monitor */
+@media only screen and (max-width: 1199px) {
+  .large-screen-only {
+    display: none !important;
+  }
+}

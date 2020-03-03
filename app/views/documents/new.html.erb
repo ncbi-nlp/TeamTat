@@ -1,0 +1,273 @@
+<h1 class="ui dividing header" style="position:relative">
+  Add Documents
+</h1>
+<div class="ui attached segment" style="padding: 0;">
+  <div class="ui dimmer" id="uploadSpinner">
+    <div class="ui text loader" style="top:70px">Uploading</div>
+  </div>
+  <div id="fileuploader">Upload BioC Documents</div>
+</div>
+<div class="ui bottom attached  message info">
+  <i class="icon exclamation triangle "></i> Supporting text or PDF files are an experimental feature. The layout of a document may not be reserved.
+</div>
+<div class="ui horizontal divider">
+  Or
+</div>
+<div class="ui segment">
+  <div class="ui dimmer" id="pmidUploadSpinner">
+    <div class="ui text loader">Uploading</div>
+  </div>
+  <%= form_tag(project_documents_path(@project), method: "POST", class:"ui form") do %>
+    <div class="field">
+      <label>PMID(s) or PMCID(s)</label>
+      <textarea id="pmids" type="number" name="pmid" rows="3" placeholder="Enter PubMed ID (PMID, e.g. 17299597), PubMed Central ID (PMCID, e.g. PMC1790863), or a list of PMIDs/PMCIDs"></textarea>
+    </div>
+    <div class="ui action">
+      <button type="button" class="ui button primary" id="uploadPmidButton">
+        <i class="icon upload"></i>
+        Upload Documents
+      </button>
+      <button type="button" class="ui button purple" id="pmidFileButton">
+        <i class="icon upload"></i>
+        Copy &amp; Paste IDs from a File
+      </button>
+    </div>
+  <% end %>
+  <input type="file" style="display:none" id="pmidFile">
+</div>
+<div class="ui message info" id="result" style="display:none;"></div>
+
+<%= link_to project_documents_path(@project), class: "ui button small" do %>
+  <i class="icon chevron left"></i> Back
+<% end %>
+<style type="text/css">
+  #fileuploader {height: 120px;}
+  .ajax-upload-dragdrop {
+    vertical-align: middle;
+    height: 120px;
+    background-color: #fbffc3;
+  }
+</style>
+<script>
+function PMIDUploader(ids) {
+  var id_map = {};
+  for(var i in ids) {
+    if (!id_map[i]) {
+      id_map[ids[i]] = parseInt(i, 10) + 1;
+    }
+  }
+  ids =  _.uniq(ids).sort();
+  return {
+    ids: ids,
+    batch_id: null, 
+    id_map: id_map,
+    upload: function() {
+      $("#result").html("");
+      $("#pmidUploadSpinner").addClass("active");
+      this.complete = 0;
+      this.idx = 0;
+      $("#pmidUploadSpinner .text").html("Uploading Documents : " + 0 + " / " + this.ids.length);
+      this.uploadPMID();
+    },
+    isPMC: function(id) {
+      return (id.indexOf('PMC') == 0);
+    },
+    checkDocumentExist: function(id) {
+      var url;
+      var self = this;
+      $.ajax({
+        url: '/documents/check',
+        method: 'GET',
+        data: {id: id},
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        success: function(data) {
+          self.appendError(id, data.message);
+        },
+        error: function() {
+          self.appendError(id);
+        }
+      });
+    },
+    appendError: function(id, message) {
+      var ord = this.id_map[id];
+      var message = message || "does not appear in the <a href='https://pubmed.gov' target='_blank'>PubMed</a>/<a href='https://www.ncbi.nlm.nih.gov/pmc/tools/openftlist' target='_blank'>PMC Open Access</a>/<a href='https://www.ncbi.nlm.nih.gov/pmc/about/authorms' target='_blank'>PMC Author Manuscript</a> datasets or failed to upload";
+      var msg = "<li data-ord='" + ord + "'>" + id + " : " + message + "</li>"
+      var $list = $("#result li");
+      for(var i = 0; i < $list.length; i++) {
+        var o = parseInt($($list[i]).data('ord'), 10);
+        if (ord <= o) {
+          $($list[i]).before(msg);
+          return;
+        }
+      }
+      $("#result").append(msg);
+      $("#result").toggle($("#result").text().trim().length > 0);
+    },
+    uploadPMID: function() {
+      var id = this.idx;
+      var self = this;
+      var list = [];
+      while(list.length < 10 && id < self.ids.length ) {
+        if (list.length > 0 && self.isPMC(self.ids[id]) !== self.isPMC(list[0])) {
+          break;
+        }
+        list.push(self.ids[id]);
+        id++;
+        this.idx++;
+      }
+      if (list.length > 0) {
+        console.log({pmid: list, id_map: self.id_map, batch_id: self.batch_id});
+        
+        $.ajax({
+          url: "<%=project_documents_path(@project, format: :json) %>",
+          method: "POST",
+          data: {pmid: list, id_map: self.id_map, batch_id: self.batch_id},
+          beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+          success: function(data) {
+            console.log(data);
+            if (data.batch_id) {
+              self.batch_id = data.batch_id;
+            }
+            var errs = [];
+            var found = false;
+            for (var i in list) {
+              found = false;
+              for (var j in data.ids) {
+                if (list[i] == data.ids[j] || list[i] == 'PMC' + data.ids[j]) {
+                  found = true;
+                  break;
+                }
+              }
+              if (!found) {
+                errs.push(list[i]);
+              }
+            }
+            if (errs && errs.length > 0) {
+              for(var i in errs) {
+                // self.checkDocumentExist(errs[i]);
+                self.appendError(list[i]);
+              }
+            } 
+            $("#result").toggle($("#result").text().trim().length > 0);
+            $("#pmids").val('');
+          },
+          error: function() {
+            for(var i in list) {
+              self.appendError(list[i]);
+              // self.checkDocumentExist(list[i]);
+            }
+            $("#result").toggle($("#result").text().trim().length > 0);
+          },
+          complete: function() {
+            self.complete += list.length;
+            $("#pmidUploadSpinner .text").html("Uploading Documents : " + self.complete + " / " + self.ids.length);
+            self.uploadPMID();
+          }
+        });
+      } else {
+        if (self.complete >= self.ids.length) {
+
+          $.ajax({
+            url: "<%=reorder_project_path(@project, format: :json) %>",
+            method: "GET",
+            data: {batch_id: self.batch_id},
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            success: function(data) {
+              $("#pmidUploadSpinner").removeClass("active");
+              toastr.success("Upload completed.");
+            },
+            error: function() {
+            },
+          });
+        }
+      }
+    }
+  };
+};
+<%= content_for :defer_js do %>
+
+  $(function() {
+    $("#fileuploader").uploadFile({
+      url: "<%=project_documents_path(@project, format: :json) %>",
+      fileName: "file",
+      sequential: true,
+      showAbort: false,
+      sequentialCount: 1,
+      dragdropWidth: '100%',
+      // allowedTypes: 'xml',
+      statusBarWidth: '100%',
+      fileCounterStyle: ") ",
+      uploadStr: '<i class="icon upload"></i> Upload Multiple BioC / text / PDF Documents',
+      afterUploadAll: function(obj) {
+        $("#uploadSpinner").removeClass("active");
+        console.log(obj);
+        // location.reload();
+        $.ajax({
+          url: "<%=reorder_project_path(@project, format: :json) %>",
+          method: "GET",
+          data: {batch_id: 999999},
+          beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+          success: function(data) {
+            $("#pmidUploadSpinner").removeClass("active");
+            toastr.success("Upload completed.");
+          },
+          error: function() {
+          },
+        });
+      },
+      onError: function(files,status,errMsg,pd) {
+        //files: list of files
+        //status: error status
+        //errMsg: error message
+        if (errMsg === 'Unprocessable Entity') {
+          toastr.error(files[0] + ": Invalid document to BioC DTD", null,{
+            positionClass: "toast-bottom-full-width"
+          });
+        } else {
+          toastr.error(errMsg);
+        }
+      }, 
+      onSubmit: function (files, xhr) {
+        $("#uploadSpinner").addClass("active");
+      },
+      onSuccess:function(files,data,xhr,pd) {
+        //files: list of files
+        //data: response from server
+        //xhr : jquer xhr object
+        toastr.success(files + " files were uploaded successfully.", null,{
+          positionClass: "toast-bottom-full-width"
+        });
+      },
+      onError: function (files, status, message, pd) {},
+      onCancel: function (files, pd) {},
+      onAbort: function (files, pd) {},
+    });
+    $("#pmidFileButton").click(function() {
+      $("#pmidFile").change(function(e) {
+        var file = e.target.files[0];
+        if (file) {
+          var reader = new FileReader();
+          reader.onload = function(e) {
+            var content = e.target.result;
+            $("#pmids").text(_.uniq(content.toUpperCase().match(/(PMC){0,1}\d+/g)).join(" "));
+          };
+        }
+        reader.readAsText(file);
+      });
+      $("#pmidFile").click();
+    });
+    $("#uploadPmidButton").click(function() {
+      var ids = $("#pmids").val().toUpperCase().match(/(PMC){0,1}\d+/g);
+      var uniq_ids = _.uniq(ids);
+      if (uniq_ids.length <= 0) {
+        alert("Please enter document IDs first");
+        return;
+      }
+      // ids.sort();
+      var uploader = new PMIDUploader(ids);
+      console.log(uploader);
+      uploader.upload();
+    });
+  });
+<% end %>
+</script>

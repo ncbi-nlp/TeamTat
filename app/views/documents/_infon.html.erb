@@ -1,0 +1,15 @@
+<div class="ui modal <%=cls_name%>">
+  <i class="close icon"></i>
+  <div class="header">
+    Infon (<%=infons.size %>)
+  </div>
+  <div class="content">
+    <ul class="ui list body">
+      <% infons.each do |key, value| %>
+        <li>
+          <%=key %>: <%= value %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

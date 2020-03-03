@@ -1,0 +1,38 @@
+<h1 class="ui dividing header">Model: <%=@model.name%></h1>
+
+<table class="ui definition table table-bordered">
+  <tr>
+    <td class="header">Status</td>
+    <td> <%= @model.status %></td>
+  </tr>
+  <tr>
+    <td class="header">URL</td>
+    <td> 
+      <% if @model.url.blank? %>
+        <span class="ui text red">Model is not ready yet. Please wait for more.</span>
+      <% else %> 
+        <%=link_to @model.model_url, @model.model_url %>
+      <% end %>
+    </td>
+  </tr>
+</table>
+
+<% unless @model.url.blank? %>
+  <div class="ui stacked segment url-area">
+    <div class="ui inverted dimmer">
+      <div class="ui loader"></div>
+    </div>
+    <div class="main"></div>
+  </div> 
+  <script>
+    <%= content_for :defer_js do -%>
+
+    $(function() {
+      $(".url-area .dimmer").addClass("active");
+      $(".url-area .main").load("<%=@model.model_url%>", function() {
+        $(".url-area .dimmer").removeClass("active");
+      });
+    });
+    <%-end-%>
+  </script>
+<% end %>

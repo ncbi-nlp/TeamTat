@@ -1,0 +1,146 @@
+<h1 class="ui dividing header">
+  About
+</h1>
+
+<b><i class="icon heart pink"></i> TeamTat is free and open to all users and there is no login requirement.</b>
+
+
+<h3 class="ui header blue"> 
+  Introduction
+</h3>
+<p class="sub header">
+  TeamTat is a novel tool for managing multi-user, multi-label document annotation. The project interface reflects
+  a production life cycle. Projects can specify annotation and normalization options for both entities and relations. A project
+  consists of a user-selected set of documents which can be automatically retrieved from PubMed/PubMed Central. Input format
+  can be BioC, plain text or PDF, and output format is XML with inline annotations. Since images frequently contain crucial
+  information or experimental evidence, TeamTat is equiped to display images for annotators’ convenience. In addition to the
+  web-based system, TeamTat can be setup locally. <br><br>
+  TeamTat project managers can select annotator(s) and conveniently distribute documents anonymously to prevent bias.
+  Multiple users can work on the same document independently in their workspaces, and the team manager can track task
+  completion. At the end of an annotation round, the project manager can merge all individual annotations, and evaluate corpus
+  quality via inter-annotator agreement statistics. TeamTat annotators can review the annotations and resolve disagreements,
+  until desired quality is achieved.<br><br>
+  TeamTat has been actively used since March 2019 for several team annotation projects at the National Library of Medicine. Our projects have generally consisted of 100-150 PubMed/PMC documents, with teams of 4-10 annotators. Word-of-mouth has generated a current active base of ~50 document annotators.
+
+<br><br>
+</p>
+
+<!-- <h3 class="ui header blue">  
+  Overview of a TeamTat annotation project
+</h3>
+<p>
+A project manager selects the documents to be annotated, specifies the types of entities and relations to be considered, enables the participation of the annotator(s), and distributes the documents among annotators. An annotation round consists of team members working independently to add/delete or update annotations and relations. Team members can also review annotations that are signaled to have a disagreement among annotation partners. TeamTat maintains anonymity to eliminate annotator bias. At the end of each round, the project manager can calculate inter-annotator agreement statistics, and decide to continue or finalize the corpus. Annotations are trackable for every annotation round, and data can be downloaded at any given time.
+</p>
+<%=image_tag("overview.png", class: 'ui centered image') %>
+ -->
+<h3 class="ui header blue" style="margin-top: 2em;">  
+  Team
+</h3>
+<p class="sub header">
+
+  <ul>
+    <li>Rezarta Islamaj <sup>1</sup> (<a href="mailto:rezarta.islamaj@nih.gov">rezarta.islamaj@nih.gov</a>)</li>
+    <li>Dongseop Kwon <sup>2</sup> (<a href="mailto:dongseop@mju.ac.kr">dongseop@mju.ac.kr</a>)</li>
+    <li>Sun Kim <sup>1</sup> (<a href="mailto:sun.kim@nih.gov">sun.kim@nih.gov</a>)</li>
+    <li>Zhiyong Lu <sup>1</sup> (<a href="mailto:zhiyong.lu@nih.gov">zhiyong.lu@nih.gov</a>)</li>
+  </ul>
+  <ol class="footnote">
+    <li>National Library of Medicine, National Institutes of Health, Bethesda, MD 20894, USA</li>
+    <li>School of Software Convergence, Myongji University, Seoul 03674, South Korea</li>
+  </ol>
+</p>
+<h3 class="ui header blue" style="margin-top: 2em;"> 
+  Browser compatibility
+</h3>
+<p class="sub header">
+  <table class="ui table table-bordered celled">
+    <thead>
+      <tr>
+        <th>
+          OS
+        </th>
+        <th>
+          Version
+        </th>
+        <th>
+          <i class="icon chrome"></i>
+          Chronme
+        </th>
+        <th>
+          <i class="icon firefox"></i>
+          Firefox
+        </th>
+        <th>
+          <i class="icon edge"></i>
+          Microsoft Edge
+        </th>
+        <!-- <th>
+          <i class="icon internet explorer"></i>
+          Internet Explorer
+        </th> -->
+        <th>
+          <i class="icon safari"></i>
+          Safari
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><i class="icon linux"></i> Linux</td>
+        <td>Ubuntu 18.04.3 LTS</td>
+        <td><i class="icon check green"></i> 79.0.3945.88</td>
+        <td><i class="icon check green"></i> 71.0</td>
+        <td><i class="icon ban" style='color:#aaa;'></i> n/a</td>
+        <!-- <td><i class="icon ban" style='color:#aaa;'></i> n/a</td> -->
+        <td><i class="icon ban" style='color:#aaa;'></i> n/a</td>
+      </tr>
+      <tr>
+        <td><i class="icon apple"></i> macOS</td>
+        <td>Mojave 10.14.6</td>
+        <td><i class="icon check green"></i> 79.0.3945.88</td>
+        <td><i class="icon check green"></i> 71.0</td>
+        <td><i class="icon ban" style='color:#aaa;'></i> n/a</td>
+        <!-- <td><i class="icon ban" style='color:#aaa;'></i> n/a</td> -->
+        <td><i class="icon check green"></i> 13.0.4</td>
+      </tr>
+      <tr>
+        <td><i class="icon windows"></i> Windows</td>
+        <td>10 Pro (Version 1903)</td>
+        <td><i class="icon check green"></i> 79.0.3945.88</td>
+        <td><i class="icon check green"></i> 71.0</td>
+        <td><i class="icon check green"></i> 44.18362.449.0</td>
+        <!-- <td><i class="icon check green"></i> 11.535.18362</td> -->
+        <td><i class="icon ban" style='color:#aaa;'></i> n/a</td>
+      </tr>
+    </tbody>
+    </table>
+  </p>
+
+</p>
+
+
+<h3 class="ui header blue" style="margin-top: 2em;"> 
+  License
+</h3>
+<p class="sub header">
+  The MIT License (MIT)<br>
+  <br>
+  Copyright (c) 2019 TeamTat<br>
+  <br>
+  Permission is hereby granted, free of charge, to any person obtaining a copy of
+  this software and associated documentation files (the "Software"), to deal in
+  the Software without restriction, including without limitation the rights to
+  use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+  the Software, and to permit persons to whom the Software is furnished to do so,
+  subject to the following conditions:
+<br>
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+<br>
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+  FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+  COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+  IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+</p>

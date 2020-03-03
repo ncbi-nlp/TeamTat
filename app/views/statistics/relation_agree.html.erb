@@ -1,0 +1,109 @@
+<%= render partial: "/projects/project_header"%>
+<%= render partial: "/projects/project_buttons" %> 
+<%= render partial: "/projects/project_tab" %>
+
+<div class="ui bottom attached active tab segment">
+  <div class="ui  right aligned grid">
+    <div class="page-info left floated left aligned six wide column">
+      Total <b><%=@documents.size %></b> documents
+    </div>
+    <div class="ui search right floated right aligned six wide column">
+      <div class="ui item basic button dropdown">
+        <i class="icon history"></i> Version <%= @version %> <i class="dropdown icon"></i>
+        <div class="menu">
+          <% (0..@project.round).each do |version| %>
+            <%= link_to "Version #{version}", project_statistics_path(@project, {version: version}), class: "item" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ui secondary pointing menu">
+    <%=link_to project_statistics_path(@project, {version: @version, type: "A"}), class: "item" do %>
+      Annotation Agreements
+    <% end %>
+    <a class="active item">
+      Relation Agreements
+    </a>
+  </div>
+  <% if @documents.empty? %>
+    <dic class='ui message info'>
+      This project is empty. Please upload documents first from Documents tab.
+    </dic>
+  <% else %>
+    <ul class='footnote'>
+      <li> <b>SN - Single</b>: not all assigned annotators mark the span</li>
+      <li> <b>FA - Full Agree</b>: with the same concept, type, and span</li>
+      <li> <b>CA - Concept Agree</b>: with the same concept, and span but different types</li>
+      <li> <b>TA - Type Agree</b>: with the same type, and span but different concepts</li>
+      <li> <b>PA - Partial Agree</b>: with the same concept or the same type but spans are overlapped</li>
+      <li> <b>DA - Disagree</b>: different type, concept, or span  </li>
+    </ul>
+    <table class="ui table sortable table-bordered celled" id="statTable">
+      <thead>
+        <tr>
+          <th class='sortable'>Doc ID</th>
+          <th class='right aligned sortable'>#</th>
+          <th class='right aligned sortable'>Agree</th>
+          <th class='right aligned sortable'>Disagree</th>
+          <th class='right aligned sortable'>Single</th>
+          <th class='right aligned sortable'>Agree (%)</th>
+          <th class='right aligned sortable'>Disagree (%)</th>
+          <th class='right aligned sortable'>Single (%)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% total = {total: 0, agree: 0, disagree: 0, single: 0} %>
+        <% @documents.each do |d| %>
+          <% 
+          stat = d.relation_stat(@version) 
+          total[:total] += stat[:total]
+          total[:agree] += stat[:agree]
+          total[:disagree] += stat[:disagree]
+          total[:single] += stat[:single]
+          %>
+          <tr>
+            <td><%=link_to d.did, document_path(d, version: @version) %></td>
+            <td class='right aligned'><%=stat[:total] %></td>
+            <td class='right aligned'><%=stat[:agree] %></td>
+            <td class='right aligned'><%=stat[:disagree] %></td>
+            <td class='right aligned'><%=stat[:single] %></td>
+            <td class='right aligned'><%=stat_percent(stat[:agree], stat[:total])%></td>
+            <td class='right aligned'><%=stat_percent(stat[:disagree], stat[:total])%></td>
+            <td class='right aligned'><%=stat_percent(stat[:single], stat[:total])%></td>
+          </tr>
+        <% end %>            
+      </tbody>
+      <tfoot>
+        <tr>
+          <th>Total</th>
+          <th class='right aligned'><%=total[:total] %></th>
+          <th class='right aligned'><%=total[:agree] %></th>
+          <th class='right aligned'><%=total[:disagree] %></th>
+          <th class='right aligned'><%=total[:single] %></th>
+          <th class='right aligned'><%=stat_percent(total[:agree], total[:total]) %></th>
+          <th class='right aligned'><%=stat_percent(total[:disagree], total[:total]) %></th>
+          <th class='right aligned'><%=stat_percent(total[:single], total[:total]) %></th>
+        </tr>
+      </tfoot>
+    </table>
+    <ul class='footnote'>
+      <li> <b>SN - Single</b>: not all assigned annotators mark the span</li>
+      <li> <b>FA - Full Agree</b>: with the same concept, type, and span</li>
+      <li> <b>CA - Concept Agree</b>: with the same concept, and span but different types</li>
+      <li> <b>TA - Type Agree</b>: with the same type, and span but different concepts</li>
+      <li> <b>PA - Partial Agree</b>: with the same concept or the same type but spans are overlapped</li>
+      <li> <b>DA - Disagree</b>: different type, concept, or span  </li>
+    </ul>
+  <% end %>
+</div>
+<style type='text/css'>
+  sup { color: royalblue; }
+
+</style>
+
+<script>
+<%= content_for :defer_js do -%>
+  $("#statTable").tablesort();
+<% end %>
+</script>

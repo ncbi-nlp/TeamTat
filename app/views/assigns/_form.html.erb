@@ -1,0 +1,47 @@
+<%= form_with(model: assign, local: true) do |form| %>
+  <% if assign.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(assign.errors.count, "error") %> prohibited this assign from being saved:</h2>
+
+      <ul>
+      <% assign.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :project_id %>
+    <%= form.text_field :project_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :document %>
+    <%= form.text_field :document %>
+  </div>
+
+  <div class="field">
+    <%= form.label :user_id %>
+    <%= form.text_field :user_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :round %>
+    <%= form.number_field :round %>
+  </div>
+
+  <div class="field">
+    <%= form.label :done %>
+    <%= form.check_box :done %>
+  </div>
+
+  <div class="field">
+    <%= form.label :curatable %>
+    <%= form.check_box :curatable %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

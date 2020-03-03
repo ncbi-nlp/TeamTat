@@ -1,0 +1,86 @@
+<%= render partial: "/projects/project_header"%>
+<%= render partial: "/projects/project_buttons" %> 
+<%= render partial: "/projects/project_tab" %>
+
+<span class="ui bottom attached active tab segment">
+  <div class="ui secondary pointing menu">
+    <a class="active item">
+      Entity Types (<%= @project.entity_types_count %>)
+    </a>
+    <a class="item" href="<%=project_relation_types_path(@project)%>">
+      Relation Types (<%= @project.relation_types_count %>)
+    </a>
+  </div>
+
+  <% if @entity_types.empty? %>
+    <div class="ui message info">
+      No entity types. Create an entity type (i.e. concept) using the button below or during manual annotation.
+    </div>
+  <% else %>
+    <table class="ui table table-bordered celled sortable form">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Color</th>
+          <th>Sample</th>
+          <th>Prefix</th>
+          <% if @project.manager?(current_user) %>
+            <th></th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody>
+        <% @entity_types.each do |entity_type| %>
+          <tr data-id="<%= entity_type.id %>">
+            <td><%= entity_type.name %></td>
+            <td>
+              <input type="hidden" id="C<%=entity_type.id%>" class="jscolor" value="<%= entity_type.color %>">
+              <button class="jscolor {valueElement: 'C<%=entity_type.id%>'} ui button fluid">
+                Pick Color
+              </button>
+
+            </td>
+            <td style="line-height: 200%">sample <span style="background-color: <%= entity_type.color %>">annotated text</span> in a sentence</td>
+            <td><%= entity_type.prefix %></td>
+            <% if @project.manager?(current_user) %>
+              <td class="center aligned">
+                <%= link_to 'Edit', edit_entity_type_path(entity_type), class: "button ui mini teal ajax-update-disbled-with-status #{'disabled' if @project.in_task?}" %>
+                <%= link_to 'Delete', entity_type, method: :delete, data: { confirm: 'Are you sure?' }, class: "button ui mini teal ajax-update-disbled-with-status #{'disabled' if @project.busy?}" %>
+              </td>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+<% if @project.manager?(current_user) %>
+  <%= link_to 'New Entity Type', new_project_entity_type_path(@project), class: "ui button primary ajax-update-disbled-with-status #{'disabled' if @project.in_task?}" %>
+<% end %>
+</div>
+<br>
+
+<script>
+<%= content_for :defer_js do -%>
+$(function() {
+  $('table').tablesort();
+  <% if @project.manager?(current_user) %>
+    $(".jscolor").change(function(e) {
+      var $e = $(e.currentTarget);
+      var $tr = $e.closest("tr");
+      var color = "#" + $e.val();
+      $tr.find("td>span").css("background-color", color);
+      $.ajax({
+        url: "/entity_types/" + $tr.data("id") + ".json",
+        method: "PATCH",
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        data: {entity_type: {color: color}},
+        success: function(data) {
+          console.log(data);
+          toastr.success("Successfully updated");
+        }
+      });
+    });
+  <% end %>
+});
+<%- end -%>
+</script>

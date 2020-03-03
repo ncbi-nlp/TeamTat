@@ -1,0 +1,148 @@
+<%= render partial: "/projects/project_header"%>
+<%= render partial: "/projects/project_buttons" %> 
+<%= render partial: "/projects/project_tab" %>
+
+<div class="ui bottom attached active tab segment">
+  <div class="ui  right aligned grid">
+    <div class="page-info left floated left aligned six wide column">
+      Total <b><%=@documents.total_count %></b> documents
+      <% if !@project.manager?(current_user) %>assigned<% end %>
+    </div>
+    <div class="ui search right floated right aligned six wide column">
+      <form>
+        <div class="ui icon input">
+          <input class="prompt" type="text" name="term" placeholder="Doc ID or Title" 
+              value="<%= params[:term]%>">
+          <i class="search icon"></i>
+        </div>
+      </form>
+    </div>
+  </div>
+  <% if @documents.empty? %>
+    <div class="ui message info">
+      <% if params[:term].present? %>
+        No results matching '<%= params[:term] %>'
+      <% else %>
+        <% if @project.manager?(current_user) %>
+          This project is empty. Please upload documents by clicking the Add Documents button below.
+        <% else %>
+          This project is empty. Manager of the project can upload documents.
+        <% end %>
+      <% end %>
+    </div>
+  <% else %>
+    <table class="ui table table-bordered celled">
+      <thead>
+        <tr>
+          <th><%= sortable 'did_no', 'Doc ID' %></th>
+          <th><%= sortable 'title'%></th>
+          <th><%= sortable 'annotations_count', 'Annotation'%></th>
+          <!--<th>BioC Key</th>-->
+          <th>
+            <% if @project.manager?(current_user) %>
+              <%= sortable 'done_count', 'Done' %>
+            <% else %>
+              <%
+              if @project.round_begin? 
+                popup_title = "Mark when annotation is done."
+              else
+                popup_title = "This feature is unavailable while the project is not in the annotation round"
+              end
+              %>
+              <div class='need-popup for-done-button' title='<%=popup_title%>'>
+                <div class="ui simple dropdown ajax-update-disbled-with-status <%='disabled' if !@project.round_begin? %>">
+                  Done <i class="dropdown icon" style='margin-left:0;'></i>
+                  <div class="menu" >
+                    <div class='item'>
+                      <%=link_to 'Check All', done_all_project_path(@project, value: true), method: :post, data: { confirm: 'Are you sure for checking all documents?' } %>
+                    </div>
+                    <div class='item'>
+                      <%=link_to 'Uncheck All', done_all_project_path(@project, value: false), method: :post, data: { confirm: 'Are you sure for unchecking all documents?' } %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </th>
+          <th>
+            <% if @project.manager?(current_user) %>
+              <%= sortable 'curatable_count', 'Curatable' %></th>
+            <% else %>
+              Curatable
+            <% end %>
+          </th>
+          <% if @project.reviewing? %>
+              <th>Review</th>
+          <% end %>
+          <th><%= sortable 'updated_at', 'Last Update' %></th>
+          <th class="center aligned"><i class="setting icon grey"></i></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @documents.each do |document| %>
+          <tr class='documents-list'>
+            <td><%= link_to document.did, document %></td>
+            <td class="ellipsis w300"><%=document.title %></td>
+            <td>
+              <%= document.annotations_count(current_user) %>
+            </td>
+            <!--<td><%= document.key %></td>-->
+            <td style='text-align:center;' class='done-checker'>
+              <% if @project.manager?(current_user) %>
+
+                <%= document.assigns_done_count %> / <%= document.assigns_count %>
+              <% else %>
+                <div class="ui checkbox">
+                  <input type="checkbox" <%='checked' if document.done?(current_user) %> data-id='<%=document.id%>' <%='disabled' if !@project.round_begin? %>>
+                  <div class="ui centered mini inline loader"></div>
+                </div>
+              <% end %>
+            </td>
+            <td style='text-align:center;'>
+              <% if @project.manager?(current_user) %>
+                <%= document.assigns_curatable_count %> / <%= document.assigns_count %>
+              <% else %>
+                <%= document.curatable_str(current_user) %>
+              <% end %>
+            </td>
+            <% if @project.reviewing? %>
+              <td style='text-align:center;'>
+                <% if document.determined? %>
+                  <i class='icon check circle green large' title='All reviewed'></i>
+                <% else %>
+                  <i class='icon question circle outline red large' title='Need review'></i>
+                <% end %>
+            <% end %>
+            <td><%= time_ago_in_words(document.updated_at) %> ago</td>
+            <td class="center aligned">
+              <div class="ui top right pointing dropdown ajax-update-disbled-with-status <%='disabled' if @project.busy? %>">
+                <i class="setting icon blue"></i>
+                <div class="menu">
+                  <div class="item">
+                    <%= link_to 'Delete All Annotations', delete_all_annotations_document_path(document), method: :post, data: { confirm: 'Are you sure?' } %>
+                  </div>
+                  <% if @project.manager?(current_user) %>
+                    <div class="item">
+                      <%= link_to 'Delete Document', document, method: :delete, data: { confirm: 'Are you sure?' } %>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+  <div class="ui center aligned grid">
+    <div class="row">
+      <%= paginate @documents %>
+    </div>
+  </div>
+  <% if @project.manager?(current_user) %>
+    <%= link_to new_project_document_path(@project), class: "ui button primary" do %>
+      <i class="icon upload"></i>
+      Add Documents
+    <% end %>
+  <% end %>
+</div>

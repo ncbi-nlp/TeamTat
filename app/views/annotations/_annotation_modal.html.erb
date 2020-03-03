@@ -1,0 +1,112 @@
+<div class="ui small modal" id="annotationModal">
+  <i class="close icon"></i>
+  <div class="header">
+  </div>
+
+  <div class="content">
+    <div class="ui inverted dimmer">
+      <div class="ui text loader">Loading</div>
+    </div>
+    <%=form_tag(document_annotations_path(@document), method: "POST", class:"ui form") do %>
+      <input type="hidden" name="review_result" value="1">
+      <div class="field show-for-add">
+        <label>Text</label>
+        <input type="text" name="text" readonly="" tabindex="-1" class="readonly">
+      </div>
+      <div class="field for-mention">
+        <label>Location</label>
+        <input type="text" name="offset" readonly="" tabindex="-1" class="readonly">
+      </div>
+      <input type="hidden" name="deleteMode">
+      <div class="field">
+        <label>Entity Type</label>
+        <select type="text" name="type" class="ui fluid normal dropdown">
+          <% @document.project.entity_types.each do |e| %>
+            <option value="<%= e.name %>"><%=e.name %></option>
+          <% end %>
+        </select>
+        <% if @project.round_begin? %>
+          <%=link_to "#", class: "add-new-entity" do %>
+            <i class="icon plus"></i> Add New Entity Type</a>
+          <% end %>
+        <% end %>
+      </div>
+      <div class="field">
+        <label>Concept ID 
+        </label>
+        <div style="position: relative;">
+          <input type="text" name="concept">
+          <a id="showMoreBtn" target='_blank'>
+            <span class='name'>Show More</span>
+            <i class="fa fa-external-link-alt"></i> 
+          </a>
+        </div>
+        <div class='concept-name'></div>
+      </div>
+      <div class="field">
+        <label>Note
+        </label>
+        <input type="text" name="note" maxlength='50'>
+      </div>
+      <div class="field">
+        <div class="ui checkbox annotate-all hide-for-add">
+          <input type="checkbox" tabindex="0" name="annotate_all" value="all" id='check-for-annotate-all'>
+          <label>
+            Annotate each instance of this mention text
+          </label>
+        </div>
+      </div>
+      <div class="ui segment for-annotate-all">
+        <div class="field">
+          <div class="ui checkbox case-sensitive">
+            <input type="checkbox" tabindex="0" name="case_sensitive" value="y">
+            <label>
+              Case sensitive match
+            </label>
+          </div>
+        </div>
+        <div class="field">
+          <div class="ui checkbox whole-word">
+            <input type="checkbox" tabindex="0" name="whole_word" value="y">
+            <label>
+              Match whole word only
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <div class="ui checkbox for-mention concept-mode hide-for-add">
+          <input type="checkbox" tabindex="0" name="mode" value="concept">
+          <label>
+            Update all mentions with the same concept ID ('<span class="old-concept-text"></span>')
+          </label>
+        </div>
+      </div>
+    <% end %>
+    <div class="update_log"></div>
+  </div>
+  <div class="actions">
+    <div class="ui button cancel">Cancel</div>
+    <div class="ui ok blue button show-for-add"><i class="icon plus"></i> Add New Mention</div>
+    <div class="ui button black action-button skip-button">
+      <i class="forward icon"></i> <span>Skip</span>
+    </div>
+    <div class="ui blue button positive action-button hide-for-add">
+      <i class="checkmark icon"></i>
+      <i class="thumbs up icon"></i> 
+      <span class='btn-update-text'>Update</span>
+    </div>
+    <div class="ui button top left pointing red dropdown delete-annotation action-button hide-for-add" style="float:left">
+      <i class="remove icon"></i> Delete
+      <div class="menu">
+        <div class="item" data-value="concept" data-text="delete concept">Delete all mentions with the same concept ID ('<span class="old-concept-text"></span>')</div>
+        <div class="item" data-value="mention" data-text="delete mention only">Delete this mention only</div>
+      </div>
+    </div>
+    <div class="ui button top left teal add-relation-button action-button hide-for-add" style="float:left">
+      <i class="plus icon"></i> Add to Relation
+    </div>
+
+  </div>
+</div>
+

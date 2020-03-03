@@ -1,0 +1,23 @@
+<%= form_for(model, html: {class: "ui form"}) do |f| %>
+  <% if model.errors.any? %>
+    <div id="error_explanation" class="ui message red">
+      <div class="header"><%= pluralize(model.errors.count, "error") %> prohibited this model from being saved:</div>
+
+      <ul class="list">
+      <% model.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field required">
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+
+  <div class="actions">
+    <%= link_to 'Back', models_path, class: "ui button" %>
+    <%= f.submit "Save", class: "ui button primary"%>
+  </div>
+<% end %>

@@ -1,0 +1,12 @@
+Assignments are done for Project <%= @project.name %>
+===============================================
+ 
+- Project ID : <%= @project.id %>
+- Project Name : <%= @project.name %>
+- Number of documents: <%= @project.documents.all.size %>
+- Number of assignments: <%= @project.assigns.all.size %>
+
+All annotation assignments are successfully done.
+To show the project, just follow this link: <%= @url %>.
+ 
+Have a great day!

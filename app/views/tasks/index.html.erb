@@ -1,0 +1,98 @@
+<%= render partial: "/projects/project_header"%>
+<%= render partial: "/projects/project_buttons" %>
+<%= render partial: "/projects/project_tab" %>
+<div class="ui bottom attached active tab segment">
+  <div class="ui secondary pointing menu">
+    <a class="item" href="<%=project_lexicon_groups_path(@project) %>">
+      Lexicons (<%= @project.lexicon_groups_count %>)
+    </a>
+    <% if @project.manager?(current_user) %>
+      <a class="item" href="<%=project_models_path(@project)%>">
+        Models (<%= @project.models_count %>)
+      </a>
+      <a class="active item" href="<%=project_tasks_path(@project)%>">
+        Tasks (<%= @project.tasks_count %>)
+      </a>
+    <% end %>
+  </div>
+  
+  <% if @tasks.empty? %>
+    <div class="ui message info">
+      No jobs that are processing or complete. All tasks you have submitted would appear here.
+    </div>
+  <% else %>
+    <table class="ui table table-bordered celled">
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Status</th>
+          <th>Lexicon</th>
+          <th>Model</th>
+          <th>Log</th>
+        </tr>
+      </thead>
+      <tbody class="task-list">
+        <%= render partial: "index_partial" %>
+      </tbody>
+    </table>
+    <ul class='footnote'>
+      Submitted jobs are running in background. You can safely go to another menu and do other tasks.
+      <p>
+        <li>
+          FYI, it takes 2-5 minutes for training TaggerOne on the sample training set.
+        </li>
+        <li>
+          Project with the status, 'Requested' or 'Processing': All features in the project are disabled except for document viewing and download.
+        </li>
+        <li>
+          Project with the status, 'Ready' or 'Finished': All features in the project are enabled.
+        </li>
+      </p>
+  </ul>
+
+  <% end %>
+</div>
+<br>
+<style>
+  .task-list tr {
+    color: #aaa;
+  }
+  .task-list tr a {
+    color: #acccec;
+  }
+  .task-list tr a:hover {
+    color: #acccec;
+  }
+  .task-list tr:first-child {
+    color: #000;
+  }
+  .task-list tr:first-child a {
+    color: #3577b7;
+  }
+  .task-list tr:first-child a:hover {
+    color: #1e70bf;
+  }
+</style>
+<script>
+function changeToLocalTime() {
+  $(".local-time").each(function() {
+    var e = $(this);
+    var utc = moment.utc(parseInt(e.text(), 10) * 1000);
+    e.text(utc.toDate());
+  });
+}
+
+function updateViews() {
+  updateProjectStatus();
+  $(".task-list").load('<%= partial_project_tasks_path(@project)%>', function() {
+    changeToLocalTime();
+  });
+}
+<%= content_for :defer_js do %>
+  $(function() {
+    changeToLocalTime();
+    updateViews();
+    setInterval(updateViews, 100000);
+  });
+<% end %>
+</script>

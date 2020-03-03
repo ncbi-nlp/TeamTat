@@ -1,0 +1,175 @@
+<%= render partial: "/projects/project_header"%>
+<%= render partial: "/projects/project_buttons" %> 
+<%= render partial: "/projects/project_tab" %>
+<div class="ui bottom attached active tab segment">
+  <div class="ui  right aligned grid">
+    <div class="page-info left floated left aligned six wide column">
+      Total <b><%=@project_users.total_count %></b> members
+    </div>
+  </div>
+  <table class="ui table table-bordered celled">
+    <thead>
+      <tr>
+        <th><%= sortable 'name'%></th>
+        <th><%= sortable 'email', 'Access URL'%></th>
+        <th><%= sortable 'role'%></th>
+        <% if @project.manager?(current_user) %>
+          <th></th>
+        <% end %>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @project_users.each do |project_user| %>
+        <tr>
+          <td>
+            <%=image_tag(project_user.user.image_or_default, class: "ui avatar image", title: project_user.user.email_or_session_tail) %>
+            <%= project_user.user.name_or_email_or_id %>
+              
+            </td>
+          <td>
+            <% if project_user.user.valid_email? %>
+              <%=project_user.user.email %>
+            <% else %>
+              <% if @project.manager?(current_user) %>
+                <%=link_to "#", data: {url: request.base_url + "/sessions/#{project_user.user.session_str}", name: project_user.user.name_or_email_or_id}, class: "copy-clipboard-link need-popup", alt: "Show Login URL", title: "Show Login URL" do %>
+                  <i class="icon linkify"></i> 
+                  <%= project_user.user.session_tail %>
+                <% end %>
+              <% else %>
+                <%= project_user.user.session_tail %>
+              <% end %>
+            <% end %>
+          </td>
+          <td><%=t project_user.role %></td>
+          <% if @project.manager?(current_user) %>
+            <td style='text-align:center;'>
+              <% if project_user.annotator? %>
+                <%= link_to  project_user, method: :delete, alt: 'Delete', data: { confirm: 'Are you sure?' } do %>
+                  <i class="trash alternate outline link icon red" title='Delete'></i>
+                <% end %>
+              <% end %>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <div class="ui center aligned grid">
+    <div class="row">
+      <%= paginate @project_users %>
+    </div>
+  </div>
+
+  <%if @project.manager?(current_user) %>
+    <div class="ui segment">
+      <% if current_user.present? && current_user.valid_email?  %>
+        <%= form_with(model: [@project, ProjectUser.new], local: true, html: {class: "ui form"}) do |form| %>
+          <div class="inline fields">
+            <div class="ui category search ajax name-auto-complete">
+              <div class="ui icon input">
+                <%= form.text_field :email, placeholder: "Please enter a user's email", class: 'ten wide prompt' %>
+                <i class="search icon"></i>
+              </div>
+              <div class="results"></div>
+            </div>
+            <button class="ui button primary">
+              <i class="icon plus"></i> Add Existing Annotator
+            </button>
+          </div>
+          <div class="sub">      
+            If the anntotator does not exist, a new account will be created automatically.
+            <!--The new account does not have a password. The user must reset password by using 'Forgot your password'.--> 
+          </div>
+        <% end %>
+        <div class="ui horizontal divider">
+          Or
+        </div>     
+      <% end %>
+      <%= form_with(model: [@project, ProjectUser.new], local: true, html: {class: "ui form"}) do |form| %>
+        <div class="inline fields">
+          <input type="hidden" name="type" value="anonymous">
+          <div class="ui category search name-auto-complete">
+            <div class="ui icon input">
+              <%= form.text_field :name, placeholder: "Please enter a nickname", class: 'ten wide prompt' %>
+            </div>
+            <div class="results"></div>
+          </div>
+          <button class="ui button olive">
+            <i class="icon plus"></i> Add Anonymous Annotator
+          </button>
+        </div>
+        <div class="sub">      
+          You can make anonymous accounts for annotators. You can get session URLs for created users.
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+<div class="ui modal login-url-modal">
+  <i class="close icon"></i>
+  <div class="header">
+    Login URL for <span class='name bold'></span>
+  </div>
+  <div class="content">
+    <p>
+      This address allows a user to access the <span class='name bold'></span>'s account. Please forward this URL to anyone you want.
+    </p>
+    <form class="ui form">
+      <div class="field">
+        <input type="text" class="ui form-control" value="" id="copy-url">
+      </div>
+    </form>
+  </div>
+</div>
+<style>
+  .form div.sub {
+    color: #aaa;
+    margin-top: -0.5em;
+    margin-left: 0.5em;
+  }
+  .login-url-modal .name {
+    font-weight: bold;
+    color: #369;
+  }
+</style>
+<script>
+<%= content_for :defer_js do -%>
+<% if current_user.super_admin? %>
+$(function() {
+  $('.ui.search.ajax').search({
+    apiSettings: {
+      onResponse: function(data) {
+        return {results: _.map(data, function (item) {return {title: item.email, description: item.name};})};
+      },
+      url: '/users?term={query}&project_id=<%=@project.id%>'
+    },
+    minCharacters: 1,
+    maxResults: 30,
+  });
+
+});
+<% end %>
+  $(".copy-clipboard-link").click(function(e) {
+    var $e = $(e.currentTarget);
+    console.log($e);
+    e.stopPropagation();
+    $(".login-url-modal .name").text($e.data("name"));
+    $(".login-url-modal input").val($e.data("url"));
+    var copyText = document.getElementById("copy-url");
+    
+    $(".login-url-modal").modal({
+      onShow: function() {
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+        setTimeout(function() {
+          console.log('copy success', document.execCommand('copy'));
+          toastr.info('copied the URL into the clipboard');
+        }, 1000);
+      }
+    }).modal('show');
+    return false;
+  });
+<%- end -%>
+</script>

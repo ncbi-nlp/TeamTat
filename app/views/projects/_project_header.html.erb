@@ -1,0 +1,17 @@
+<h1 class="ui dividing header" style="position:relative">
+  <% if @project.locked %>
+    <i class="icon lock project-locked-icon"></i>
+  <% end %>
+  <%= @project.name %> 
+  <div class="ui yellow label">
+    Version #<%= @project.round %>
+  </div>
+  <% if @project.manager?(current_user) && @project.done %>
+    <span class='ui label green'>Done</span>
+  <% end %>
+  <div class="sub header"><%= @project.desc %></div>
+  <% unless @project.status.blank? %>
+    <div class="ui top right attached teal label project-status" data-status="<%=@project.status%>" data-id="<%=@project.id%>"><%=@project.status_with_icon %>
+    </div>
+  <% end %>
+</h1>

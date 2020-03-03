@@ -1,0 +1,113 @@
+<div class="fixed-buttons">
+  <%= link_to project_documents_path(@document.project), class: "ui button small" do %>
+    <i class="icon chevron left"></i> List
+  <% end %>
+  <%= link_to prev_document_path(@document), class: "ui icon button small disabled prev-button", title: 'prev document' do %>
+    <i class="icon angle double left"></i>
+  <% end %>
+  <%= link_to next_document_path(@document), class: "ui icon button small disabled next-button", title: 'next document' do %>
+    <i class="icon angle double right"></i>
+  <% end %>
+  <button class="ui button small doc-info-btn" type="button">
+    <i class="icon info circle"></i> BioC Info
+  </button>
+  <% if @is_manager %>
+    <div class="ui icon top left pointing dropdown button small">
+      <div class="text">Version <%=@version%></div>
+      <i class="dropdown icon"></i>
+      <div class="menu">
+        <% (0..@document.version).each do |v| %>
+          <%= link_to "/documents/#{@document.id}?version=#{v}", class: 'item'  do %>
+            Version <%=v %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+  <%= link_to "/documents/#{@document.id}.xml?version=#{@version}", class: 'ui button small', download: "#{@document.id}_#{@version}.xml" do %>
+    <i class='icon download'></i> Download
+  <% end %>
+  <div class="ui icon top left pointing dropdown button small" id="annotatorChecker">
+    <i class="user icon"></i>
+    <div class="menu" id="annotatorCheckerList">
+    </div>
+  </div>
+  <% if @is_manager %>
+    <div class="ui icon top left pointing dropdown button small" id="annotatorChecker">
+      <i class="cogs icon"></i>
+      <div class="menu">
+        <div class="item" id="hideAnnotatorButton">Hide annotator</div>
+        <div class="item" id="showAnnotatorButton">Show annotator</div>
+      </div>
+    </div>
+  <% end %>
+  <a href="#" id="showDemoButton" class="ui button small">
+    <i class="icon question"></i>
+    Demo
+  </a>
+  <i class='ui icon lock need-popup' style='color:#999' id="lockedIndicator" 
+    data-position="bottom left"
+    data-content="<%= @document.writable?(current_user, @version) %>" 
+    title="<%= @document.writable?(current_user, @version) %>"
+  ></i>
+  <div class='error-checker'>
+    <div class='ui active small inverted inline loader'></div>
+    <button class="ui button small yellow btn-errors">
+      <i class='icon warning sign'></i> 
+      Error
+    </button>
+    <div class="ui button small green">
+      <i class='icon checkmark'></i> 
+      No error
+    </div>
+  </div>
+  <div class="ui inverted tiny inline document-loader loader"></div>
+  <% if @project.in_task? %>
+    <div class="annotation-toggles"%>
+      <i class="icon warning sign"></i> Cannot modify
+      <div class='ui label yellow'><%=@project.status_with_icon %></div>
+    </div>
+  <% elsif @is_manager %>
+  <% else %>
+    <% if @project.collaborate_round %>
+      <div class="document-done-checker need-popup " style='color:gold; padding-top: 0.7em;' data-position="bottom center"
+          data-content="Caution! Collaborative mode shares the result among annotators." >
+        <i class='ui icon exclamation circle'></i> Collaborative Mode
+      </div>
+    <% end %>
+    <div class="document-done-checker done-checker need-popup" title="Toggle this on when annotation is complete">
+      <div class="ui checkbox toggle">
+        <input type="checkbox" name="example" data-id='<%=@document.id%>' <%='checked' if @document.done?(current_user) %> <%='disabled' if !@project.round_begin? %>>
+        <label>Done</label>
+      </div>
+    </div>
+    <div class="document-done-checker large curatable-checker need-popup" title="Toggle this on when document is curatable">
+      <div class="ui checkbox toggle">
+        <input type="checkbox" name="example" data-id='<%=@document.id%>' <%='checked' if @document.curatable?(current_user) %> <%='disabled' if !@project.round_begin? || @document.done?(current_user) %>>
+        <label>Curatable</label>
+      </div>
+    </div>
+  <% end %>
+</div>
+<script>
+  <%= content_for :defer_js do %>
+    $(function() {
+      $('.atype-check').change(function(e) {
+        var $e = $(e.currentTarget);
+        var type = $e.closest('.item').data('type');
+        $('.main.pane').toggleClass(type + '-enabled', $e.prop('checked'));
+      });
+
+      $('#annotatorChecker').dropdown({
+        action: function(text, value) {
+          console.log(text, value);
+          console.log(this);
+        // nothing built in occurs
+        },
+        onChange: function(value, text, $choice) {
+          console.log('changed', $choice)
+        }
+      });
+    });
+  <% end %>
+</script>

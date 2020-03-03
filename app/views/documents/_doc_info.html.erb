@@ -1,0 +1,39 @@
+<div class="ui modal doc-info">
+  <i class="close icon"></i>
+  <div class="header">
+    <div class="header">Document - <%=@document.did %></div>
+  </div>
+  <div class="content">
+    Uploaded <%=time_ago_in_words @document.created_at %> ago<br>
+    <ul class="list">
+      <li>Source: <%=@document.bioc.source %></li>
+      <li>Date: <%=@document.bioc.date %></li>
+      <li>Key: <%=@document.bioc.key %></li>
+      <li>Document's Infon (<%=@document.bioc_doc.infons.size %>)
+        <ul class="ui list body">
+          <% @document.bioc_doc.infons.each do |key, value| %>
+            <li>
+              <%=key %>: <%= value %>
+              <!--a href="#" class="mini"><i class="icon setting"></i></a-->
+            </li>
+          <% end %>
+        </ul>
+      </li>
+      <li>Collection's Infon (<%=@document.bioc.infons.size %>)
+        <ul class="ui list body">
+          <% @document.bioc.infons.each do |key, value| %>
+            <li>
+              <%=key %>: <%= value %>
+              <!--a href="#" class="mini"><i class="icon setting"></i></a-->
+            </li>
+          <% end %>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <div class="actions">
+    <div class="ui cancel button">
+      Close
+    </div>
+  </div>
+</div>

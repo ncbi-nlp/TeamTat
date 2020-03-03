@@ -1,0 +1,48 @@
+<% @tasks.each do |task| %>
+  <tr>
+    <td class="center aligned"><%=Task::TYPES[task.task_type] %></td>
+    <td class="center aligned"><%=task.status_with_icon %></td>
+    <td class="center aligned">
+      <% if task.lexicon_group.nil? %>
+        <% if task.has_lexicon_group %>
+          N/A
+        <% else %>
+          -
+        <% end %>
+      <% else %>
+        <%= link_to task.lexicon_group.name, lexicon_group_lexicons_path(task.lexicon_group) %>
+      <% end %>
+    </td>
+    <td class="center aligned">
+      <% if task.pre_trained_model.nil? %>
+        <% if task.model.nil? %>
+          <% if task.has_model %>
+            N/A
+          <% else %>
+            -
+          <% end %>
+        <% else %>
+          <%= link_to task.model.name, task.model %>
+        <% end %>
+      <% else %>
+        <%= task.pre_trained_model %>
+      <% end %>
+    </td>
+    <td>
+      <ul>
+        <li>Requested at <span class="local-time"><%=task.created_at.to_i %></span> </li>
+        <% unless task.tool_begin_at.nil? %>
+          <li>Processing begun at <span class="local-time"><%=task.tool_begin_at.to_i %></span> </li>
+        <% end %>
+        <% unless task.tool_end_at.nil? %>
+          <li>Processing done at <span class="local-time"><%=task.tool_end_at.to_i %></span></li>
+        <% end %>
+      </ul>
+      <% if task.can_cancel? %>
+        <%= link_to task, method: :delete, data: { confirm: 'Are you sure?' }, style: "float: right;", class: "ui button mini red" do %>
+          <i class="icon remove"></i> Cancel
+        <% end %>
+      <% end %>
+    </td>
+  </tr>
+<% end %>

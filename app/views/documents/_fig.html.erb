@@ -1,0 +1,12 @@
+<%
+unless @figure_cache.include?(filename) 
+  @figure_cache << filename
+%>
+  <a class='figure-box js-smartPhoto' id="fig_<%=id%>" href="<%=@document.image_url(filename)%>" data-caption="<%=title%>" data-id="<%=id%>" data-group="fig">
+    <img src='<%=@document.image_url(filename)%>' title='<%=title%>' class="ui centered large image">
+  </a>
+<% else %>
+  <a href="#fig_<%=id%>" class='ui label image-show-button' >
+    <i class="image outline icon"></i> <%=filename %>
+  </a>
+<% end %>

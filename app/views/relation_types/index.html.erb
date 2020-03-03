@@ -1,0 +1,86 @@
+<%= render partial: "/projects/project_header"%>
+<%= render partial: "/projects/project_buttons" %> 
+<%= render partial: "/projects/project_tab" %>
+
+<span class="ui bottom attached active tab segment">
+  <div class="ui secondary pointing menu">
+    <a class=" item" href="<%=project_entity_types_path(@project)%>">
+      Entity Types (<%= @project.entity_types_count %>)
+    </a>
+    <a class="active item" >
+      Relation Types (<%= @project.relation_types_count %>)
+    </a>
+  </div>
+
+  <% if @relation_types.empty? %>
+    <div class="ui message info">
+      No relation types. Create an relation type using the button below or during manual annotation.
+    </div>
+  <% else %>
+    <table class="ui table table-bordered celled sortable form">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Color</th>
+          <th># nodes</th>
+          <th>Entity Type</th>
+          <% if @project.manager?(current_user) %>
+            <th></th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody>
+        <% @relation_types.each do |relation_type| %>
+          <tr data-id="<%= relation_type.id %>">
+            <td><%= relation_type.name %></td>
+            <td>
+              <input type="hidden" id="C<%=relation_type.id%>" class="jscolor" value="<%= relation_type.color %>">
+              <button class="jscolor {valueElement: 'C<%=relation_type.id%>'} ui button fluid">
+                Pick Color
+              </button>
+            </td>
+            <td style="line-height: 200%"><%=relation_type.num_nodes %></td>
+
+            <td><%= relation_type.entity_type %></td>
+            <% if @project.manager?(current_user) %>
+              <td class="center aligned">
+                <%= link_to 'Edit', edit_relation_type_path(relation_type), class: "button ui mini teal ajax-update-disbled-with-status #{'disabled' if @project.in_task?}" %>
+                <%= link_to 'Delete', relation_type, method: :delete, data: { confirm: 'Are you sure?' }, class: "button ui mini teal ajax-update-disbled-with-status #{'disabled' if @project.busy?}" %>
+              </td>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+<% if @project.manager?(current_user) %>
+  <%= link_to 'New Relation Type', new_project_relation_type_path(@project), class: "ui button primary ajax-update-disbled-with-status #{'disabled' if @project.in_task?}" %>
+<% end %>
+</div>
+<br>
+
+<script>
+<%= content_for :defer_js do -%>
+$(function() {
+  $('table').tablesort();
+  <% if @project.manager?(current_user) %>
+    $(".jscolor").change(function(e) {
+      var $e = $(e.currentTarget);
+      var $tr = $e.closest("tr");
+      var color = "#" + $e.val();
+      $tr.find("td>span").css("background-color", color);
+      $.ajax({
+        url: "/relation_types/" + $tr.data("id") + ".json",
+        method: "PATCH",
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        data: {relation_type: {color: color}},
+        success: function(data) {
+          console.log(data);
+          toastr.success("Successfully updated");
+        }
+      });
+    });
+  <% end %>
+});
+<%- end -%>
+</script>

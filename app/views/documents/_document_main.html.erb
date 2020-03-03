@@ -1,0 +1,121 @@
+<% @document.bioc_doc.passages.each_with_index do |p, index| %>
+  <div class="ui basic segment passage" data-id="<%=index%>" id="passage-<%=index%>" data-offset="<%=p.offset%>">
+    <div class="ui top right attached label mini passage-sub-info">
+      offset: <%=p.offset%> - <%=p.offset + @document.get_psize(p)%>
+    </div>
+    <%=infon_helper(p.infons, "infon-#{index}") %>
+    <a href="#" class="infon-btn ui top left attached label mini passage-sub-info" data-id="<%=index%>">
+      <%=p.infons["type"]%> <div class="detail">
+      <i class="icon info circle"></i><%=p.infons.size%></div>
+    </a>
+    <% if p.infons["section_type"] == "FIG" && p.infons["file"].present? %>
+      <%
+      unless @figure_cache.include?(p.infons["file"]) 
+        @figure_cache << p.infons["file"]
+      %>
+        <a class='figure-box js-smartPhoto' id="fig_<%=p.infons["id"]%>" href="<%=@document.image_url(p.infons["file"])%>" data-caption="<%=p.text%>" data-id="<%=p.infons["id"]%>" data-group="fig">
+          <img src='<%=@document.image_url(p.infons["file"])%>' title='<%=p.text%>' class="ui centered large image">
+        </a>
+      <% else %>
+        <a href="#fig_<%=p.infons["id"]%>" class='ui label image-show-button' >
+          <i class="image outline icon"></i> <%=p.infons["file"] %>
+        </a>
+      <% end %>
+    <% end %>
+    <% case p.infons["type"] %>
+    <% when "ref" %>
+      <p>
+        <% if p.infons["citation"].present? %>
+          <%=p.infons["citation"] %>
+        <% else %>
+          <%-
+          i = 0
+          result_names = []
+          while !p.infons["name_#{i}"].nil? do
+            name = p.infons["name_#{i}"]
+            parts = name.split(";")
+            sur = parts[0].split(":")
+            if parts.size == 1
+              result_names << sur[1]  
+            else
+              given = parts[1].split(":")
+              if (sur[0] == "surname" && given[0] == "given-names")
+                result_names << "#{sur[1]}, #{given[1]}#{'.' if given[1][-1] != "."}"
+              else 
+                result_names << name
+              end
+            end
+            i = i + 1
+          end 
+          -%>
+          <%=result_names.join(",")%>
+          <%=p.infons["year"]%>.
+          <% if p.text.present? %>
+            <b class="text passage-text"><%= p.text %></b>.
+          <% end %>
+          <% if p.infons["volume"].present? %>
+            Vol. <%=p.infons["volume"]%>. 
+          <% end %>
+          <% if p.infons["issue"].present? %>
+            Issue <%=p.infons["issue"]%>. 
+          <% end %>
+          <% if p.infons["journal-title"].present? %>
+            <%=p.infons["journal-title"] %>,
+          <% end %>
+          <% if p.infons["source"].present? %>
+            <%=p.infons["source"] %>,
+          <% end %>
+          <%=p.infons["fpage"]%> - <%=p.infons["lpage"]%>.
+
+          <% if p.infons["kwd"].present? %>
+            <br>
+            Keyword: <%=p.infons["kwd"]%>. 
+          <% end %>
+          <% if p.infons["article-id_pmc"].present? %>
+            <br>
+            <a href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC<%=p.infons['article-id_pmc']%>" target="_blank">
+              <i class="icon world"></i>PMC <%=p.infons["article-id_pmc"]%>
+            </a>
+          <% end %>
+          <% if p.infons["article-id_pmid"].present? %>
+            <br>
+            <a href="http://www.ncbi.nlm.nih.gov/pubmed/<%=p.infons['article-id_pmid']%>" target="_blank">
+              <i class="icon world"></i>PMID <%=p.infons["article-id_pmid"]%>
+            </a>
+          <% end %>
+          <% if p.infons["pub-id_pmid"].present? %>
+            <br>
+            <a href="http://www.ncbi.nlm.nih.gov/pubmed/<%=p.infons['pub-id_pmid']%>" target="_blank">
+              <i class="icon world"></i>PMID <%=p.infons["pub-id_pmid"]%>
+            </a> 
+          <% end %>
+        <% end %>
+      </p>
+    <% when "front" %>
+      <% if p.text.blank? %>
+        <h1 class="<%=p.infons["type"]%> passage-text"><%-
+          p.sentences.each do |s|
+            -%><%=s.text%><%-
+          end
+          -%></h1>
+      <% else %>
+        <h1 class="<%=p.infons["type"]%> passage-text"><%=p.text%></h1>
+      <% end %>
+      <div class="ui message">
+        <%=render partial: "ref", locals: {infons: p.infons, title: nil} %>
+      </div>
+    <% else %>
+        <% if p.text.blank? %>
+          <div class="text <%=p.infons["type"]%> passage-text"><%-
+            p.sentences.each do |s|
+              -%><%=s.text%><%-
+            end
+            -%></div>
+        <% else %>
+          <div class="text <%=p.infons["type"]%> passage-text"><%=p.text%></div>
+        <% end %>
+    <% end %>
+  </div>
+<% end %>
+<style type="text/css" id='document-entity-type-css'>
+</style>

@@ -1,0 +1,56 @@
+<h1 class="ui dividing header">
+  <% if @task.task_type == 1%>
+    Train on Annotated Text
+  <% else %>
+    Annotate with a Lexicon or a Tagging Model
+  <% end %>  
+</h1>
+<% if @target_document.size == 0 || (@task.task_type == 1 && !@project.has_annotations?) %>
+  <div class="ui icon error message">
+    <i class="warning sign icon"></i>
+    <div class="content">
+      <div class="header">
+        <% if @task.task_type == 1 %>
+          No Documents Available for Training
+        <% else %>
+          No Documents Available for Auto Annotate
+        <% end %>
+      </div>
+      <p>
+        <% if @task.task_type == 1 %>
+          <% if @target_document.size == 0 %>
+            Nothing has been marked as "Done". Only the documents that are marked as "Done" will be used for training.
+            <br>
+            You can mark/unmark "Done" on <%=link_to 'the document list page', project_documents_path(@project)%> or on the manual annotation page.
+          <% elsif !@project.has_annotations? %>
+            There are no annotations in the completed documents (i.e. documents marked as "Done").
+          <% end %>
+        <% else %>
+          All documents are marked as "Done". Only the documents that are not marked as "Done" will be auto-annotated.
+          <br>
+          You can mark/unmark "Done" on <%=link_to 'the document list page', project_documents_path(@project)%> or on the manual annotation page.
+        <% end %>
+      </p>
+    </div>
+  </div>
+  <div class="actions">
+    <%= link_to 'Back', "#", onclick: "history.back(); return false;", class: "ui button" %>
+  </div>
+<% else %>
+  <div class="ui icon info message">
+    <i class="inbox icon"></i>
+    <div class="content">
+      <div class="header">
+        <% if @task.task_type == 1 %>
+          <%= @project.documents.size %> documents will be used for training
+        <% else %>
+          <%= @project.documents.size %> documents will be auto-annotated
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <%= render 'form', task: @task %>
+<% end %>
+
+<%= render partial: 'projects/project_action_modal' %>
+

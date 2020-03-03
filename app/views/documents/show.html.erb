@@ -1,0 +1,352 @@
+<%= render partial: "buttons" %>
+<div class="ui inverted active dimmer" id="documentSpinner" style='position:fixed'>
+  <div class="ui  text loader">Loading</div>
+</div>
+<%= render partial: "doc_info" %>
+<div class="document clearfix <%= 'outline' if @document.outline.size > 2 %>">
+  <div class="left-side pane">
+    <h4>Outline</h4>
+    <%= render partial: "outline", locals: {nodes: @document.outline} %>
+  </div>
+  <div class="main pane" id="main-document" data-url="<%=partial_document_path(@document) %>">
+    <%= render partial: "document_main" %>
+  </div>
+
+  <div class="ui right top right-side pane annotation-table" style="display: none">
+    <div class="ui top attached tabular menu" id="typeTab">
+      <a class="item active" data-tab="annotations">Annotations
+        <div id="reviewWarning" class="ui red label" style="display: none"></div>
+      </a>
+      <a class="item" data-tab="relations">Relations</a>
+    </div>
+    <div class="ui bottom attached tab segment active type-tab-content" data-tab="annotations">
+      <div id="defaultTypeSelector" class='type-selector'>
+        Default Type: 
+        <select type="text" name="type" class="ui normal" data-url="<%= project_entity_types_path(@project, format: :json) %>">
+          <% if @document.project.entity_types.empty? %>
+            <option value="" class="nothing"></option>
+          <% else %>
+            <% @document.project.entity_types.each do |e| %>
+              <% next if e.name.blank? %>
+              <option value="<%= e.name %>" class='type'><%=e.name %></option>
+            <% end %>
+          <% end %>
+          <% if @is_manager %>
+            <option disabled class="divider">──────────</option>
+            <option value="" class="new">[ Add New Entity Type ]</option>
+          <% end %>
+        </select>
+        <a href="#" class="refresh-annotation-table icon icon-button mini ui" title="Refresh Annotation Table">
+          <i class="icon refresh"></i>
+        </a>
+      </div>
+      <table id="annotationTable" class="ui inverted celled grey selectable single line very compact small table unstackable">
+        <thead id="annotationHead"></thead>
+        <tbody id="annotationList"></tbody>
+      </table>
+    </div>
+    <div class="ui bottom attached tab segment type-tab-content" data-tab="relations">
+      <div id="defaultRTypeSelector" class='type-selector'>
+        Default Type: 
+        <select type="text" name="type" class="ui normal" data-url="<%= project_relation_types_path(@project, format: :json) %>">
+          <% if @document.project.relation_types.empty? %>
+            <option value="" class="nothing"></option>
+          <% else %>
+            <% @document.project.relation_types.each do |e| %>
+              <% next if e.name.blank? %>
+              <option value="<%= e.name %>" class='type'><%=e.name %></option>
+            <% end %>
+            <% if @is_manager %>
+              <option disabled class="divider">──────────</option>
+              <option value="" class="new">[ Add New Relation Type ]</option>
+            <% end %>
+          <% end %>
+        </select>
+        <a href="#" class="refresh-relation-table icon-button icon  mini ui" title="Refresh Annotation Table">
+          <i class="icon refresh"></i>
+        </a>
+        <a href="#" id="addRelationButton" class="icon-button icon  mini ui" title="Add New Relation">
+          <i class="icon plus"></i>
+        </a>
+      </div>
+      <div class="helper-msg">
+        Ctrl/CMD + clicking on an annotation will add it to relation
+      </div>
+      <table id="relationTable" class="ui inverted celled grey selectable single line very compact small table unstackable">
+        <thead id="relationHead">
+          <th style='width: 40px;'>ID</th>
+          <th style='width: 100px;'>Type</th>
+          <th>Nodes</th>
+        </thead>
+        <tbody id="relationList"></tbody>
+      </table>    </div>
+    <a id="annotationTableUpButton" class="scrollUpDownButton"><i class='icon arrow circle up'></i></a>
+    <a id="annotationTableDownButton" class="scrollUpDownButton"><i class='icon arrow circle down'></i></a>
+  </div>
+</div>
+<%=render partial: "errors_modal" %>
+
+<div class="annotator-checker hidden" id="annotatorChecker">
+  <table class='ui inverted selectable cyan single line table very compact small unstackable celled selected'>
+    <thead>
+      <tr>
+        <th>Annotator</th>
+        <% if @project.manager?(current_user) %>
+          <th style='text-align:center;'>Done?</th>
+          <th style='text-align:center;'>Curatable?</th>
+          <th style='text-align:center;'><i class="close icon"></i></th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <% @assigns.each do |a| %>
+        <tr class="user-row" data-email='<%= hide_user2(a.user, @project, current_user) %>'>
+          <td>
+            <%= hide_user(a.user, @project, current_user) %>
+          </td>
+          <% if @project.manager?(current_user) %>
+            <td style='text-align:center;'><%if a.done %><i class='icon check'></i><% end %></td>
+            <td style='text-align:center;'><%if a.curatable %><i class='icon check'></i><% end %></td>
+            <td style='text-align:center;'><%=a.annotations_count%></td>
+          <% end %>
+        </tr>
+      <% end unless @assigns.blank? %>
+      <% @emails.each do |email| %>
+        <tr class="user-row" data-email='<%= hide_email2(email, @project, current_user) %>'>
+          <td>
+            <%= hide_email(email, @project, current_user) %>
+          </td>
+          <% if @project.manager?(current_user) %>
+            <td style='text-align:center;'>-</td>
+            <td style='text-align:center;'>-</td>
+            <td style='text-align:center;'>-</td>
+          <% end %>
+        </tr>
+      <% end unless @emails.blank?  %>
+    </tbody>
+  </table>
+</div>
+
+<div class="ui basic modal" id="demoModal">
+  <i class="close icon"></i>
+  <div class="header">Quick Demo for Manual Annotation</div>
+  <div class="content" style="text-align: center">
+    <%=image_tag "demo.gif", class: "image", style: "margin:auto", width: 800, height: 380 %>
+  </div>
+  <div class="actions">
+    <div class="ui red deny button">
+      <i class="icon ban"></i>
+      Do not show this demo again
+    </div>
+  </div>
+</div>
+
+<%=render "/annotations/annotation_modal" %>
+<%=render "/annotations/annotation_table" %>
+<%=render "/relations/relation_modal" %>
+
+<div class="ui modal" id="annotationListModal">
+  <i class="close icon"></i>
+  <div class="header">
+    Range[1445:123]  "AASDFASFAS.... ASFASFASF"
+  </div>
+  <div class="content">
+    <span class='annotationListCount'></span> annotation(s) exist(s) in this range.
+    <table class="ui small celled selectable single line very compact unstackable table">
+      <thead>
+        <tr>
+          <th style='text-align:center;'>
+            <input type="checkbox" tabindex='-1'>
+          </th>
+          <th>Type</th>
+          <th class='concept-id-head'>Concept ID</th>
+          <th>Text</th>
+          <th>Offset</th>
+          <th>Annotator</th>
+          <th>Updated at</th>
+        </tr>
+      </thead>
+      <tbody class="annotationListTableBody">
+
+      </tbody>
+    </table>
+  </div>
+  <div class="actions">
+    <div class="create-new ui blue button positive action-button hide-for-add"><i class="plus icon" tabindex="1"></i> Create New Annotation</div>
+    <div class="ui button deny">Close</div>
+
+    <div class="delete-checked ui button red deny action-button hide-for-add" style="float:left">
+      <i class="remove icon"></i> Delete
+    </div>
+    <div class="ui button top left teal add-relation-button action-button hide-for-add" style="float:left">
+      <i class="plus icon"></i> Add to Relation
+    </div>
+  </div>
+</div>
+
+<%
+@document.bioc_doc.passages.each_with_index do |p, p_idx|
+%>
+<div class='ptext' id='ptext-<%=p_idx%>'><%-
+  if p.text.nil?
+    p.sentences.each do |s|
+      -%><%=s.text%><%-
+    end
+  else
+    -%><%=p.text%><%-
+  end
+-%></div>
+<% end %>
+
+<div id="conceptPopup">
+  <table>
+  </table>
+</div>
+<script type="text/template" id="conceptPopupTemplate">
+  <tr>
+    <td class='id'>{{id}}</td>
+    <td class='name'>{{name}}</td>
+  </tr>
+</script>
+<script type="text/template" id="annotatorSelectRow">
+  <div class="item user-row">{{email}}</div>
+</script>
+<script type="text/template" id="relationTr">
+  <tr data-id="{{id}}" data-type="{{type}}" class="relation-tr" data-relation_id="{{relation_id}}">
+    <td>{{id}}</td>
+    <td class="type R_{{type}}">
+      <div class='ui basic segment'>
+        <span class="type-text ellipsis w80">{{type}}</span>
+        <span class="type-edit"></span>
+        <div class='ui dimmer'><div class='ui mini loader'></div></div>
+      </div>
+    </td>
+    <td class="nodes">
+      <div class='ui dimmer'><div class='ui mini loader'></div></div>
+      <i class="icon show-popup search" title="edit"></i>
+      {{#each nodes}}
+        {{#if this.r}}
+          <span class="node ui label mini R_{{this.r.type}}" data-ref_id="{{this.ref_id}}" data-role="{{this.role}}">{{this.r.id}}</span>
+        {{else}}
+          <span class="node ui label mini A_{{this.a.type}}" data-ref_id="{{this.ref_id}}" data-role="{{this.role}}">{{this.a.text}}</span>
+        {{/if}}
+      {{/each}}
+    </td>
+  </tr>
+</script>
+<script>
+  <%= content_for :defer_js do %>
+    $(function() {
+      $(".js-smartPhoto").SmartPhoto();
+      setTimeout(function() {
+        $('.error-checker').addClass('loading');
+        $.getJSON("/documents/<%=@document.id%>/verify", function(data) {
+          $('.error-checker').removeClass('loading');
+          if (data.length > 0) {
+            $('.error-checker').addClass('error');
+            var items = _.map(data, function(str) {
+              return "<li>" + str + "</li>";
+            });
+            $('.error-modal .content ol').html(items.join('\n'));
+          } else {
+            /*$('.error-checker').addClass('no-error');*/
+          }
+        });
+      }, 0);
+      $('.btn-errors').click(function() {
+        $('.error-modal').modal('show');
+      });
+
+      <% 
+      flash.each do |type, message|
+        next if message.blank?
+        type = :success if type.to_sym == :notice
+        type = :error   if type.to_sym == :alert
+        next unless [:error, :info, :success, :warning].include?(type.to_sym)
+        %>
+        toastr.<%= type %>('<%= message%>');
+        <%
+      end
+      %>
+      $("#demoModal").modal({
+        onDeny: function() {
+          localStorage.setItem("DontShowDemo", "true");
+        }
+      });
+      if(localStorage.getItem("DontShowDemo") !== "true") {
+        $("#demoModal").modal("show");
+      }
+      $("#showDemoButton").click(function() {
+        $("#demoModal").modal("show");
+        localStorage.setItem("DontShowDemo", false);
+      });
+      <!-- @document.version <%=@document.version.inspect %> -->
+      <!-- @version <%=@version.inspect %> -->
+      $.get('<%=prev_document_path(@document, format: 'json')%>', function(id) {
+        if (id >= 0) {
+          $(".fixed-buttons .prev-button").attr('href', '/documents/' + id);
+          $(".fixed-buttons .prev-button").removeClass('disabled');
+        }
+      });
+      $.get('<%=next_document_path(@document, format: 'json')%>', function(id) {
+        if (id >= 0) {
+          $(".fixed-buttons .next-button").attr('href', '/documents/' + id);
+          $(".fixed-buttons .next-button").removeClass('disabled');
+        }
+      });
+
+
+      var doc = new BioC('<%= @document.id%>', {
+        root: '<%= root_path%>',
+        writable: "<%= @document.writable?(current_user, @version) %>",
+        isManager: <%= @is_manager ? 'true' : 'false' %>,
+        me: '<%= current_user.email_or_name %>',
+        conceptNameCache: new ConceptNameCache(),
+        projectId: '<%= @project.id%>', 
+        roundState: '<%= @project.round_state %>',
+        assignId: '<%= @assign.present? && @assign.id%>',
+        entityTypes: {
+          <% @project.entity_types.each do |e| %>
+            '<%=j e.name %>': {prefix: '<%=j e.prefix %>', color: '<%=j e.color%>'},
+          <% end %>
+        },
+        relationTypes: {
+          <% @project.relation_types.each do |e| %>
+            '<%=j e.name %>': {entity: [<%= e.entity_types.map{|n| "'#{n}',"}.join("").html_safe %>], num: <%= e.num_nodes %>, color: '<%=j e.color%>'},
+          <% end %>
+        },
+        annotations: [
+          <% @annotations.each do |a| %>
+            {id: '<%= a.a_id%>', type: '<%=j a.a_type%>', concept: '<%=j a.concept%>', text: '<%=j a.content%>', offset: <%= a.offset %>, passage: '<%= a.passage%>', note: '<%=j a.note || "" %>', annotator: '<%=j a.annotator || "" %>', updated_at: '<%= a.updated_at.iso8601 || "" %>', user_id: '<%= a.user_id%>', annotation_id: <%=a.id%>,
+              review_result: '<%=a.review_result %>'
+          },
+          <% end %>
+        ],
+        relations: [
+          <% @relations.each do |r| %>
+            {id: '<%=r.r_id%>', type: '<%=j r.r_type%>', passage: '<%= r.passage%>', note: '<%=j r.note || "" %>', annotator: '<%=j r.annotator || "" %>', updated_at: '<%=r.updated_at.iso8601 || "" %>', user_id: '<%= r.user_id%>', relation_id: <%=r.id%>, review_result: '<%=r.review_result %>',
+              nodes: [
+                <% r.nodes.each do |n| %>
+                  {id: '<%=n.id%>', ref_id: '<%=n.ref_id%>', role: '<%=j n.role%>', order_no: '<%=n.order_no%>'},
+                <% end %>
+              ]
+            },
+          <% end %>
+        ],
+        endpoints: {
+          annotations: "<%= document_annotations_path(@document) %>",
+          relations: "<%= document_relations_path(@document) %>"
+        },
+        templates: {
+          head: $("#conceptHead").html(),
+          view1: Handlebars.compile($("#conceptViewTemplate1").html()),
+          view2: Handlebars.compile($("#conceptViewTemplate2").html()),
+          annotationList: Handlebars.compile($("#annotationListViewTemplate1").html()),
+          relationTr: Handlebars.compile($("#relationTr").html()),
+          popup: Handlebars.compile($("#conceptPopupTemplate").html()),
+        }
+      });
+      __doc = doc;
+    });
+  <% end %>
+</script>
