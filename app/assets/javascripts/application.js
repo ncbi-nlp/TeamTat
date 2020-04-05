@@ -18,7 +18,8 @@
 //= require moment/moment
 //= require lightbox
 //= require toastr
-//= require_tree .
+//= require_tree "." 
+//= stub "svg.js"
 //= require semantic-ui
 //= require smartphoto
 //= require jquery-smartphoto

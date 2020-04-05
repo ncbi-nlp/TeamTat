@@ -19,8 +19,8 @@
       </div>
       <input type="hidden" name="deleteMode">
       <div class="field">
-        <label>Entity Type</label>
-        <select type="text" name="type" class="ui fluid normal dropdown">
+        <label for="annotationFormType">Entity Type</label>
+        <select type="text" name="type" id="annotationFormType" class="ui fluid normal dropdown">
           <% @document.project.entity_types.each do |e| %>
             <option value="<%= e.name %>"><%=e.name %></option>
           <% end %>
@@ -32,10 +32,10 @@
         <% end %>
       </div>
       <div class="field">
-        <label>Concept ID 
+        <label for="annotationFormConcept">Concept ID 
         </label>
         <div style="position: relative;">
-          <input type="text" name="concept">
+          <input type="text" name="concept" id="annotationFormConcept">
           <a id="showMoreBtn" target='_blank'>
             <span class='name'>Show More</span>
             <i class="fa fa-external-link-alt"></i> 

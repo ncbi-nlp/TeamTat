@@ -37,6 +37,10 @@
   font-size: 16px;
 }
 
+.ui.primary.button {
+  background-color: #1a77bc;
+}
+
 #main-nav {
   .ui.dropdown .menu { z-index: 1001; }
   &.ui.menu .item {
@@ -47,7 +51,6 @@
 }
 .brand-initial {
   font-family: 'Exo 2', sans-serif;
-  color: white;
   font-size: 16px;
 }
 h1, h1.ui.header {
@@ -103,8 +106,18 @@ a {
   margin-top: 60px;
 }
 .ui.fixed.menu {
-  background-color: rgba(0, 0, 0, 0.7);  
+  color: #fff;
+  background-color: #213049;  
 } 
+
+.ui.inverted.menu .active.item {
+    background: #39527d;
+    color: #ffffff !important;
+}
+.ui.inverted.menu .item {
+    background: #213049;
+    color: #ffffff !important;
+}
 
 .documents-show {
   .ui.toggle.checkbox input ~ .box:before, .ui.toggle.checkbox input ~ label:before {

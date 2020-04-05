@@ -24,7 +24,7 @@
     <div class="ui bottom attached tab segment active type-tab-content" data-tab="annotations">
       <div id="defaultTypeSelector" class='type-selector'>
         Default Type: 
-        <select type="text" name="type" class="ui normal" data-url="<%= project_entity_types_path(@project, format: :json) %>">
+        <select aria-label="default entity type" type="text" name="type" class="ui normal" data-url="<%= project_entity_types_path(@project, format: :json) %>">
           <% if @document.project.entity_types.empty? %>
             <option value="" class="nothing"></option>
           <% else %>
@@ -50,7 +50,7 @@
     <div class="ui bottom attached tab segment type-tab-content" data-tab="relations">
       <div id="defaultRTypeSelector" class='type-selector'>
         Default Type: 
-        <select type="text" name="type" class="ui normal" data-url="<%= project_relation_types_path(@project, format: :json) %>">
+        <select aria-label="default relation type" type="text" name="type" class="ui normal" data-url="<%= project_relation_types_path(@project, format: :json) %>">
           <% if @document.project.relation_types.empty? %>
             <option value="" class="nothing"></option>
           <% else %>
@@ -88,7 +88,7 @@
 </div>
 <%=render partial: "errors_modal" %>
 
-<div class="annotator-checker hidden" id="annotatorChecker">
+<div class="annotator-checker hidden" id="annotatorCheckerTable">
   <table class='ui inverted selectable cyan single line table very compact small unstackable celled selected'>
     <thead>
       <tr>
@@ -236,8 +236,10 @@
     </td>
   </tr>
 </script>
+<%= javascript_include_tag 'svg' %>
 <script>
   <%= content_for :defer_js do %>
+
     $(function() {
       $(".js-smartPhoto").SmartPhoto();
       setTimeout(function() {

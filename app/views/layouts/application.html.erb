@@ -17,12 +17,14 @@
 
   <body class="<%=params[:controller]%>-<%=params[:action]%>" data-no-turbolink>
     <div id="drawing"></div>
-    <nav class="ui fixed menu inverted navbar" id="main-nav">
+    <nav class="ui fixed menu inverted navbar" id="main-nav"  role="navigation">
       <div class="ui container clearing">
         <%= link_to root_path, class:"brand item" do %>
           <span class='brand-initial'>TeamTat</span>
         <% end %>
-        <%= link_to_if @top_menu != 'home', "Home", '/', class: "item #{'active' if @top_menu == 'home'}" %>
+        <% if @top_menu != 'home' %>
+          <%= link_to "Home", '/', class: "item #{'active' if @top_menu == 'home'}" %>
+        <% end %>
         <%= link_to "Projects", '/projects', class: "item #{'active' if @top_menu == 'projects'}" %>
         <%= link_to "#", onclick: "window.open('https://sites.google.com/view/teamtat-tutorial/', 'teamtat-tutorial', 'width=850,height=800,menubar=no,location=no,scrollbars=yes,toolbar=no,status=no,resizable=yes');return false;", class: "item" do %>
           Tutorial
@@ -64,7 +66,7 @@
       </div>
     </nav> <!-- end nav -->
     <% if params[:controller] == "home" && params[:action] == "index" %>
-      <div class='hero'>
+      <div class='hero' role="banner">
         <div class="ui container clearing">
           <div class="ui header">
             <span>Team</span><span class='tag'>Tat</span><br>
@@ -75,7 +77,7 @@
         </div>
       </div>
     <% end %>
-    <div class='main-container'>
+    <main class='main-container' role="main">
       <div class="ui main container">
         <% if params[:controller] != "documents" || params[:action] != "show" %>
           <%= semantic_breadcrumbs %>
@@ -87,16 +89,16 @@
 
         <%= yield %>
       </div>
-    </div>
+    </main>
     <% if params[:controller] != "documents" || params[:action] != "show" %>
-      <div class="footer" id="main-footer">
+      <footer class="footer" id="main-footer">
         <div class="ui container">
           Copyright © 2019 TeamTat, Contact us: <a href="mailto:Rezarta.Islamaj@nih.gov">Rezarta.Islamaj@nih.gov</a>, <a href="mailto:dongseop@mju.ac.kr">dongseop@mju.ac.kr</a>, <a href="mailto:Zhiyong.Lu@nih.gov">Zhiyong.Lu@nih.gov</a>
           | 
           <%=link_to "Site Map", "/home/sitemap"%> 
           <br>
         </div>
-      </div> 
+      </footer> 
     <% end %>
 
 <!-- Global site tag (gtag.js) - Google Analytics -->

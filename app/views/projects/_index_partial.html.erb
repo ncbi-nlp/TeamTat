@@ -8,7 +8,7 @@
   <tr>
     <td><%=link_to project.name, project %></td>
     <td>
-      <%=image_tag(project.manager.user.image_or_default, class: "ui avatar image") %>
+      <%=image_tag(project.manager.user.image_or_default, class: "ui avatar image", alt: "avatar of #{project.manager.user.name_or_email_or_id}") %>
       <%= project.manager.user.name_or_email_or_id %>
     </td>
     <td><%= documents_count %></td>

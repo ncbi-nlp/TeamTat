@@ -111,7 +111,7 @@ class DocumentsController < ApplicationController
     end
     @document.create_audit(current_user, 'open document') unless @is_manager
     if @document.bioc_doc.infons.present? && @document.infons.blank?
-      @document.infons = @document.infons.merge(@document.bioc_doc.infons)
+      @document.infons = @document.bioc_doc.infons
       @document.save
     end
     logger.debug("DOC INFONS = #{@document.infons.inspect}")
