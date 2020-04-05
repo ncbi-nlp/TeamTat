@@ -22,7 +22,7 @@
         <%= link_to root_path, class:"brand item" do %>
           <span class='brand-initial'>TeamTat</span>
         <% end %>
-        <%= link_to "Home", '/', class: "item #{'active' if @top_menu == 'home'}" %>
+        <%= link_to_if @top_menu != 'home', "Home", '/', class: "item #{'active' if @top_menu == 'home'}" %>
         <%= link_to "Projects", '/projects', class: "item #{'active' if @top_menu == 'projects'}" %>
         <%= link_to "#", onclick: "window.open('https://sites.google.com/view/teamtat-tutorial/', 'teamtat-tutorial', 'width=850,height=800,menubar=no,location=no,scrollbars=yes,toolbar=no,status=no,resizable=yes');return false;", class: "item" do %>
           Tutorial
