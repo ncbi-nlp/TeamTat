@@ -1,26 +1,29 @@
+<% content_for :title, "new session" %>
 <script async defer src='https://www.google.com/recaptcha/api.js'></script>
-<style>
-.ui.grid>.column+.divider, .ui.grid>.row>.column+.divider {
-    left: 50%;
-}
-.bb {
-  font-weight: bold;
-  color: #00b5ad;
-  text-decoration: underline;
-}
-.cc {
-  font-weight: normal;
-}
-</style>
+<% content_for :defer_css do -%>
+  <style>
+  .ui.grid>.column+.divider, .ui.grid>.row>.column+.divider {
+      left: 50%;
+  }
+  .bb {
+    font-weight: bold;
+    color: #00b5ad;
+  }
+  .cc {
+    font-weight: normal;
+  }
+  .top-important {font-weight: bold;}
+  </style>
+<%- end %>
 <div class="ui two column centered grid" style="padding-top: 2em;">
   <div class="ui segment " >
     <div class="ui <%= 'two' if params[:mode] == "ncbi-inner" %> column centered relaxed grid">
       <div class="column" style="padding: 2em 3em 2em 2em;">
-        <b><i class="icon heart pink"></i> 
-        TeamTat is free and open to all users and there is no login requirement.</b>
-        <h2 class="ui header blue">
+        <div class="top-important"><i class="icon heart pink"></i> 
+        TeamTat is free and open to all users and there is no login requirement.</div>
+        <h1 class="ui header blue">
           Please tell us that you are not a robot
-        </h2>
+        </h1>
         <h4 class="ui text information">
           <span class='bb'>LOGIN IS NOT REQUIRED</span> to use TeamTat.
         </h4>
@@ -32,7 +35,7 @@
             We use reCAPTCHA to protect our website from spam and abuse. Thank you.
           </p>
           <%= form_tag(generate_users_path, method: "POST", class:"ui form") do %>
-            <%= recaptcha_tags %>
+            <%= recaptcha_tags :noscript => false %>
             <br>
             <button class="ui button fluid large pink">
               <i class='icon heart'></i>

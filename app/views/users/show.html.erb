@@ -1,4 +1,6 @@
-<%=image_tag(@user.image_or_default, class: "ui small circular image") %>
+<% content_for :title, "User" %>
+
+<%=image_tag(@user.image_or_default, alt: "avatar", class: "ui small circular image") %>
 <h1 class="ui header">
   <% if @user.name.present? %>
     <%= @user.name %>
@@ -15,7 +17,7 @@
   <div class="ui segment">
     <%=form_for(@user, html: {class: 'ui form inline'}) do |f| %>
       <div class="inline field">
-        <label>You can change your nickname</label>
+        <label for='user_name'>You can change your nickname</label>
         <%= f.text_field :name, autocomplete: "name" %>
         <%= f.submit "Change nickname", class: 'ui button'%>
       </div>
@@ -30,7 +32,7 @@
 
     <%=form_tag("/users/sendmail", class: "ui form" ) do %>
       <div class="inline field">
-        <input type="email" name="email" placeholder="Enter an email address to send the URL" size="40">
+        <input type="email" name="email" placeholder="Enter an email address to send the URL" aria-label="email" size="40">
         <button class="ui button primary">
           <i class="icon mail"></i>
           Send the URL above

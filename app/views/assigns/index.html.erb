@@ -1,3 +1,5 @@
+<% content_for :title, @project.name %>
+
 <%= render partial: "/projects/project_header"%>
 <%= render partial: "/projects/project_buttons" %> 
 <%= render partial: "/projects/project_tab" %>
@@ -41,7 +43,7 @@
           <th>Title</th>
           <% @users.each do |user|%>
             <th style='text-align:center;'>          
-              <%=image_tag(user.image_or_default, class: "ui avatar image", data: {content: user.name_and_email}) %>
+              <%=image_tag(user.image_or_default, class: "ui avatar image", alt: user.name_and_email, data: {content: user.name_and_email}) %>
             </th>
           <% end %>
           <th style='text-align:center;'>#</th>

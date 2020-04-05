@@ -5,6 +5,7 @@ class Document < ApplicationRecord
   has_many :relations, -> { order 'sig2 asc' }, dependent: :destroy
   has_many :assigns, dependent: :destroy
   has_many :audits,-> { order 'created_at desc' }, dependent: :destroy
+  serialize :infons
 
   def create_audit(user, message, request = "", result = "")
     if self.project.enable_audit
@@ -586,6 +587,7 @@ class Document < ApplicationRecord
     Document.transaction do 
       self.annotations.where('`version`=?', version).destroy_all
       self.relations.where('`version`=?', version).destroy_all
+      self.infons = self.bioc_doc.infons
       p_offset = self.bioc_doc.passages.map{|p, index| p.offset.to_i }
       # logger.debug(p_offset.inspect)
       # logger.debug(self.bioc_doc.all_annotations.size)
@@ -708,6 +710,7 @@ class Document < ApplicationRecord
       r = generate_bioc_relation_node(self.bioc_doc, relation)
       self.bioc_doc.relations << r
     end
+    self.bioc_doc.infons = self.bioc_doc.infons.merge(self.infons)
     self.bioc_doc.relations
     self.adjust_offset(true)
     self.bioc_doc.infons['curatable'] = self.curatable_value
@@ -728,6 +731,12 @@ class Document < ApplicationRecord
       xml = self.merge_xml(version)
     end
     xml
+  end
+  
+  def get_json(version = nil)
+    xml = self.get_xml(version)
+    @bioc = SimpleBioC.from_xml_string(xml)
+    SimpleBioC.to_pubann(@bioc)
   end
 
   def save_xml(bioc)
@@ -877,6 +886,7 @@ class Document < ApplicationRecord
 
   def bioc
     if @bioc.nil?
+      # Rails.logger.debug(self.xml)
       @bioc = SimpleBioC.from_xml_string(self.xml)
     end
     @bioc

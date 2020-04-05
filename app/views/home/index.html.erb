@@ -1,3 +1,5 @@
+<% content_for :title, "Home" %>
+
 <h1 class="ui dividing header">
   Highlights
 </h1>
@@ -12,9 +14,9 @@
   and merge individual annotations.  
   <br>  <br>
 
-  <%=link_to image_tag("sm_screenshot01.png", style: "width: 33%; border: 1px solid gray"), image_url("screenshot01.png"), class: "figure-box js-smartPhoto", data: {caption: "You can upload documents in any format such as BioC, text and XML, or import from PubMed and PubMed Central."} %>
-  <%=link_to image_tag("sm_screenshot02.png", style: "width: 33%; border: 1px solid gray"), image_url("screenshot02.png"), class: "figure-box js-smartPhoto", data: {caption: "A project manager can invite annotator(s) to work on a given project."} %>
-  <%=link_to image_tag("sm_screenshot03.png", style: "width: 33%; border: 1px solid gray"), image_url("screenshot03.png"), class: "figure-box js-smartPhoto", data: {caption: "Document assignment can be done manually, or automatically. Documents can also be assigned offline and uploaded."} %>
+  <%=link_to image_tag("sm_screenshot01.png", style: "width: 33%; height: auto, border: 1px solid gray", title: "You can upload documents in any format such as BioC, text and XML, or import from PubMed and PubMed Central", alt: "screenshot-01"), image_url("screenshot01.png"), target: "_blank", class: "figure-box js-smartPhoto", data: {caption: "You can upload documents in any format such as BioC, text and XML, or import from PubMed and PubMed Central.", aria: {label: 'screenshot-01'}} %>
+  <%=link_to image_tag("sm_screenshot02.png", style: "width: 33%; height: auto, border: 1px solid gray", title: "A project manager can invite annotator(s) to work on a given project.", alt: "screenshot-02"), image_url("screenshot02.png"), target: "_blank", class: "figure-box js-smartPhoto", data: {caption: "A project manager can invite annotator(s) to work on a given project.", aria: {label: 'screenshot-02'}} %>
+  <%=link_to image_tag("sm_screenshot03.png", style: "width: 33%; height: auto, border: 1px solid gray", title: "Document assignment can be done manually, or automatically. Documents can also be assigned offline and uploaded.", alt: "screenshot-03"), image_url("screenshot03.png"), target: "_blank", class: "figure-box js-smartPhoto", data: {caption: "Document assignment can be done manually, or automatically. Documents can also be assigned offline and uploaded.", aria: {label: 'screenshot-03'}} %>
 </p>
 
 <h3 class="ui header blue" style="margin-top: 2em;"> 
@@ -27,8 +29,8 @@
   such as ability to annotate both entities and relations, 
   pre-annotation, inter-annotator agreement, etc.
   <br> <br>
-  <%=link_to image_tag("sm_screenshot04.png", style: "width: 49%; border: 1px solid gray"), image_url("screenshot04.png"), class: "figure-box js-smartPhoto", data: {caption: "You can annotate directly on text with annotation type, concept ID, etc. Multi-label annotatoions are also supported."} %>
-  <%=link_to image_tag("sm_screenshot05.png", style: "width: 49%; border: 1px solid gray"), image_url("screenshot05.png"), class: "figure-box js-smartPhoto", data: {caption: "Relation annotation is document level and entities can appear on different sentences, paragraphs, or sections. "} %>
+  <%=link_to image_tag("sm_screenshot04.png", style: "width: 49%; height: auto, border: 1px solid gray", title: "You can annotate directly on text with annotation type, concept ID, etc. Multi-label annotatoions are also supported.", alt: "screenshot-04"), image_url("screenshot04.png"), target: "_blank", class: "figure-box js-smartPhoto", data: {caption: "You can annotate directly on text with annotation type, concept ID, etc. Multi-label annotatoions are also supported.", aria: {label: 'screenshot-04'}} %>
+  <%=link_to image_tag("sm_screenshot05.png", style: "width: 49%; height: auto, border: 1px solid gray", title: "Relation annotation is document level and entities can appear on different sentences, paragraphs, or sections.", alt: "screenshot-05"), image_url("screenshot05.png"), target: "_blank", class: "figure-box js-smartPhoto", data: {caption: "Relation annotation is document level and entities can appear on different sentences, paragraphs, or sections. ", aria: {label: 'screenshot-05'}} %>
 </p>
 
 <h3 class="ui header blue" style="margin-top: 2em;"> 
@@ -40,14 +42,16 @@
   figures of full-text articles in PubMed Central. 
   <br>
   <br>
-  <%=link_to image_tag("sm_screenshot06.png", style: "width: 49%; border: 1px solid gray"), image_url("screenshot06.png"), class: "figure-box js-smartPhoto", data: {caption: "If an article is retrieved from PubMed Central, TeamTat can display all images in text, for annotators’ convenience."} %>
-  <%=link_to image_tag("sm_screenshot07.png", style: "width: 49%; border: 1px solid gray"), image_url("screenshot07.png"), class: "figure-box js-smartPhoto", data: {caption: "If an article is retrieved from PubMed Central, TeamTat can display all images in text, for annotators’ convenience."} %>
+  <%=link_to image_tag("sm_screenshot06.png", style: "width: 49%; height: auto, border: 1px solid gray", title: "If an article is retrieved from PubMed Central, TeamTat can display all images in text, for annotators’ convenience.", alt: "screenshot-06"), image_url("screenshot06.png"), target: "_blank", class: "figure-box js-smartPhoto", data: {caption: "If an article is retrieved from PubMed Central, TeamTat can display all images in text, for annotators’ convenience.", aria: {label: 'screenshot-06'}} %>
+  <%=link_to image_tag("sm_screenshot07.png", style: "width: 49%; height: auto, border: 1px solid gray", title: "If an article is retrieved from PubMed Central, TeamTat can display all images in text, for annotators’ convenience.", alt: "screenshot-07"), image_url("screenshot07.png"), target: "_blank", class: "figure-box js-smartPhoto", data: {caption: "If an article is retrieved from PubMed Central, TeamTat can display all images in text, for annotators’ convenience.", aria: {label: 'screenshot-07'}} %>
 </p>
 
 <script>
   <%= content_for :defer_js do %>
+    <!--
     $(function() {
       $(".js-smartPhoto").SmartPhoto();
     });
+    // -->
   <% end %>
 </script>

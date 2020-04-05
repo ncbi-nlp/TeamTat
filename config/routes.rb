@@ -104,10 +104,14 @@ Rails.application.routes.draw do
   end
 
   get 'home/index'
+  get 'home/sitemap'
   get 'home/proxy'
   get 'home/tos'
   get 'home/privacy'
-  devise_for :users, path: 'account', :controllers => { 
+  devise_for :users, path: 'account', path_names: {
+    sign_in: 'new',
+    sign_out: 'destroy',    
+  },:controllers => { 
     :omniauth_callbacks => "users/omniauth_callbacks",
     sessions: 'users/sessions',
     registrations: 'users/registrations'

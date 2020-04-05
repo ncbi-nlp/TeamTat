@@ -51,6 +51,7 @@ gem 'devise'
 gem "recaptcha"
 gem "docsplit"
 gem "font-awesome-rails"
+gem "sitemap_generator"
 
 gem 'capistrano', '~> 3.11'
 gem 'capistrano-rails', '~> 1.4'
@@ -62,7 +63,7 @@ gem "sentry-raven"
 # https://medium.com/@_benrudolph/end-to-end-devise-omniauth-google-api-rails-7f432b38ed75
 gem 'omniauth-google-oauth2'
 gem "bower-rails", "~> 0.11.0"
-gem 'lightbox2-rails'
+# gem 'lightbox2-rails'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

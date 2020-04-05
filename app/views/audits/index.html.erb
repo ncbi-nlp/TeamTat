@@ -52,7 +52,7 @@
           <td><%=audit.document.did%></td>
           <td>
             <% if audit.user.present? %>
-              <%=image_tag(audit.user.image_or_default, class: "ui avatar image", title: audit.user.email_or_session_tail) %>
+              <%=image_tag(audit.user.image_or_default, class: "ui avatar image", alt: audit.user.email_or_session_tail, title: audit.user.email_or_session_tail) %>
               <%= audit.user.name_or_email_or_id %>
             <% end %>
           </td>

@@ -1,7 +1,11 @@
 class HomeController < ApplicationController
   def index
+    @top_menu = "home"
   end
 
+  def sitemap
+  end
+  
   def about
     @top_menu = "about"
   end

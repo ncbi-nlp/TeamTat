@@ -1,14 +1,15 @@
+<% content_for :title, "About" %>
 <h1 class="ui dividing header">
   About
 </h1>
 
-<b><i class="icon heart pink"></i> TeamTat is free and open to all users and there is no login requirement.</b>
+<div class="text-bold"><i class="icon heart pink"></i> TeamTat is free and open to all users and there is no login requirement.</div>
 
 
 <h3 class="ui header blue"> 
   Introduction
 </h3>
-<p class="sub header">
+<div class="sub header">
   TeamTat is a novel tool for managing multi-user, multi-label document annotation. The project interface reflects
   a production life cycle. Projects can specify annotation and normalization options for both entities and relations. A project
   consists of a user-selected set of documents which can be automatically retrieved from PubMed/PubMed Central. Input format
@@ -23,20 +24,20 @@
   TeamTat has been actively used since March 2019 for several team annotation projects at the National Library of Medicine. Our projects have generally consisted of 100-150 PubMed/PMC documents, with teams of 4-10 annotators. Word-of-mouth has generated a current active base of ~50 document annotators.
 
 <br><br>
-</p>
+</div>
 
 <!-- <h3 class="ui header blue">  
   Overview of a TeamTat annotation project
 </h3>
 <p>
 A project manager selects the documents to be annotated, specifies the types of entities and relations to be considered, enables the participation of the annotator(s), and distributes the documents among annotators. An annotation round consists of team members working independently to add/delete or update annotations and relations. Team members can also review annotations that are signaled to have a disagreement among annotation partners. TeamTat maintains anonymity to eliminate annotator bias. At the end of each round, the project manager can calculate inter-annotator agreement statistics, and decide to continue or finalize the corpus. Annotations are trackable for every annotation round, and data can be downloaded at any given time.
-</p>
+</div>
 <%=image_tag("overview.png", class: 'ui centered image') %>
  -->
 <h3 class="ui header blue" style="margin-top: 2em;">  
   Team
 </h3>
-<p class="sub header">
+<div class="sub header">
 
   <ul>
     <li>Rezarta Islamaj <sup>1</sup> (<a href="mailto:rezarta.islamaj@nih.gov">rezarta.islamaj@nih.gov</a>)</li>
@@ -48,11 +49,11 @@ A project manager selects the documents to be annotated, specifies the types of 
     <li>National Library of Medicine, National Institutes of Health, Bethesda, MD 20894, USA</li>
     <li>School of Software Convergence, Myongji University, Seoul 03674, South Korea</li>
   </ol>
-</p>
+</div>
 <h3 class="ui header blue" style="margin-top: 2em;"> 
   Browser compatibility
 </h3>
-<p class="sub header">
+<div class="sub header">
   <table class="ui table table-bordered celled">
     <thead>
       <tr>
@@ -113,16 +114,14 @@ A project manager selects the documents to be annotated, specifies the types of 
         <td><i class="icon ban" style='color:#aaa;'></i> n/a</td>
       </tr>
     </tbody>
-    </table>
-  </p>
-
-</p>
+  </table>
+</div>
 
 
 <h3 class="ui header blue" style="margin-top: 2em;"> 
   License
 </h3>
-<p class="sub header">
+<div class="sub header">
   The MIT License (MIT)<br>
   <br>
   Copyright (c) 2019 TeamTat<br>
@@ -143,4 +142,4 @@ A project manager selects the documents to be annotated, specifies the types of 
   COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
   IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-</p>
+</div>

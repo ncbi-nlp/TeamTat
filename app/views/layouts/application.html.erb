@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang='en'>
   <head>
-    <title>TeamTat</title>
+    <title>TeamTat - <%= yield(:title) || "home" %></title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <meta charset="utf-8" />
@@ -12,6 +12,7 @@
 
     <%= stylesheet_link_tag    'application', media: 'all' %>
     <%= yield :recaptcha_js %>
+    <%= yield :defer_css %>
   </head>
 
   <body class="<%=params[:controller]%>-<%=params[:action]%>" data-no-turbolink>
@@ -21,6 +22,7 @@
         <%= link_to root_path, class:"brand item" do %>
           <span class='brand-initial'>TeamTat</span>
         <% end %>
+        <%= link_to "Home", '/', class: "item #{'active' if @top_menu == 'home'}" %>
         <%= link_to "Projects", '/projects', class: "item #{'active' if @top_menu == 'projects'}" %>
         <%= link_to "#", onclick: "window.open('https://sites.google.com/view/teamtat-tutorial/', 'teamtat-tutorial', 'width=850,height=800,menubar=no,location=no,scrollbars=yes,toolbar=no,status=no,resizable=yes');return false;", class: "item" do %>
           Tutorial
@@ -54,7 +56,7 @@
               <% end %>
             <% end %>
           <% else %>
-            <%= link_to "/users/sign_in", class: "item" do %>
+            <%= link_to "/account/new", class: "item" do %>
               Click here to Start
             <% end %>
           <% end %>
@@ -64,12 +66,12 @@
     <% if params[:controller] == "home" && params[:action] == "index" %>
       <div class='hero'>
         <div class="ui container clearing">
-          <h1 class="ui header">
+          <div class="ui header">
             <span>Team</span><span class='tag'>Tat</span><br>
             <div class="sub header">
               A Text Annotation Tool for Team Collaboration <br>
             </div>
-          </h1>
+          </div>
         </div>
       </div>
     <% end %>
@@ -89,11 +91,13 @@
     <% if params[:controller] != "documents" || params[:action] != "show" %>
       <div class="footer" id="main-footer">
         <div class="ui container">
-          Copyright © 2019 TeamTat, Contact us: <a href="mailto:Rezarta.Islamaj@nih.gov">Rezarta.Islamaj@nih.gov</a>, <a href="mailto:dongseop@mju.ac.kr">dongseop@mju.ac.kr</a>, <a href="mailto:Zhiyong.Lu@nih.gov">Zhiyong.Lu@nih.gov</a><br>
+          Copyright © 2019 TeamTat, Contact us: <a href="mailto:Rezarta.Islamaj@nih.gov">Rezarta.Islamaj@nih.gov</a>, <a href="mailto:dongseop@mju.ac.kr">dongseop@mju.ac.kr</a>, <a href="mailto:Zhiyong.Lu@nih.gov">Zhiyong.Lu@nih.gov</a>
+          | 
+          <%=link_to "Site Map", "/home/sitemap"%> 
+          <br>
         </div>
       </div> 
     <% end %>
-  </body>
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111986512-1"></script>
@@ -139,7 +143,6 @@
     <%= yield :defer_js %>
   };
 </script>
-</html>
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-144266318-1"></script>
@@ -151,3 +154,5 @@
   gtag('config', 'UA-144266318-1');
 </script>
 
+</body>
+</html>

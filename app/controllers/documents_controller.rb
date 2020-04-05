@@ -110,9 +110,14 @@ class DocumentsController < ApplicationController
       @relations =  @document.relations.where('`version`=?', @version).includes(:nodes)
     end
     @document.create_audit(current_user, 'open document') unless @is_manager
+    if @document.bioc_doc.infons.present? && @document.infons.blank?
+      @document.infons = @document.infons.merge(@document.bioc_doc.infons)
+      @document.save
+    end
+    logger.debug("DOC INFONS = #{@document.infons.inspect}")
     respond_to do |format|
       format.html
-      format.json
+      format.json {render json: @document.get_json(@version)}
       format.xml {render xml: @document.get_xml(@version)}
     end
   end

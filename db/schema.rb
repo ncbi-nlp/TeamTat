@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_20_023849) do
+ActiveRecord::Schema.define(version: 2020_04_05_053933) do
 
   create_table "annotations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "a_id"
@@ -104,6 +104,7 @@ ActiveRecord::Schema.define(version: 2020_02_20_023849) do
     t.integer "done_count", default: 0
     t.text "content2"
     t.integer "curatable_count", default: 0
+    t.text "infons"
     t.index ["project_id"], name: "index_documents_on_project_id"
   end
 

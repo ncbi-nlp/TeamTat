@@ -24,9 +24,18 @@
       </div>
     </div>
   <% end %>
-  <%= link_to "/documents/#{@document.id}.xml?version=#{@version}", class: 'ui button small', download: "#{@document.id}_#{@version}.xml" do %>
-    <i class='icon download'></i> Download
-  <% end %>
+  <div class="ui icon top left pointing dropdown button small">
+    <div class="text">Download</div>
+    <i class="dropdown icon"></i>
+    <div class="menu">
+      <%= link_to "/documents/#{@document.id}.xml?version=#{@version}", class: 'item', download: "#{@document.id}_#{@version}.xml"  do %>
+        BioC XML
+      <% end %>
+      <%= link_to "/documents/#{@document.id}.json?version=#{@version}", class: 'item',download: "#{@document.id}_#{@version}.json"   do %>
+        PubAnnotator JSON
+      <% end %>
+    </div>
+  </div>
   <div class="ui icon top left pointing dropdown button small" id="annotatorChecker">
     <i class="user icon"></i>
     <div class="menu" id="annotatorCheckerList">

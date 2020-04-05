@@ -1,3 +1,4 @@
+<% content_for :title, @project.name %>
 <%= render partial: "/projects/project_header"%>
 <%= render partial: "/projects/project_buttons" %> 
 <%= render partial: "/projects/project_tab" %>
@@ -23,7 +24,7 @@
       <% @project_users.each do |project_user| %>
         <tr>
           <td>
-            <%=image_tag(project_user.user.image_or_default, class: "ui avatar image", title: project_user.user.email_or_session_tail) %>
+            <%=image_tag(project_user.user.image_or_default, class: "ui avatar image", alt: project_user.user.email_or_session_tail, title: project_user.user.email_or_session_tail) %>
             <%= project_user.user.name_or_email_or_id %>
               
             </td>
