@@ -2,7 +2,7 @@
 lock "~> 3.12.0"
 
 set :application, "pubqrator"
-set :repo_url, "git@gitlab.com:ranzzy/pubqrator.git"
+set :repo_url, "git@github.com:ncbi-nlp/TeamTat.git"
 set :user, 'deploy'
 
 set :rbenv_type, :user # or :system, depends on your rbenv setup
