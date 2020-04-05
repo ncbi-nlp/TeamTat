@@ -17,7 +17,7 @@
 
   <body class="<%=params[:controller]%>-<%=params[:action]%>" data-no-turbolink>
     <div id="drawing"></div>
-    <nav class="ui fixed menu inverted navbar" id="main-nav"  role="navigation">
+    <nav class="ui fixed menu inverted navbar" id="main-nav">
       <div class="ui container clearing">
         <%= link_to root_path, class:"brand item" do %>
           <span class='brand-initial'>TeamTat</span>
@@ -77,7 +77,7 @@
         </div>
       </div>
     <% end %>
-    <main class='main-container' role="main">
+    <main class='main-container'>
       <div class="ui main container">
         <% if params[:controller] != "documents" || params[:action] != "show" %>
           <%= semantic_breadcrumbs %>
