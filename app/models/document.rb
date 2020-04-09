@@ -713,18 +713,22 @@ class Document < ApplicationRecord
     self.bioc_doc.infons = self.bioc_doc.infons.merge(self.infons || {})
     self.bioc_doc.relations
     self.adjust_offset(true)
-    self.bioc_doc.infons['_curatable'] = self.curatable_value
-    self.bioc_doc.infons['_version'] = version
-    self.bioc_doc.infons['_round'] = self.project.round
-    if self.assigns.present? && current_user.present? && self.project.manager?(current_user)
-      self.bioc_doc.infons['_annotators'] = self.assigns.map do |a|
-        "#{a.user.email_or_name}|C:#{if a.curatable then 1 else 0 end}|D:#{if a.done then 1 else 0 end}"
-      end.join(",")
-      if self.project.reviewing?
-        self.bioc_doc.infons['_review'] = if self.determined? then 1 else 0 end
+    self.bioc_doc.infons['tt_curatable'] = self.curatable_value
+    self.bioc_doc.infons['tt_version'] = version
+    self.bioc_doc.infons['tt_round'] = self.project.round
+    if current_user.present? && self.project.manager?(current_user)
+      if self.assigns.present? 
+        self.bioc_doc.infons['tt_annotators'] = self.assigns.map do |a|
+          "#{a.user.email_or_name}|C:#{if a.curatable then 1 else 0 end}|D:#{if a.done then 1 else 0 end}"
+        end.join(",")
       end
+      if self.project.reviewing?
+        self.bioc_doc.infons['tt_review'] = if self.determined? then 1 else 0 end
+      end
+    else
+      self.bioc_doc.infons.delete('tt_annotators')
+      self.bioc_doc.infons.delete('tt_review')
     end
-    self.bioc_doc.infons['']
     SimpleBioC.to_xml(bioc)
   end
 
