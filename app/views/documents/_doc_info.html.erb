@@ -13,7 +13,7 @@
         Document's Infon (<%=@document.bioc_doc.infons.size %>)
         <ul class="ui list body">
           <% @document.bioc_doc.infons.each do |key, value| %>
-            <% unless key.start_with("tt_") %>
+            <% unless key.start_with?("tt_") %>
               <li>
                 <%=key %>: <%= value %>
                 <!--a href="#" class="mini"><i class="icon setting"></i></a-->
