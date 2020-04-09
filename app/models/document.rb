@@ -34,8 +34,8 @@ class Document < ApplicationRecord
 
   def curatable_value
     return "no" if self.assigns.blank?
-    no_yes = self.assigns.where('curatable=true').count
-    no_no = self.assigns.where('curatable=no').count
+    no_yes = self.assigns.where('curatable=1').count
+    no_no = self.assigns.where('curatable=0').count
     return "yes" if self.assigns.size == no_yes
     return "no" if self.assigns.size == no_no
     return "undecided"
@@ -662,7 +662,7 @@ class Document < ApplicationRecord
     end
   end
 
-  def merge_xml(version = nil)
+  def merge_xml(version = nil, current_user = nil)
     version = self.version if version.nil?
 
     annotations = self.annotations.where('`version`=?', version).order('offset').all
@@ -710,10 +710,21 @@ class Document < ApplicationRecord
       r = generate_bioc_relation_node(self.bioc_doc, relation)
       self.bioc_doc.relations << r
     end
-    self.bioc_doc.infons = self.bioc_doc.infons.merge(self.infons)
+    self.bioc_doc.infons = self.bioc_doc.infons.merge(self.infons || {})
     self.bioc_doc.relations
     self.adjust_offset(true)
-    self.bioc_doc.infons['curatable'] = self.curatable_value
+    self.bioc_doc.infons['_curatable'] = self.curatable_value
+    self.bioc_doc.infons['_version'] = version
+    self.bioc_doc.infons['_round'] = self.project.round
+    if self.assigns.present? && current_user.present? && self.project.manager?(current_user)
+      self.bioc_doc.infons['_annotators'] = self.assigns.map do |a|
+        "#{a.user.email_or_name}|C:#{if a.curatable then 1 else 0 end}|D:#{if a.done then 1 else 0 end}"
+      end.join(",")
+      if self.project.reviewing?
+        self.bioc_doc.infons['_review'] = if self.determined? then 1 else 0 end
+      end
+    end
+    self.bioc_doc.infons['']
     SimpleBioC.to_xml(bioc)
   end
 

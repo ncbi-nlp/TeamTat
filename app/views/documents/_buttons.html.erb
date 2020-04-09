@@ -24,9 +24,9 @@
       </div>
     </div>
   <% end %>
-  <div class="ui icon top left pointing dropdown button small">
+  <div class="ui icon top left pointing dropdown button small" id="downloadButton">
+    <i class="download icon"></i>
     <div class="text">Download</div>
-    <i class="dropdown icon"></i>
     <div class="menu">
       <%= link_to "/documents/#{@document.id}.xml?version=#{@version}", class: 'item', download: "#{@document.id}_#{@version}.xml"  do %>
         BioC XML
@@ -117,6 +117,7 @@
           console.log('changed', $choice)
         }
       });
+      $("#downloadButton").dropdown({action: 'select'});
     });
   <% end %>
 </script>

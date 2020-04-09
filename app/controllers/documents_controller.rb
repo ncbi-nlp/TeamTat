@@ -118,7 +118,7 @@ class DocumentsController < ApplicationController
     respond_to do |format|
       format.html
       format.json {render json: @document.get_json(@version)}
-      format.xml {render xml: @document.get_xml(@version)}
+      format.xml {render xml: @document.merge_xml(@version, current_user)}
     end
   end
 
