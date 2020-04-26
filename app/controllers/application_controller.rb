@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
     if @project.present? && !@project.available?(current_user)
       respond_to do |format|
         format.html { redirect_back fallback_location: projects_path, alert: "Cannot access the project"}
-        format.json { render json: 'Cannot access the project', status: 401 }
+        format.json { render json: {message: 'Cannot access the project'}, status: 401 }
       end    
       return true
     end
@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
     if @project.present? && !@project.manager?(current_user)
       respond_to do |format|
         format.html { redirect_back fallback_location: projects_path, alert: "Availble only for the manager of the project"}
-        format.json { render json: 'Availble only for the manager of the project', status: 401 }
+        format.json { render json: {message: 'Availble only for the manager of the project'}, status: 401 }
       end    
       return true
     end
@@ -40,7 +40,7 @@ class ApplicationController < ActionController::Base
     if @project.locked
       respond_to do |format|
         format.html { redirect_back fallback_location: projects_path, alert: "Project is already locked"}
-        format.json { render json: 'Project is already locked' , status: 422 }
+        format.json { render json: {message: 'Project is already locked' }, status: 422 }
       end
       return true
     end
@@ -50,7 +50,7 @@ class ApplicationController < ActionController::Base
     if !@project.locked
       respond_to do |format|
         format.html { redirect_back fallback_location: projects_path, alert: "Project is unlocked"}
-        format.json { render json: 'Project is locked' , status: 422 }
+        format.json { render json: {message: 'Project is locked' }, status: 422 }
       end
       return true
     end
