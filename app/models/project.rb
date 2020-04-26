@@ -64,7 +64,7 @@ class Project < ApplicationRecord
 
   def available?(user)
     pu = self.project_users.where('user_id = ?', user.id).first
-    return pu.present? or user.super_admin?
+    return pu.present? || user.super_admin?
   end
 
   def manager?(user)
