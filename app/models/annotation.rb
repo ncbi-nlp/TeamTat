@@ -2,6 +2,7 @@ class Annotation < ApplicationRecord
   belongs_to :user, optional: true
   belongs_to :document
   belongs_to :assign, optional: true
+  belongs_to :project, optional: true
   serialize :infons
   enum review_result: [:not_determined, :agreed, :disagreed, :skipped, :final_result]
 

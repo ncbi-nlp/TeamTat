@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_05_053933) do
+ActiveRecord::Schema.define(version: 2020_04_27_162815) do
 
   create_table "annotations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "a_id"
@@ -31,8 +31,10 @@ ActiveRecord::Schema.define(version: 2020_04_05_053933) do
     t.integer "a_id_no"
     t.integer "version", default: 0
     t.integer "review_result", default: 0
+    t.bigint "project_id"
     t.index ["assign_id"], name: "index_annotations_on_assign_id"
     t.index ["document_id", "user_id"], name: "index_annotations_on_document_id_and_user_id"
+    t.index ["project_id"], name: "index_annotations_on_project_id"
     t.index ["user_id"], name: "index_annotations_on_user_id"
   end
 
@@ -289,6 +291,7 @@ ActiveRecord::Schema.define(version: 2020_04_05_053933) do
   end
 
   add_foreign_key "annotations", "assigns"
+  add_foreign_key "annotations", "projects"
   add_foreign_key "annotations", "users"
   add_foreign_key "api_keys", "users"
   add_foreign_key "assigns", "documents"

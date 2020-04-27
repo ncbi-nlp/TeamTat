@@ -4,6 +4,7 @@ class Project < ApplicationRecord
   has_many :project_users, -> { order('role asc')}, dependent: :destroy 
   has_many :users, through: :project_users
   has_many :documents, dependent: :destroy
+  has_many :annotations
   has_many :assigns, dependent: :destroy
   has_many :entity_types, dependent: :destroy
   has_many :relation_types, dependent: :destroy
@@ -486,8 +487,10 @@ class Project < ApplicationRecord
   end
 
   def has_annotations?
-    document_ids = self.documents.map{|d| d.id}
-    !Annotation.where("document_id in (?) AND version = ?", document_ids, self.round).empty?
+    !self.annotations.empty?
+    
+    # document_ids = self.documents.map{|d| d.id}
+    # !Annotation.where("document_id in (?) AND version = ?", document_ids, self.round).empty?
 
   #   size = documents.size
 
