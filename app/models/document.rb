@@ -625,6 +625,7 @@ class Document < ApplicationRecord
             updated_at: a.infons["updated_at"] || "1980-01-01",
             infons: a.infons,
             document_id: self.id,
+            project_id: self.project_id,
             version: version
           })
         end
@@ -853,6 +854,7 @@ class Document < ApplicationRecord
         passage: p_idx,
         assign_id: assign_id,
         document_id: self.id,
+        project_id: self.project_id,
         annotator: annotator,
         review_result: review_result,
         version: self.version,

@@ -73,6 +73,7 @@ class AnnotationsController < ApplicationController
         offset: (params[:offset] || "-1").to_i,
         passage: params[:passage_id],
         document_id: @document.id,
+        project_id: @document.project_id,
         annotator: annotator,
         version: @document.version,
         review_result: 'agreed',

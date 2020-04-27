@@ -42,6 +42,7 @@ class Assign < ApplicationRecord
           offset: a.offset,
           passage: a.passage,
           annotator: a.annotator,
+          project_id: self.project_id,
           version: self.document.version,
           infons: a.infons,
           review_result: 0,
