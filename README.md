@@ -58,6 +58,8 @@ google:
 recaptcha:
   site_key: << your recaptcha site key - for prevent spammer >> 
   secret: << your recaptcha secret - for prevent spammer >>
+mailgun:
+  key: << your mailgun key - for sending email from the server >>
 ```
 
 You can generate your own google id from https://console.developers.google.com and reCAPTCHA key from https://www.google.com/recaptcha/admin.
