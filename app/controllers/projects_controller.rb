@@ -57,7 +57,7 @@ class ProjectsController < ApplicationController
     @project.lock
     respond_to do |format|
       format.html { redirect_to @project, notice: 'Project is locked' }
-      format.json { render json: {documents: @project.documents.map{|d| d.id}} }
+      format.json { render json: {documents: Document.find_by_sql("SELECT id FROM documents WHERE project_id = ?", @project.id).all.map{|l| l.id}} }
     end
   end
 
