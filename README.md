@@ -1,8 +1,5 @@
 # TeamTat
 
-- Spec: https://docs.google.com/document/d/1olDmMGXN-hNsdiIuE9aBNidhlGTkLYQs09rOJst-zKs/edit?ts=5ce7021d#heading=h.5tw45zu3fdl4
-
-
 ### Publication
 Rezarta Islamaj, Dongseop Kwon, Sun Kim, Zhiyong Lu, TeamTat: a collaborative text annotation tool, Nucleic Acids Research, 2020, gkaa333, 
 https://doi.org/10.1093/nar/gkaa333
