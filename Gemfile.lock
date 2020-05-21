@@ -143,7 +143,7 @@ GEM
     mimemagic (0.3.4)
     mini_mime (1.0.2)
     mini_portile2 (2.4.0)
-    minitest (5.14.0)
+    minitest (5.14.1)
     msgpack (1.3.3)
     multi_json (1.14.1)
     multi_xml (0.6.0)
@@ -232,7 +232,7 @@ GEM
       sass (>= 3.2)
     sentry-raven (3.0.0)
       faraday (>= 1.0)
-    simple_bioc (0.0.23)
+    simple_bioc (0.0.24)
       jbuilder (~> 2.3)
       nokogiri (~> 1.6)
     sitemap_generator (6.1.0)
@@ -307,7 +307,7 @@ DEPENDENCIES
   sass-rails (~> 5.0)
   semantic-ui-sass
   sentry-raven
-  simple_bioc
+  simple_bioc (~> 0.0.24)
   sitemap_generator
   spring
   spring-watcher-listen (~> 2.0.0)

@@ -41,7 +41,7 @@ gem 'toastr-rails'
 gem 'nokogiri'
 gem 'kaminari'
 gem 'browser'
-gem "simple_bioc"
+gem 'simple_bioc', '~> 0.0.24'
 gem 'semantic-ui-sass'
 gem 'mailgun_rails'
 gem 'tsv'
