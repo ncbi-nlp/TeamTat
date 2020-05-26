@@ -537,8 +537,8 @@ class Project < ApplicationRecord
 
   def destroy_all
     Project.transaction do 
-      lexicon_groups = self.lexicon_groups.all.map{|l| l.id}
-        documents = Document.find_by_sql("SELECT id FROM documents WHERE project_id = ?", self.id).all.map{|l| l.id}
+      lexicon_groups = self.lexicon_groups.map{|l| l.id}
+        documents = Document.find_by_sql(["SELECT id FROM documents WHERE project_id = ?", self.id]).map{|l| l.id}
 
       Project.execute_sql("DELETE FROM lexicons WHERE lexicon_group_id IN (?)", lexicon_groups)
       Project.execute_sql("DELETE FROM lexicon_groups WHERE project_id = ?", self.id)
@@ -560,7 +560,7 @@ class Project < ApplicationRecord
   def cancel_round
     if self.round > 0
       Project.transaction do 
-        documents = Document.find_by_sql("SELECT id FROM documents WHERE project_id = ?", self.id).all.map{|l| l.id}
+        documents = Document.find_by_sql(["SELECT id FROM documents WHERE project_id = ?", self.id]).map{|l| l.id}
         Project.execute_sql("DELETE FROM annotations WHERE version=? AND document_id IN (?)", self.round, documents)
         Project.execute_sql("DELETE FROM nodes WHERE version=? AND document_id IN (?)", self.round, documents)
         Project.execute_sql("DELETE FROM relations WHERE version=? AND document_id IN (?)", self.round, documents)
@@ -577,7 +577,7 @@ class Project < ApplicationRecord
   def entities_stat(version)
     ret = {}
     self.entity_types.each{|t| ret[t.name] = {total: 0, uniq_str: 0, uniq_ids: 0, no_ids: 0}}
-    documents = Document.find_by_sql("SELECT id FROM documents WHERE project_id = ?", self.id).all.map{|l| l.id}
+    documents = Document.find_by_sql(["SELECT id FROM documents WHERE project_id = ?", self.id]).map{|l| l.id}
 
     rows = Annotation.execute_sql("
       SELECT a_type, COUNT(*), COUNT(DISTINCT content) 
