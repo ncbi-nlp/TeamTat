@@ -537,7 +537,7 @@ class Project < ApplicationRecord
 
   def destroy_all
     Project.transaction do 
-      lexicon_groups = self.lexicon_groups.map{|l| l.id}
+      lexicon_groups = self.lexicon_groups.all.map{|l| l.id}
         documents = Document.find_by_sql(["SELECT id FROM documents WHERE project_id = ?", self.id]).map{|l| l.id}
 
       Project.execute_sql("DELETE FROM lexicons WHERE lexicon_group_id IN (?)", lexicon_groups)
