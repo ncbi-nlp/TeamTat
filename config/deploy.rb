@@ -6,7 +6,7 @@ set :repo_url, "git@github.com:ncbi-nlp/TeamTat.git"
 set :user, 'deploy'
 
 set :rbenv_type, :user # or :system, depends on your rbenv setup
-set :rbenv_ruby, '2.5.1'
+set :rbenv_ruby, '2.5.5'
 
 set :puma_threads,    [4, 16]
 set :puma_workers,    0
