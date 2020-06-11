@@ -1597,8 +1597,11 @@ BioC.prototype.renderPassage = function(id) {
     }
     return false;
   });
+  var div = document.createElement("div");
   _.each(annotations, function(a) {
-    var n_pos = a.offset + a.text.length;
+    div.innerHTML = a.text;
+    a.length = div.innerText.length;
+    var n_pos = a.offset + a.length;
     ranges.push(a.offset)
     if (n_pos < max) {
       ranges.push(n_pos); 
@@ -1616,7 +1619,7 @@ BioC.prototype.renderPassage = function(id) {
     var entity_type = "", concept_id = "";
     var a_in_range = [];
     _.each(annotations, function(a) {
-      var size = a.text.length;
+      var size = a.length;
       var ss = a.offset;
       var ee = ss + size;
       if (ee > s_pos && e_pos > ss) {
