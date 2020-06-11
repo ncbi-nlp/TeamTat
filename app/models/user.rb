@@ -8,6 +8,8 @@ class User < ApplicationRecord
          :omniauthable, :omniauth_providers => [:google_oauth2]
 
   before_validation :generate_session_str
+  after_create :make_superadmin_for_the_first_user
+
   attr_accessor :skip_password_validation  # virtual attribute to skip password validation while saving
   
   has_many :project_users, -> { order('role asc')}, dependent: :destroy 
@@ -82,6 +84,13 @@ class User < ApplicationRecord
 
   def super_admin?
     self.super_admin
+  end
+
+  def make_superadmin_for_the_first_user
+    if User.where("super_admin = 1").first.nil?
+      self.super_admin = true
+      self.save
+    end 
   end
 
   def valid_email?

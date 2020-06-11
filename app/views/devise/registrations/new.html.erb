@@ -24,8 +24,10 @@
     <%= f.label :password_confirmation %>
     <%= f.password_field :password_confirmation, autocomplete: "off" %>
   </div>
-  <%= flash[:recaptcha_error] %>
-  <%= recaptcha_tags %><br>
+  <% if Rails.configuration.use_recaptcha %>
+    <%= flash[:recaptcha_error] %>
+    <%= recaptcha_tags %><br>
+  <% end %>
   <div class="actions">
     <%= f.submit "Sign Up", class: "ui button primary" %>
   </div>

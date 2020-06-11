@@ -262,14 +262,14 @@ Devise.setup do |config|
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
   
   # Add the credentials from your Google application to your secrets
-  client_id = Rails.application.credentials.google[:client_id]
-  client_secret = Rails.application.credentials.google[:secret]
-  # client_id = "449182934814-16223c5rlmg90n80cujcm5el69q2ioof.apps.googleusercontent.com"
-  # client_secret = "w-ZcEAUtMiTstJwJVOoiBIEi"
-  # Configure Google omniauth with proper scope
-  config.omniauth :google_oauth2, client_id, client_secret, {
-    scope: "userinfo.email, userinfo.profile"
-  }
+  if Rails.application.credentials.google.present?
+    client_id = Rails.application.credentials.google[:client_id]
+    client_secret = Rails.application.credentials.google[:secret]
+    # Configure Google omniauth with proper scope
+    config.omniauth :google_oauth2, client_id, client_secret, {
+      scope: "userinfo.email, userinfo.profile"
+    }
+  end
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

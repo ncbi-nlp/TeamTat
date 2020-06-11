@@ -15,9 +15,12 @@
   .top-important {font-weight: bold;}
   </style>
 <%- end %>
+<%
+use_email = !Rails.configuration.use_recaptcha || params[:mode] == "ncbi-inner"
+%>
 <div class="ui two column centered grid" style="padding-top: 2em;">
   <div class="ui segment " >
-    <div class="ui <%= 'two' if params[:mode] == "ncbi-inner" %> column centered relaxed grid">
+    <div class="ui <%= 'two' if use_email %> column centered relaxed grid">
       <div class="column" style="padding: 2em 3em 2em 2em;">
         <div class="top-important"><i class="icon heart pink"></i> 
         TeamTat is free and open to all users and there is no login requirement.</div>
@@ -31,12 +34,16 @@
           Every user will receive a unique and secret URL to access their projects and annotations. 
         </p>
         <div class="ui segment">
-          <p>
-            We use reCAPTCHA to protect our website from spam and abuse. Thank you.
-          </p>
+          <% if Rails.configuration.use_recaptcha %>
+            <p>
+              We use reCAPTCHA to protect our website from spam and abuse. Thank you.
+            </p>
+          <% end %>
           <%= form_tag(generate_users_path, method: "POST", class:"ui form") do %>
-            <%= recaptcha_tags :noscript => false %>
-            <br>
+            <% if Rails.configuration.use_recaptcha %>
+              <%= recaptcha_tags :noscript => false %>
+              <br>
+            <% end %>
             <button class="ui button fluid large pink">
               <i class='icon heart'></i>
               Continue
@@ -44,7 +51,7 @@
           <% end %>
         </div>
       </div>
-      <% if params[:mode] == "ncbi-inner" %> 
+      <% if use_email %> 
         <div class="column" style="padding: 2em 2em 2em 3em;">
           <p>
             You may choose to create an account for your convenience or use google login.
@@ -76,20 +83,21 @@
               <% end %>
             </div>
           </div>
-
-          <div class="ui divider"></div>
-
-
-          <%- resource_class.omniauth_providers.each do |provider| %>
-            <%= link_to omniauth_authorize_path(resource_name, provider), class: 'ui fluid red large button' do %>
-              <i class="icon google"></i> 
-              Log in with Google
-            <% end %>
-          <% end -%>
+          <% if params[:mode] == "ncbi-inner" %>
+            <div class="ui divider"></div>
+            
+            
+            <%- resource_class.omniauth_providers.each do |provider| %>
+              <%= link_to omniauth_authorize_path(resource_name, provider), class: 'ui fluid red large button' do %>
+                <i class="icon google"></i> 
+                Log in with Google
+              <% end %>
+            <% end -%>
+          <% end %>
         </div>
       <% end %>
     </div>
-    <% if params[:mode] == "ncbi-inner" %> 
+    <% if use_email %> 
 
       <div class="ui vertical divider">
         or

@@ -91,7 +91,7 @@ class UsersController < ApplicationController
   end
 
   def generate
-    if verify_recaptcha
+    if !Rails.configuration.use_recaptcha || verify_recaptcha
       current_user = User.new_anonymous_user
       current_user.save
       logger.debug(current_user.errors.inspect)
