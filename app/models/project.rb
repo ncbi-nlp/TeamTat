@@ -273,6 +273,7 @@ class Project < ApplicationRecord
       end
     rescue => e
       Rails.logger.debug(e.inspect)
+      Rails.logger.debug(e.backtrace.join("\n"))
       return [e, nil]
     end
   end
