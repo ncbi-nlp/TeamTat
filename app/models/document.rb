@@ -655,7 +655,7 @@ class Document < ApplicationRecord
 
         if relation_types[relation.r_type.upcase].nil?
           relation_type = self.project.relation_types.create!({name: relation.r_type})
-          relation_types[relation_type.name] = relation_type
+          relation_types[relation_type.name.upcase] = relation_type
         end
       end
       self.xml_at = Time.now
