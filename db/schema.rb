@@ -91,7 +91,7 @@ ActiveRecord::Schema.define(version: 2020_04_27_162815) do
     t.string "did"
     t.datetime "user_updated_at"
     t.datetime "tool_updated_at"
-    t.text "xml"
+    t.text "xml", limit: 16777215
     t.text "title"
     t.string "key"
     t.integer "did_no"
@@ -104,7 +104,6 @@ ActiveRecord::Schema.define(version: 2020_04_27_162815) do
     t.integer "version", default: 0
     t.datetime "xml_at"
     t.integer "done_count", default: 0
-    t.text "content2"
     t.integer "curatable_count", default: 0
     t.text "infons"
     t.index ["project_id"], name: "index_documents_on_project_id"

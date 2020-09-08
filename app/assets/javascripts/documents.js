@@ -1,3 +1,262 @@
+var keyboardMap = [
+  "", // [0]
+  "", // [1]
+  "", // [2]
+  "CANCEL", // [3]
+  "", // [4]
+  "", // [5]
+  "HELP", // [6]
+  "", // [7]
+  "BACK_SPACE", // [8]
+  "TAB", // [9]
+  "", // [10]
+  "", // [11]
+  "CLEAR", // [12]
+  "ENTER", // [13]
+  "ENTER_SPECIAL", // [14]
+  "", // [15]
+  "SHIFT", // [16]
+  "CONTROL", // [17]
+  "ALT", // [18]
+  "PAUSE", // [19]
+  "CAPS_LOCK", // [20]
+  "KANA", // [21]
+  "EISU", // [22]
+  "JUNJA", // [23]
+  "FINAL", // [24]
+  "HANJA", // [25]
+  "", // [26]
+  "ESCAPE", // [27]
+  "CONVERT", // [28]
+  "NONCONVERT", // [29]
+  "ACCEPT", // [30]
+  "MODECHANGE", // [31]
+  "SPACE", // [32]
+  "PAGE_UP", // [33]
+  "PAGE_DOWN", // [34]
+  "END", // [35]
+  "HOME", // [36]
+  "LEFT", // [37]
+  "UP", // [38]
+  "RIGHT", // [39]
+  "DOWN", // [40]
+  "SELECT", // [41]
+  "PRINT", // [42]
+  "EXECUTE", // [43]
+  "PRINTSCREEN", // [44]
+  "INSERT", // [45]
+  "DELETE", // [46]
+  "", // [47]
+  "0", // [48]
+  "1", // [49]
+  "2", // [50]
+  "3", // [51]
+  "4", // [52]
+  "5", // [53]
+  "6", // [54]
+  "7", // [55]
+  "8", // [56]
+  "9", // [57]
+  "COLON", // [58]
+  "SEMICOLON", // [59]
+  "LESS_THAN", // [60]
+  "EQUALS", // [61]
+  "GREATER_THAN", // [62]
+  "QUESTION_MARK", // [63]
+  "AT", // [64]
+  "A", // [65]
+  "B", // [66]
+  "C", // [67]
+  "D", // [68]
+  "E", // [69]
+  "F", // [70]
+  "G", // [71]
+  "H", // [72]
+  "I", // [73]
+  "J", // [74]
+  "K", // [75]
+  "L", // [76]
+  "M", // [77]
+  "N", // [78]
+  "O", // [79]
+  "P", // [80]
+  "Q", // [81]
+  "R", // [82]
+  "S", // [83]
+  "T", // [84]
+  "U", // [85]
+  "V", // [86]
+  "W", // [87]
+  "X", // [88]
+  "Y", // [89]
+  "Z", // [90]
+  "OS_KEY", // [91] Windows Key (Windows) or Command Key (Mac)
+  "", // [92]
+  "CONTEXT_MENU", // [93]
+  "", // [94]
+  "SLEEP", // [95]
+  "NUMPAD0", // [96]
+  "NUMPAD1", // [97]
+  "NUMPAD2", // [98]
+  "NUMPAD3", // [99]
+  "NUMPAD4", // [100]
+  "NUMPAD5", // [101]
+  "NUMPAD6", // [102]
+  "NUMPAD7", // [103]
+  "NUMPAD8", // [104]
+  "NUMPAD9", // [105]
+  "MULTIPLY", // [106]
+  "ADD", // [107]
+  "SEPARATOR", // [108]
+  "SUBTRACT", // [109]
+  "DECIMAL", // [110]
+  "DIVIDE", // [111]
+  "F1", // [112]
+  "F2", // [113]
+  "F3", // [114]
+  "F4", // [115]
+  "F5", // [116]
+  "F6", // [117]
+  "F7", // [118]
+  "F8", // [119]
+  "F9", // [120]
+  "F10", // [121]
+  "F11", // [122]
+  "F12", // [123]
+  "F13", // [124]
+  "F14", // [125]
+  "F15", // [126]
+  "F16", // [127]
+  "F17", // [128]
+  "F18", // [129]
+  "F19", // [130]
+  "F20", // [131]
+  "F21", // [132]
+  "F22", // [133]
+  "F23", // [134]
+  "F24", // [135]
+  "", // [136]
+  "", // [137]
+  "", // [138]
+  "", // [139]
+  "", // [140]
+  "", // [141]
+  "", // [142]
+  "", // [143]
+  "NUM_LOCK", // [144]
+  "SCROLL_LOCK", // [145]
+  "WIN_OEM_FJ_JISHO", // [146]
+  "WIN_OEM_FJ_MASSHOU", // [147]
+  "WIN_OEM_FJ_TOUROKU", // [148]
+  "WIN_OEM_FJ_LOYA", // [149]
+  "WIN_OEM_FJ_ROYA", // [150]
+  "", // [151]
+  "", // [152]
+  "", // [153]
+  "", // [154]
+  "", // [155]
+  "", // [156]
+  "", // [157]
+  "", // [158]
+  "", // [159]
+  "CIRCUMFLEX", // [160]
+  "EXCLAMATION", // [161]
+  "DOUBLE_QUOTE", // [162]
+  "HASH", // [163]
+  "DOLLAR", // [164]
+  "PERCENT", // [165]
+  "AMPERSAND", // [166]
+  "UNDERSCORE", // [167]
+  "OPEN_PAREN", // [168]
+  "CLOSE_PAREN", // [169]
+  "ASTERISK", // [170]
+  "PLUS", // [171]
+  "PIPE", // [172]
+  "HYPHEN_MINUS", // [173]
+  "OPEN_CURLY_BRACKET", // [174]
+  "CLOSE_CURLY_BRACKET", // [175]
+  "TILDE", // [176]
+  "", // [177]
+  "", // [178]
+  "", // [179]
+  "", // [180]
+  "VOLUME_MUTE", // [181]
+  "VOLUME_DOWN", // [182]
+  "VOLUME_UP", // [183]
+  "", // [184]
+  "", // [185]
+  "SEMICOLON", // [186]
+  "EQUALS", // [187]
+  "COMMA", // [188]
+  "MINUS", // [189]
+  "PERIOD", // [190]
+  "SLASH", // [191]
+  "BACK_QUOTE", // [192]
+  "", // [193]
+  "", // [194]
+  "", // [195]
+  "", // [196]
+  "", // [197]
+  "", // [198]
+  "", // [199]
+  "", // [200]
+  "", // [201]
+  "", // [202]
+  "", // [203]
+  "", // [204]
+  "", // [205]
+  "", // [206]
+  "", // [207]
+  "", // [208]
+  "", // [209]
+  "", // [210]
+  "", // [211]
+  "", // [212]
+  "", // [213]
+  "", // [214]
+  "", // [215]
+  "", // [216]
+  "", // [217]
+  "", // [218]
+  "OPEN_BRACKET", // [219]
+  "BACK_SLASH", // [220]
+  "CLOSE_BRACKET", // [221]
+  "QUOTE", // [222]
+  "", // [223]
+  "META", // [224]
+  "ALTGR", // [225]
+  "", // [226]
+  "WIN_ICO_HELP", // [227]
+  "WIN_ICO_00", // [228]
+  "", // [229]
+  "WIN_ICO_CLEAR", // [230]
+  "", // [231]
+  "", // [232]
+  "WIN_OEM_RESET", // [233]
+  "WIN_OEM_JUMP", // [234]
+  "WIN_OEM_PA1", // [235]
+  "WIN_OEM_PA2", // [236]
+  "WIN_OEM_PA3", // [237]
+  "WIN_OEM_WSCTRL", // [238]
+  "WIN_OEM_CUSEL", // [239]
+  "WIN_OEM_ATTN", // [240]
+  "WIN_OEM_FINISH", // [241]
+  "WIN_OEM_COPY", // [242]
+  "WIN_OEM_AUTO", // [243]
+  "WIN_OEM_ENLW", // [244]
+  "WIN_OEM_BACKTAB", // [245]
+  "ATTN", // [246]
+  "CRSEL", // [247]
+  "EXSEL", // [248]
+  "EREOF", // [249]
+  "PLAY", // [250]
+  "ZOOM", // [251]
+  "", // [252]
+  "PA1", // [253]
+  "WIN_OEM_CLEAR", // [254]
+  "" // [255]
+];
+
 var BioC = function(id, options) {
   this.initPaneWidthHeight();
   var self = this;
@@ -281,53 +540,348 @@ BioC.prototype.addNewRelationType = function() {
 
 BioC.prototype.bindAnnotationSpan = function() {
   var self = this;
- 
-  $(".passage").mouseup(function (e) {   
-    var passageId = $(this).data('id');
-    var selection = getSelected();
-    if (selection && selection.rangeCount > 0) {
-      var range = selection.getRangeAt(0);
 
-      var result = self.findAnnotationRange(range);
-      if (result.error) {
-        toastr.error("You cannot work with multiple paragraphs. Please select a span in a paragraph.");
-        clearSelection();
-        return;
-      }
+  var actualSpan;
+  var nextSpan
+  var nextChild;
+  var passageId;
+  var start = 0;
+  var end = 1;
+  var startWord = 0;
+  var endWord = 0;
+  var startSpan;
+  var endSpan;
+  var range = document.createRange();
+  var arrayOfSpans = new Array();
+  var shortcuts = {
+    'next-word': 68,
+    'previous-word': 65,
+    'jump-next': 83,
+    'jump-previous': 87,
+    'next-char': 69,
+    'previous-char': 81,
+    'add-annot': 32,
+    'create-annot': 18
+  }
 
-      var length = range.endOffset - range.startOffset;
-      var text = result.text.trim();
-      var offset = result.offset + result.text.indexOf(text);
-      if (result.annotations.length == 0 && length > 0 && text.length > 0) {
-        if (result.text.length != length) {
-          console.log("Something wrong " + length + " !=" + result.text.length);
-          clearSelection();
-          return;
-        }
-        // recommends = getRecommendText(range);
-        // var elemOffset = parseInt($(range.startContainer.parentElement).data('offset'), 10);
-        // var offset = elemOffset + range.startOffset;
-        
-        if (self.writable) {
-          self.addNewAnnotation(text, offset, passageId);
-        } else {
-          clearSelection();
-        }   
-        // self.showLocationSelector(recommends, range);
-      } else if (result.annotations.length > 0) {
-        
-        if (result.annotations.length == 1 && result.text.length == 0) {
+  wordsOffSets = function (text) {
+    let s = 0;
+    let e = 1;
+    let i;
+    let arrayOfOffsets = new Array();
 
-        } else if (result.annotations.length > 0) {
-          self.showAnnotationListModal(result.annotations, result.offset, result.text, passageId);
-        }
-        clearSelection();
-      } else {
-        console.log("????", length);
-        clearSelection();
+    for (i = 0; i <= text.length; i++) {
+      if ((text[i] === ' ') || (text[i] === '\n') || (i === text.length-1)) {
+        e = i;
+        arrayOfOffsets.push([s, e+1]);
+        i++;
+        s = i;
       }
     }
+    return arrayOfOffsets;
+  }
+
+  spansWords = function () {
+    spans = par.find('.passage-text span')
+    arrayOfSpans = new Array();
+    spans.each(function ( index ) {
+      arrayOfSpans.push({span: $(this).get(0), words: wordsOffSets($(this).text())})
+    });
+    console.log(arrayOfSpans);
+  }
+
+  findActualWord = function () {
+    for (let i = 0; i < arrayOfOffsets.length; i++) {
+      if (end >= arrayOfOffsets[i][0] && end <= arrayOfOffsets[i][1]) {
+        word = 0;
+        if (i != 0) {
+          word = i - 1
+        }
+        break;
+      }
+    }
+  }
+
+  resetPointers = function(prev) {
+    startSpan = 0
+    endSpan = 0
+    startWord = 0
+    endWord = 0
+    if (prev) {
+      startSpan = arrayOfSpans.length-1
+      endSpan = arrayOfSpans.length-1
+      startWord = arrayOfSpans[startSpan].words.length-1
+      endWord = startWord
+    }
+  }
+
+  assignSpans = function () {
+    actualSpan = arrayOfSpans[startSpan].span;
+    nextChild = arrayOfSpans[endSpan].span;
+  }
+
+  nextWord = function (amount, hold) {
+    endWord += 1
+    if (endWord >= arrayOfSpans[endSpan].words.length && endSpan >= arrayOfSpans.length-1) {
+      resetPointers(false);
+    }
+    if (endWord >= arrayOfSpans[endSpan].words.length) {
+      endWord = 0;
+      endSpan += 1;
+    }
+    if (!hold) {
+      startWord = endWord;
+      startSpan = endSpan;
+    }
+    assignSpans()
+    start = arrayOfSpans[startSpan].words[startWord][0];
+    end = arrayOfSpans[endSpan].words[endWord][1];
+  }
+
+  previousWord = function (amount, hold) {
+    endWord -= 1
+    if (!hold) {
+      startWord -= 1;
+    }
+    if (endWord < 0) {
+      if (endSpan >= 0) {
+        endSpan -= 1
+        if (endSpan < 0) {
+          resetPointers(true)
+        }
+        endWord = arrayOfSpans[endSpan].words.length-1
+      }
+
+      if (!hold) {
+        startSpan -= 1;
+        startWord = arrayOfSpans[startSpan].words.length-1;
+      }
+    }
+    assignSpans()
+    start = arrayOfSpans[startSpan].words[startWord][0];
+    end = arrayOfSpans[endSpan].words[endWord][1];
+  }
+
+  nextChar = function (hold) {
+    end += 1;
+    if (!hold) {
+      start = end - 1;
+      startSpan = endSpan
+    }
+    if (end >= arrayOfSpans[endSpan].words[arrayOfSpans[endSpan].words.length-1][1]) {
+      end = 0;
+      endSpan += 1
+      endWord = 0
+    }
+    assignSpans()
+
+    // findActualWord()
+  }
+  
+  previousChar = function (hold) {
+    end -= 1;
+    if (end < 0) {
+      endSpan -= 1
+      end = arrayOfSpans[endSpan].words[arrayOfSpans[endSpan].words.length-1][1];
+      endWord = arrayOfSpans[endSpan].words[arrayOfSpans[endSpan].words.length-1][1]
+    }
+    if (!hold) {
+      start = end - 1;
+      startSpan = endSpan
+    }
+    assignSpans()
+    // findActualWord()
+  }
+
+  setRangeSelection = function () {
+    range.setStart(actualSpan.firstChild, start);
+    if (nextChild === null) {
+      nextChild = actualSpan;
+    }
+    range.setEnd(nextChild.firstChild, end);
+    document.getSelection().removeAllRanges();
+    document.getSelection().addRange(range);
+  }
+
+  swapIf = function () {
+    if (start > end) {
+      let aux = start
+      start = end
+      end = aux
+    }
+  }
+
+  $(".passage").click(function () {
+    passageId = $(this).data('id');
+    par = $(this);
+    actualSpan = par.find('.passage-text span').first().get(0);
+    nextChild = actualSpan
+    spansWords()
+    start = arrayOfSpans[0].words[0][0]; end = arrayOfSpans[0].words[0][1]
+    startSpan = 0;
+    endWord = 0;
+    startWord = 0;
+    endSpan = 0;
+    setRangeSelection()
   });
+
+  $(document).keydown(function(e) {
+    console.log('Keydown: ' + e.key)
+    var optionValues = [];
+    $('#defaultTypeSelector select > option').each(function() {
+      optionValues.push($(this).val());
+    });
+    if ($(e.target).is('input, textarea, select')) {
+      return true;
+    }
+    if ((e.which >= 48) && (e.which <= 57)) {
+      let norm = ((e.which - 48))
+      $("#defaultTypeSelector select").val(optionValues[norm]).change()
+    }
+    switch(e.which) {
+      case shortcuts['next-word']:
+        nextWord(1, e.shiftKey);
+        break;
+      case shortcuts['previous-word']:
+        previousWord(1, e.shiftKey);
+        break;
+      case shortcuts['jump-next']:
+        nextWord(16, e.shiftKey);
+        break;
+      case shortcuts['previous-word']:
+        previousWord(16, e.shiftKey);
+        break;
+      case shortcuts['next-char']:
+        nextChar(e.shiftKey);
+        break;
+      case shortcuts['previous-char']:
+        previousChar(e.shiftKey);
+        break;
+      case shortcuts['create-annot']:
+        $("#defaultTypeSelector select").val(optionValues[optionValues.length-1]).change()
+        break;
+      case shortcuts['add-annot']:
+        e.preventDefault();
+        console.log('Executa o salvamento')
+        var selection = getSelected();
+        if (selection && selection.rangeCount > 0) {
+          var range = selection.getRangeAt(0);
+
+          var result = self.findAnnotationRange(range);
+          if (result.error) {
+            toastr.error("You cannot work with multiple paragraphs. Please select a span in a paragraph.");
+            clearSelection();
+            return;
+          }
+
+          var length = range.endOffset - range.startOffset;
+          var text = result.text.trim();
+          var offset = result.offset + result.text.indexOf(text);
+          if (result.annotations.length == 0 && length > 0 && text.length > 0) {
+            if (result.text.length != length) {
+              console.log("Something wrong " + length + " !=" + result.text.length);
+              clearSelection();
+              return;
+            }
+            // recommends = getRecommendText(range);
+            // var elemOffset = parseInt($(range.startContainer.parentElement).data('offset'), 10);
+            // var offset = elemOffset + range.startOffset;
+            
+            if (self.writable) {
+              self.addNewAnnotation(text, offset, passageId);
+            } else {
+              clearSelection();
+            }   
+            // self.showLocationSelector(recommends, range);
+          } else if (result.annotations.length > 0) {
+            
+            if (result.annotations.length == 1 && result.text.length == 0) {
+
+            } else if (result.annotations.length > 0) {
+              self.showAnnotationListModal(result.annotations, result.offset, result.text, passageId);
+            }
+            clearSelection();
+          } else {
+            console.log("????", length);
+            clearSelection();
+          }
+        }
+        break;
+      default:
+        break;
+    }
+    // swapIf()
+    spansWords()
+    setRangeSelection();
+  });
+
+  $("p[id^='p-']").each(function() {
+    // console.log(this)
+    this.innerHTML = keyboardMap[shortcuts[this.id.substring(2)]]
+  })
+
+  $("button[id^='shc']").click(function() {
+    var pId = 'p-' + this.id.substring(4)
+    console.log(pId)
+    $('#key-modal').modal('show')
+    $('#key-modal').focus()
+    $('#key-modal').on('click')
+    $('#key-modal').keydown(function(e) {
+      console.log("p[id^=" + pId + "]")
+      $("#"+pId).html(keyboardMap[e.which])
+      shortcuts[pId.substring(2)] = e.which
+      console.log("Code:" + e.which)
+      $('#key-modal').off()
+      $('#key-modal').modal('hide')
+    })
+  });
+
+  // $(".passage").mouseup(function (e) {   
+  //   var passageId = $(this).data('id');
+  //   var selection = getSelected();
+  //   if (selection && selection.rangeCount > 0) {
+  //     var range = selection.getRangeAt(0);
+
+  //     var result = self.findAnnotationRange(range);
+  //     if (result.error) {
+  //       toastr.error("You cannot work with multiple paragraphs. Please select a span in a paragraph.");
+  //       clearSelection();
+  //       return;
+  //     }
+
+  //     var length = range.endOffset - range.startOffset;
+  //     var text = result.text.trim();
+  //     var offset = result.offset + result.text.indexOf(text);
+  //     if (result.annotations.length == 0 && length > 0 && text.length > 0) {
+  //       if (result.text.length != length) {
+  //         console.log("Something wrong " + length + " !=" + result.text.length);
+  //         clearSelection();
+  //         return;
+  //       }
+  //       // recommends = getRecommendText(range);
+  //       // var elemOffset = parseInt($(range.startContainer.parentElement).data('offset'), 10);
+  //       // var offset = elemOffset + range.startOffset;
+        
+  //       if (self.writable) {
+  //         self.addNewAnnotation(text, offset, passageId);
+  //       } else {
+  //         clearSelection();
+  //       }   
+  //       // self.showLocationSelector(recommends, range);
+  //     } else if (result.annotations.length > 0) {
+        
+  //       if (result.annotations.length == 1 && result.text.length == 0) {
+
+  //       } else if (result.annotations.length > 0) {
+  //         self.showAnnotationListModal(result.annotations, result.offset, result.text, passageId);
+  //       }
+  //       clearSelection();
+  //     } else {
+  //       console.log("????", length);
+  //       clearSelection();
+  //     }
+  //   }
+  // });
 };
 
 BioC.prototype.annotationUrl = function(id) {
@@ -381,7 +935,7 @@ BioC.prototype.addNewAnnotation = function(text, offset, passageId) {
         self.renderPassage(data.annotation.passage);
         $("#annotationList tr:first-child").addClass("new");
         self.bindAnnotationTr();
-        $("#annotationList .annotation-tr:first-child .concept").click();
+        // $("#annotationList .annotation-tr:first-child .concept").click();
       } else {
         toastr.error("Unable to create an annotation. Maybe texts are located in sentences."); 
       }

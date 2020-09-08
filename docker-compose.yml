@@ -1,0 +1,27 @@
+version: '2'
+services:
+    db: 
+        image: mysql:5.7
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: password
+            MYSQL_DATABASE: app
+            MYSQL_USER: user
+            MYSQL_PASSWORD: password
+        ports:
+            - "3307:3306"
+    app: 
+        build: .
+        volumes: 
+            - ".:/app"
+        ports: 
+            - "3001:3000"
+        depends_on:
+            - db
+        links:
+            - db
+         environment:
+            DB_USER: root
+            DB_NAME: app
+            DB_PASSWORD: password
+            DB_HOST: db

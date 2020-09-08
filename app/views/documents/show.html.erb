@@ -20,6 +20,7 @@
         <div id="reviewWarning" class="ui red label" style="display: none"></div>
       </a>
       <a class="item" data-tab="relations">Relations</a>
+      <a class="item" data-tab="shortcuts">Shortcuts</a>
     </div>
     <div class="ui bottom attached tab segment active type-tab-content" data-tab="annotations">
       <div id="defaultTypeSelector" class='type-selector'>
@@ -28,9 +29,9 @@
           <% if @document.project.entity_types.empty? %>
             <option value="" class="nothing"></option>
           <% else %>
-            <% @document.project.entity_types.each do |e| %>
+            <% @document.project.entity_types.each_with_index do |e, index| %>
               <% next if e.name.blank? %>
-              <option value="<%= e.name %>" class='type'><%=e.name %></option>
+              <option value="<%= e.name %>" class='type'><%= e.name %></option>
             <% end %>
           <% end %>
           <% if @is_manager %>
@@ -38,6 +39,12 @@
             <option value="" class="new">[ Add New Entity Type ]</option>
           <% end %>
         </select>
+        <ul>
+          <% @document.project.entity_types.each_with_index do |e, index| %>
+              <% next if e.name.blank? %>
+              <li><%= index %> - <%= e.name %></li>
+          <% end %>
+        </ul>
         <a href="#" class="refresh-annotation-table icon icon-button mini ui" title="Refresh Annotation Table">
           <i class="icon refresh"></i>
         </a>
@@ -81,7 +88,57 @@
           <th>Nodes</th>
         </thead>
         <tbody id="relationList"></tbody>
-      </table>    </div>
+      </table>    
+    </div>
+    <div class="ui bottom attached tab segment type-tab-content" data-tab="shortcuts">
+      <div style='text-align: left; display: block; width:100%; margin-bottom: 1rem; padding-top: 1rem;'>
+          <label style='font-weight: bold;'>Next word:</label>
+          <p id='p-next-word' style='display: inline-block;margin:0'>d</p>
+          <button id='shc-next-word' style='margin-left: auto; float: right;'>Change</button>
+      </div>
+      <hr> 
+      <div style='text-align: left; display: block; width:100%; margin-bottom: 1rem;'>
+          <label style='font-weight: bold;'>Previous word:</label>
+          <p id='p-previous-word' style='display: inline-block;margin:0'>a</p>
+          <button id='shc-previous-word' style='margin-left: auto; float: right;'>Change</button>
+      </div>
+      <hr> 
+      <div style='text-align: left; display: block; width:100%; margin-bottom: 1rem;'>
+          <label style='font-weight: bold;'>Jump next words:</label>
+          <p id='p-jump-next' style='display: inline-block;margin:0'>s</p>
+          <button id='shc-jump-next' style='margin-left: auto; float: right;'>Change</button>
+      </div>
+      <hr> 
+      <div style='text-align: left; display: block; width:100%; margin-bottom: 1rem;'>
+          <label style='font-weight: bold;'>Jump previous words:</label>
+          <p id='p-jump-previous' style='display: inline-block;margin:0'>w</p>
+          <button id='shc-jump-previous' style='margin-left: auto; float: right;'>Change</button>
+      </div>
+      <hr> 
+      <div style='text-align: left; display: block; width:100%; margin-bottom: 1rem;'>
+          <label style='font-weight: bold;'>Next char:</label>
+          <p id='p-next-char' style='display: inline-block;margin:0'>e</p>
+          <button id='shc-next-char' style='margin-left: auto; float: right;'>Change</button>
+      </div>
+      <hr> 
+      <div style='text-align: left; display: block; width:100%; margin-bottom: 1rem;'>
+          <label style='font-weight: bold;'>Previous char:</label>
+          <p id='p-previous-char' style='display: inline-block;margin:0'>q</p>
+          <button id='shc-previous-char' style='margin-left: auto; float: right;'>Change</button>
+      </div>
+      <hr> 
+      <div style='text-align: left; display: block; width:100%; margin-bottom: 1rem;'>
+          <label style='font-weight: bold;'>Add annotation:</label>
+          <p id='p-add-annot' style='display: inline-block;margin:0'>space</p>
+          <button id='shc-add-annot' style='margin-left: auto; float: right;'>Change</button>
+      </div>
+      <hr> 
+      <div style='text-align: left; display: block; width:100%; margin-bottom: 1rem;'>
+          <label style='font-weight: bold;'>Create annotation:</label>
+          <p id='p-create-annot' style='display: inline-block;margin:0'>alt</p>
+          <button id='shc-create-annot' style='margin-left: auto; float: right;'>Change</button>
+      </div>
+    </div class>
     <a id="annotationTableUpButton" class="scrollUpDownButton"><i class='icon arrow circle up'></i></a>
     <a id="annotationTableDownButton" class="scrollUpDownButton"><i class='icon arrow circle down'></i></a>
   </div>
@@ -140,6 +197,12 @@
       <i class="icon ban"></i>
       Do not show this demo again
     </div>
+  </div>
+</div>
+
+<div class="ui basic modal" id="key-modal" tabindex="0">
+  <div class="content" style="text-align: center">
+    <h1>Please press the new key to the shortcut</h1>
   </div>
 </div>
 
