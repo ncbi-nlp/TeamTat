@@ -538,13 +538,16 @@ BioC.prototype.addNewRelationType = function() {
   }
 };
 
+// annotation changes =======================================================================
 BioC.prototype.bindAnnotationSpan = function() {
   var self = this;
 
   var actualSpan;
-  var nextSpan
+  var nextSpan;
   var nextChild;
   var passageId;
+  var par;
+  var control = 0;
   var start = 0;
   var end = 1;
   var startWord = 0;
@@ -561,7 +564,9 @@ BioC.prototype.bindAnnotationSpan = function() {
     'next-char': 69,
     'previous-char': 81,
     'add-annot': 32,
-    'create-annot': 18
+    'create-annot': 67,
+    'delete-annot': 82,
+    'plus-ten': 17
   }
 
   wordsOffSets = function (text) {
@@ -600,8 +605,8 @@ BioC.prototype.bindAnnotationSpan = function() {
         break;
       }
     }
-  }
-
+  } 
+  
   resetPointers = function(prev) {
     startSpan = 0
     endSpan = 0
@@ -690,7 +695,6 @@ BioC.prototype.bindAnnotationSpan = function() {
       startSpan = endSpan
     }
     assignSpans()
-    // findActualWord()
   }
 
   setRangeSelection = function () {
@@ -710,7 +714,17 @@ BioC.prototype.bindAnnotationSpan = function() {
       end = aux
     }
   }
-
+  var optionValues = [];
+  var createEntityShorcuts = function() {
+    optionValues = [];
+    $('#defaultTypeSelector select > option').each(function(index) {
+      optionValues.push($(this).val());
+      if (index < $('#defaultTypeSelector select > option').length-2) {
+        $('[id^=entity-helper]').append('<li>'+ index + ' - ' + $(this).text() + '</li>')
+      }
+    });
+  }
+  createEntityShorcuts();
   $(".passage").click(function () {
     passageId = $(this).data('id');
     par = $(this);
@@ -727,18 +741,32 @@ BioC.prototype.bindAnnotationSpan = function() {
 
   $(document).keydown(function(e) {
     console.log('Keydown: ' + e.key)
-    var optionValues = [];
-    $('#defaultTypeSelector select > option').each(function() {
-      optionValues.push($(this).val());
-    });
     if ($(e.target).is('input, textarea, select')) {
       return true;
     }
     if ((e.which >= 48) && (e.which <= 57)) {
       let norm = ((e.which - 48))
+      norm += control;
       $("#defaultTypeSelector select").val(optionValues[norm]).change()
     }
     switch(e.which) {
+      case shortcuts['plus-ten']:
+        if (control+10 > optionValues.length) {
+          control = 0;
+          $('[id^=plus-ten]').text('Control plus: ' + control);
+        } else {
+          control += 10;
+          $('[id^=plus-ten]').text('Control plus: ' + control);
+        }
+        $('[id^=entity-helper] > li').each(function (index) {
+          if (index >= control && index < control+10) {
+            $(this).wrapInner("<b></b>");
+          } else {
+            let li_cont = $(this).html()
+            $(this).html(li_cont.replace("<b>", "").replace("</b>", ""))
+          }
+        })
+        break;
       case shortcuts['next-word']:
         nextWord(1, e.shiftKey);
         break;
@@ -759,10 +787,40 @@ BioC.prototype.bindAnnotationSpan = function() {
         break;
       case shortcuts['create-annot']:
         $("#defaultTypeSelector select").val(optionValues[optionValues.length-1]).change()
+        $('[id^=entity-helper] li').remove()
+        createEntityShorcuts();
+        break;
+      case shortcuts['delete-annot']:
+        var selection = getSelected();
+        if (selection && selection.rangeCount > 0) {
+          var range = selection.getRangeAt(0);
+
+          var result = self.findAnnotationRange(range);
+          if (result.error) {
+            toastr.error("You cannot work with multiple paragraphs. Please select a span in a paragraph.");
+            clearSelection();
+            return;
+          }
+          var annotations = _.filter(self.annotations, function(a) {
+            return result.annotations.includes(a.id); 
+          });
+          var annotationsIds = $.map(annotations, function(annot) {
+            return annot.annotation_id
+          })
+          self.deleteCheckedAnnotation(annotationsIds);
+          spansWords()
+          startSpan = arrayOfSpans.length-1;
+          endSpan = arrayOfSpans.length-1;
+          startWord = 0
+          endWord = 0
+          start = arrayOfSpans[startSpan].words[arrayOfSpans[startSpan].words.length-1][0];
+          end = arrayOfSpans[endSpan].words[arrayOfSpans[endSpan].words.length-1][1];
+        } else {
+          console.log('Nothing to Delete')
+        }
         break;
       case shortcuts['add-annot']:
         e.preventDefault();
-        console.log('Executa o salvamento')
         var selection = getSelected();
         if (selection && selection.rangeCount > 0) {
           var range = selection.getRangeAt(0);
@@ -806,12 +864,17 @@ BioC.prototype.bindAnnotationSpan = function() {
             clearSelection();
           }
         }
+        startSpan = endSpan;
+        endWord = startWord;
+        start = arrayOfSpans[startSpan].words[arrayOfSpans[startSpan].words.length-1][0];
+        end = arrayOfSpans[endSpan].words[arrayOfSpans[endSpan].words.length-1][1];
         break;
       default:
         break;
     }
-    // swapIf()
+    console.log('Passei aqui')
     spansWords()
+    assignSpans()
     setRangeSelection();
   });
 
@@ -822,7 +885,6 @@ BioC.prototype.bindAnnotationSpan = function() {
 
   $("button[id^='shc']").click(function() {
     var pId = 'p-' + this.id.substring(4)
-    console.log(pId)
     $('#key-modal').modal('show')
     $('#key-modal').focus()
     $('#key-modal').on('click')
@@ -836,53 +898,54 @@ BioC.prototype.bindAnnotationSpan = function() {
     })
   });
 
-  // $(".passage").mouseup(function (e) {   
-  //   var passageId = $(this).data('id');
-  //   var selection = getSelected();
-  //   if (selection && selection.rangeCount > 0) {
-  //     var range = selection.getRangeAt(0);
+  $(".passage").mouseup(function (e) {   
+    var passageId = $(this).data('id');
+    var selection = getSelected();
+    if (selection && selection.rangeCount > 0) {
+      var range = selection.getRangeAt(0);
 
-  //     var result = self.findAnnotationRange(range);
-  //     if (result.error) {
-  //       toastr.error("You cannot work with multiple paragraphs. Please select a span in a paragraph.");
-  //       clearSelection();
-  //       return;
-  //     }
+      var result = self.findAnnotationRange(range);
+      if (result.error) {
+        toastr.error("You cannot work with multiple paragraphs. Please select a span in a paragraph.");
+        clearSelection();
+        return;
+      }
 
-  //     var length = range.endOffset - range.startOffset;
-  //     var text = result.text.trim();
-  //     var offset = result.offset + result.text.indexOf(text);
-  //     if (result.annotations.length == 0 && length > 0 && text.length > 0) {
-  //       if (result.text.length != length) {
-  //         console.log("Something wrong " + length + " !=" + result.text.length);
-  //         clearSelection();
-  //         return;
-  //       }
-  //       // recommends = getRecommendText(range);
-  //       // var elemOffset = parseInt($(range.startContainer.parentElement).data('offset'), 10);
-  //       // var offset = elemOffset + range.startOffset;
+      var length = range.endOffset - range.startOffset;
+      var text = result.text.trim();
+      var offset = result.offset + result.text.indexOf(text);
+      if (result.annotations.length == 0 && length > 0 && text.length > 0) {
+        if (result.text.length != length) {
+          console.log("Something wrong " + length + " !=" + result.text.length);
+          clearSelection();
+          return;
+        }
+        // recommends = getRecommendText(range);
+        // var elemOffset = parseInt($(range.startContainer.parentElement).data('offset'), 10);
+        // var offset = elemOffset + range.startOffset;
         
-  //       if (self.writable) {
-  //         self.addNewAnnotation(text, offset, passageId);
-  //       } else {
-  //         clearSelection();
-  //       }   
-  //       // self.showLocationSelector(recommends, range);
-  //     } else if (result.annotations.length > 0) {
+        if (self.writable) {
+          self.addNewAnnotation(text, offset, passageId);
+        } else {
+          clearSelection();
+        }   
+        // self.showLocationSelector(recommends, range);
+      } else if (result.annotations.length > 0) {
         
-  //       if (result.annotations.length == 1 && result.text.length == 0) {
+        if (result.annotations.length == 1 && result.text.length == 0) {
 
-  //       } else if (result.annotations.length > 0) {
-  //         self.showAnnotationListModal(result.annotations, result.offset, result.text, passageId);
-  //       }
-  //       clearSelection();
-  //     } else {
-  //       console.log("????", length);
-  //       clearSelection();
-  //     }
-  //   }
-  // });
+        } else if (result.annotations.length > 0) {
+          self.showAnnotationListModal(result.annotations, result.offset, result.text, passageId);
+        }
+        clearSelection();
+      } else {
+        console.log("????", length);
+        clearSelection();
+      }
+    }
+  });
 };
+// End annotation changes ========================================================================
 
 BioC.prototype.annotationUrl = function(id) {
   if (id) {
@@ -1146,7 +1209,6 @@ BioC.prototype.refreshViewAfterDelete = function(ids) {
   self.annotations = _.filter(self.annotations, function(a) {
     return !ids.includes(a.annotation_id);
   });
-  console.log(passageIds);
   _.each(passageIds, function(id) {
     self.renderPassage(id);
   });
@@ -1179,6 +1241,7 @@ BioC.prototype.deleteCheckedAnnotation = function(ids) {
   $.ajax({
     url: self.annotationUrl(ids[0]),
     method: "DELETE",
+    async: false,
     data: {
       deleteMode: 'batch', 
       ids: ids, 

@@ -1,5 +1,5 @@
 <% @document.bioc_doc.passages.each_with_index do |p, index| %>
-  <div class="ui basic segment passage" data-id="<%=index%>" id="passage-<%=index%>" data-offset="<%=p.offset%>">
+  <div tabindex="0" class="ui basic segment passage" data-id="<%=index%>" id="passage-<%=index%>" data-offset="<%=p.offset%>">
     <div class="ui top right attached label mini passage-sub-info">
       offset: <%=p.offset%> - <%=p.offset + @document.get_psize(p)%>
     </div>

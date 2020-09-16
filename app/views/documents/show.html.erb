@@ -39,11 +39,13 @@
             <option value="" class="new">[ Add New Entity Type ]</option>
           <% end %>
         </select>
-        <ul>
-          <% @document.project.entity_types.each_with_index do |e, index| %>
-              <% next if e.name.blank? %>
-              <li><%= index %> - <%= e.name %></li>
-          <% end %>
+        <h4 id="plus-ten"></h4>
+        <ul id="entity-helper">
+        <p>Press control to change between 10 shortcuts.</p>
+          <%# @document.project.entity_types.each_with_index do |e, index| %>
+              <%# next if e.name.blank? %>
+              <!-- <li><%# index %> - <%# e.name %></li> -->
+          <%# end %>
         </ul>
         <a href="#" class="refresh-annotation-table icon icon-button mini ui" title="Refresh Annotation Table">
           <i class="icon refresh"></i>
@@ -137,6 +139,17 @@
           <label style='font-weight: bold;'>Create annotation:</label>
           <p id='p-create-annot' style='display: inline-block;margin:0'>alt</p>
           <button id='shc-create-annot' style='margin-left: auto; float: right;'>Change</button>
+      </div>
+      <hr> 
+      <div style='text-align: left; display: block; width:100%; margin-bottom: 1rem;'>
+          <label style='font-weight: bold;'>Delete annotation:</label>
+          <p id='p-delete-annot' style='display: inline-block;margin:0'>alt</p>
+          <button id='shc-delete-annot' style='margin-left: auto; float: right;'>Change</button>
+      </div>
+      <div style='text-align: left; display: block; width:100%; margin-bottom: 1rem;'>
+          <label style='font-weight: bold;'>Next ten annotation:</label>
+          <p id='p-plus-ten' style='display: inline-block;margin:0'>alt</p>
+          <button id='shc-plus-ten' style='margin-left: auto; float: right;'>Change</button>
       </div>
     </div class>
     <a id="annotationTableUpButton" class="scrollUpDownButton"><i class='icon arrow circle up'></i></a>
