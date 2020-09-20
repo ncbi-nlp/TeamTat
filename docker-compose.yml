@@ -5,13 +5,14 @@ services:
         restart: always
         environment:
             MYSQL_ROOT_PASSWORD: password
-            MYSQL_DATABASE: app
-            MYSQL_USER: user
-            MYSQL_PASSWORD: password
+            MYSQL_DATABASE: teamtat_development
+            MYSQL_USER: teamtat
+            MYSQL_PASSWORD: 12345678
         ports:
             - "3307:3306"
     app: 
         build: .
+        command: bundle exec rails s -p 3000 -b '0.0.0.0'
         volumes: 
             - ".:/app"
         ports: 
@@ -20,8 +21,8 @@ services:
             - db
         links:
             - db
-         environment:
-            DB_USER: root
-            DB_NAME: app
-            DB_PASSWORD: password
+        environment:
+            DB_USER: teamtat
+            DB_NAME: teamtat_development
+            DB_PASSWORD: 12345678
             DB_HOST: db
