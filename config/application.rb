@@ -28,6 +28,8 @@ module Pubqrator
     # the framework and any gems in your application.
 
     # Don't generate system test files.
+    config.serve_static_assets = true
+    config.assets.compile = true
     config.generators.system_tests = nil
 
     Raven.configure do |config|
