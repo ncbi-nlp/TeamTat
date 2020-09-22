@@ -12,7 +12,7 @@ Rails.application.configure do
   # Show full error reports.
   config.consider_all_requests_local = true
   config.read_encrypted_secrets = true
-  config.action_controller.default_url_options = { host: '164.41.76.201/teamtat' }
+  config.action_controller.default_url_options = { host: '164.41.76.201:80/teamtat' }
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.
   if Rails.root.join('tmp', 'caching-dev.txt').exist?
