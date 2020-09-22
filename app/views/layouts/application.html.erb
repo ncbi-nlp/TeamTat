@@ -29,7 +29,7 @@
         <%= link_to "#", onclick: "window.open('https://sites.google.com/view/teamtat-tutorial/', 'teamtat-tutorial', 'width=850,height=800,menubar=no,location=no,scrollbars=yes,toolbar=no,status=no,resizable=yes');return false;", class: "item" do %>
           Tutorial
         <% end %>
-        <%= link_to "About", '/teamtat/about', class: "item #{'active' if @top_menu == 'about'}" %>
+        <%= link_to "About", '/about', class: "item #{'active' if @top_menu == 'about'}" %>
         <% if current_user.present? && current_user.super_admin? %>
           <div class="ui dropdown item">
             <i class="icon user secret"></i> Admin
@@ -47,7 +47,7 @@
         <% end %>
         <div class="right floated menu">
           <% if current_user.present? %>
-            <%= link_to "teamtat/users/#{current_user.id}", class: "item" do %>
+            <%= link_to "/users/#{current_user.id}", class: "item" do %>
               <i class="icon user"></i>
               <% if current_user.valid_email? %>
                 <%= current_user.name_or_email_or_id %>
@@ -58,7 +58,7 @@
               <% end %>
             <% end %>
           <% else %>
-            <%= link_to "teamtat/account/new", class: "item" do %>
+            <%= link_to "/account/new", class: "item" do %>
               Click here to Start
             <% end %>
           <% end %>
@@ -95,7 +95,7 @@
         <div class="ui container">
           Copyright © 2019 TeamTat, Contact us: <a href="mailto:Rezarta.Islamaj@nih.gov">Rezarta.Islamaj@nih.gov</a>, <a href="mailto:dongseop@mju.ac.kr">dongseop@mju.ac.kr</a>, <a href="mailto:Zhiyong.Lu@nih.gov">Zhiyong.Lu@nih.gov</a>
           | 
-          <%=link_to "Site Map", "teamtat/home/sitemap"%> 
+          <%=link_to "Site Map", "/home/sitemap"%> 
           <br>
           <a href="https://doi.org/10.1093/nar/gkaa333" target="_blank">
             Rezarta Islamaj, Dongseop Kwon, Sun Kim, Zhiyong Lu, TeamTat: a collaborative text annotation tool, Nucleic Acids Research, 2020, gkaa333, 

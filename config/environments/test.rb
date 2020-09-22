@@ -21,7 +21,7 @@ Rails.application.configure do
   # Show full error reports and disable caching.
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = false
-  config.action_controller.default_url_options = { host: '164.41.76.201:80/teamtat' }
+  config.action_controller.default_url_options = { host: '164.41.76.201:80' }
 
   # Raise exceptions instead of rendering exception templates.
   config.action_dispatch.show_exceptions = false
