@@ -14,7 +14,7 @@ Rails.application.configure do
   config.read_encrypted_secrets = true
   config.action_controller.default_url_options = { host: '164.41.76.201', port: '80' }
   config.relative_url_root = "/teamtat"
-
+  config.action_controller.relative_url_root = "/teamtat"
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.
   if Rails.root.join('tmp', 'caching-dev.txt').exist?
