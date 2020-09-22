@@ -320,7 +320,7 @@
       $(".js-smartPhoto").SmartPhoto();
       setTimeout(function() {
         $('.error-checker').addClass('loading');
-        $.getJSON("/documents/<%=@document.id%>/verify", function(data) {
+        $.getJSON("/teamtat/documents/<%=@document.id%>/verify", function(data) {
           $('.error-checker').removeClass('loading');
           if (data.length > 0) {
             $('.error-checker').addClass('error');
