@@ -643,6 +643,62 @@ BioC.prototype.bindAnnotationSpan = function() {
     end = arrayOfSpans[endSpan].words[endWord][1];
   }
 
+  nextJump = function (hold) {
+    if (arrayOfSpans.length <= 1) {
+    } else {
+      console.log("startWord: " + startWord);
+      console.log("endWord: " + endWord);
+      console.log("startSpan: " + startSpan);
+      console.log("endSpan: " + endSpan);
+      if ((endWord + 5) >= arrayOfSpans[endSpan].words.length) {
+        if (endSpan+1 < arrayOfSpans.length) {
+          endSpan+=1;
+          if (!hold) {
+            startSpan = endSpan;
+          }
+          startWord = 0;
+          endWord = 0;
+        }
+      } else {
+        endWord += 5
+      }
+      if (!hold) {
+        startWord = endWord;
+      }
+    }
+    assignSpans();
+    start = arrayOfSpans[startSpan].words[startWord][0];
+    end = arrayOfSpans[endSpan].words[endWord][1];
+  }
+
+  previousJump = function (hold) {
+    console.log("startWord: " + startWord);
+    console.log("endWord: " + endWord);
+    console.log("startSpan: " + startSpan);
+    console.log("endSpan: " + endSpan);
+    if (arrayOfSpans.length <= 1) {
+    } else {
+      if ((endWord - 5) < 0) {
+        if (endSpan-1 > 0) {
+          endSpan-=1;
+          endWord = arrayOfSpans[endSpan].words.length-1;
+          if (!hold) {
+            startSpan = endSpan;
+            startWord = endWord;
+          }
+        }
+      } else {
+        endWord -= 5
+      }
+      if (!hold) {
+        startWord = endWord;
+      }
+    }
+    assignSpans();
+    start = arrayOfSpans[startSpan].words[startWord][0];
+    end = arrayOfSpans[endSpan].words[endWord][1];
+  }
+
   previousWord = function (amount, hold) {
     endWord -= 1
     if (!hold) {
@@ -774,10 +830,10 @@ BioC.prototype.bindAnnotationSpan = function() {
         previousWord(1, e.shiftKey);
         break;
       case shortcuts['jump-next']:
-        nextWord(16, e.shiftKey);
+        nextJump(e.shiftKey)
         break;
-      case shortcuts['previous-word']:
-        previousWord(16, e.shiftKey);
+      case shortcuts['jump-previous']:
+        previousJump(e.shiftKey);
         break;
       case shortcuts['next-char']:
         nextChar(e.shiftKey);
@@ -808,13 +864,6 @@ BioC.prototype.bindAnnotationSpan = function() {
             return annot.annotation_id
           })
           self.deleteCheckedAnnotation(annotationsIds);
-          spansWords()
-          startSpan = arrayOfSpans.length-1;
-          endSpan = arrayOfSpans.length-1;
-          startWord = 0
-          endWord = 0
-          start = arrayOfSpans[startSpan].words[arrayOfSpans[startSpan].words.length-1][0];
-          end = arrayOfSpans[endSpan].words[arrayOfSpans[endSpan].words.length-1][1];
         } else {
           console.log('Nothing to Delete')
         }

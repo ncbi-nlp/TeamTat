@@ -14,10 +14,10 @@ default: &default
   encoding: utf8mb4
   collation: utf8mb4_unicode_ci
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  database: <%= ENV['DB_NAME'] %>
-  username: <%= ENV['DB_USER'] %>
-  password: <%= ENV['DB_PASSWORD'] %>
-  host: <%= ENV['DB_HOST'] %>
+#  database: <%= ENV['DB_NAME'] %>
+  username: khalil
+  password: 12345678
+  host: localhost
 
 development:
   <<: *default

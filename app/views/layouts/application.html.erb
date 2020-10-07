@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang='en'>
   <head>
-    <title>TeamTat - <%= yield(:title) || "home" %></title>
+    <title>NidoTat - <%= yield(:title) || "home" %></title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <meta charset="utf-8" />
@@ -20,7 +20,7 @@
     <nav class="ui fixed menu inverted navbar" id="main-nav">
       <div class="ui container clearing">
         <%= link_to root_path, class:"brand item" do %>
-          <span class='brand-initial'>TeamTat</span>
+          <span class='brand-initial'>NidoTat</span>
         <% end %>
         <% if @top_menu != 'home' %>
           <%= link_to "Home", root_path, class: "item #{'active' if @top_menu == 'home'}" %>
@@ -69,9 +69,9 @@
       <div class='hero' role="banner">
         <div class="ui container clearing">
           <div class="ui header">
-            <span>Team</span><span class='tag'>Tat</span><br>
+            <span>Nido</span><span class='tag'>Tat</span><br>
             <div class="sub header">
-              A Text Annotation Tool for Team Collaboration <br>
+              A Fork from TeamTat for better suits Knedle problems <br>
             </div>
           </div>
         </div>
