@@ -53,35 +53,81 @@
       <tbody>
         <% 
           popup_msg = if @project.round_begin? then "cannot change" else "click to change" end
+
+          json_map = []
+          json_user_map = {}
+          json_document_map = {}
+          document_idx = 0
+          user_sum  = {}
+          @users.each do |user|
+            user_sum[user.id] = 0
+          end
           @documents.each do |document| %>
-          <tr class='assign-row' data-did='<%=document.id%>'>
+            <% 
+            done_cls = "done"
+            found = false
+            @users.each do |user|
+              assign_task =  @assigns_map["#{document.id}-#{user.id}"]
+              if assign_task.present?
+                found = true
+              end
+              if assign_task.present? && !assign_task.done
+                done_cls = ""
+              end
+            end
+            done_cls = "" if !found 
+            %>
+          <tr class='assign-row <%=done_cls%>' data-did='<%=document.id%>'>
+            <%
+            json_map_item = []
+            user_idx = 0
+            sum = 0
+            done_count = 0
+            %>
             <td><%= link_to document.did, document %></td>
             <td class="ellipsis w300"><%=document.title %></td>
             <% @users.each do |user|%>
+              <%
+              if document_idx == 0 
+                json_user_map["#{user.id}"] = user_idx
+              end
+              %>
               <td style='text-align:center;'>          
                 <%
                 assign_task =  @assigns_map["#{document.id}-#{user.id}"]
                 cls = 'not-assigned'
                 if assign_task.present?
                   cls = if assign_task.done then 'done assigned' else 'assigned' end
+                  sum += 1
+                  user_sum[user.id] += 1
                 end
                 state = if assign_task.present? then 'on' else 'off' end
+
                 %>
-                <div class='assign-button <%= cls%> need-popup' data-did='<%=document.id%>' data-uid='<%=user.id%>' data-aid='<%=assign_task.id if assign_task.present? %>' data-state='<%=state%>' data-content='<%= popup_msg %>' >
+                <% json_map_item << assign_task.present?  %>
+                <div id="btn-<%=document_idx%>-<%=user_idx%>" class='assign-button <%= cls%> need-popup' data-did='<%=document.id%>' data-uid='<%=user.id%>' data-aid='<%=assign_task.id if assign_task.present? %>' data-state='<%=state%>' data-content='<%= popup_msg %>' >
                   <i class='icon check circle'></i>
                   <i class='circle outline icon'></i>
                   <i class='icon circle'></i>
                 </div>
               </td>
+              <%               
+              user_idx += 1
+              %>
             <% end %>
-            <td data-did='<%=document.id%>' class='sum row'>0</td>
+            <td data-did='<%=document.id%>' class='sum row row-<%=document.id%>'><%= sum %></td>
           </tr>
+          <%
+            json_document_map["#{document.id}"] = document_idx
+            json_map << json_map_item
+            document_idx += 1
+          %>
         <% end %>
       </tbody>
       <tfoot>
         <th colspan=2 class='sum'><%=@documents.size%> documents</th>
         <% @users.each do |user| %>
-          <th data-uid='<%=user.id%>' class='sum col'>0</th>
+          <th data-uid='<%=user.id%>' class='sum col col-<%=user.id%>'><%=user_sum[user.id]%></th>
         <% end %>
         <th class='sum total'>0</th>
       </tfoot>
@@ -128,46 +174,65 @@
 <script>
 <%= content_for :defer_js do -%>
 <% if !@documents.empty? && !@users.empty? %>
+
+  var assignMap;
+  var documentMap;
+  var userMap;
+  var rowSum=[], colSum=[], totalSum = 0;
+  var xMax;
+  var yMax;
+  
+
   var dirtyFlag = false;
   $(function() {
-    $('.ui.avatar.image').popup();
+    $('#main-loader').addClass('active');
+    $('#main-loader .text.loader').text('Loading...');
+    setTimeout(function() {
+      assignMap = JSON.parse('<%=raw json_map.to_json %>');
+      documentMap = JSON.parse('<%=raw json_document_map.to_json %>');
+      userMap = JSON.parse('<%=raw json_user_map.to_json %>');
+      xMax = assignMap.length > 0 ? assignMap[0].length : 0;
+      yMax = assignMap.length;
 
-    $('.assign-button').click(function(e) {
-      <% if @project.round_begin? %>
+      $('.ui.avatar.image').popup();
 
-      <% else %>
-        toggleButton(e.currentTarget);
-        recalculateSum();
-      <% end %>
-    });
-    $('.clear-assigns-button').click(clearAssign);
-    $('.upload-button').click(function() {
-      $('#uploadModal').modal({
-        onApprove: function() {
-          $("#uploadFileForm").submit();
+      $('.assign-button').click(function(e) {
+        <% if @project.round_begin? %>
+        <% else %>
+          toggleAssignMap(e.currentTarget);
+        <% end %>
+      });
+      $('.clear-assigns-button').click(clearAssign);
+      $('.upload-button').click(function() {
+        $('#uploadModal').modal({
+          onApprove: function() {
+            $("#uploadFileForm").submit();
+          }
+        }).modal('show');
+      });
+      $('.assign-randomly-button').click(assignRandomly);
+      $('.save-button').click(save);
+      $(window).on('beforeunload', function(){
+        if (dirtyFlag) {
+          return "Are you sure you want to discard the changes?";
         }
-      }).modal('show');
-    });
-    $('.assign-randomly-button').click(assignRandomly);
-    $('.save-button').click(save);
-    recalculateSum();
-    $(window).on('beforeunload', function(){
-      if (dirtyFlag) {
-        return "Are you sure you want to discard the changes?";
-      }
-    });
-    <% if @project.status == "preparing" %>
-      $('.upload-button').removeClass('disabled');
-      $('.assign-randomly-button').removeClass('disabled');
-    <% end %>
-    clearDirty();
+      });
+      recalculateSumAll();
+      <% if @project.status == "preparing" %>
+        $('.upload-button').removeClass('disabled');
+        $('.assign-randomly-button').removeClass('disabled');
+      <% end %>
+      clearDirty();
+
+      $('#main-loader').removeClass('active');
+      $('#main-loader .text.loader').text('Loading...');
+    }, 1);
   });
 
-  function toggleButton(e) {
+  function toggleButton(e, state) {
       var $e = $(e);
-      var state = $e.data('state') || 'off';
 
-      if (state == 'off') {
+      if (state == 'on') {
         $e.data('state', 'on');
         $e.removeClass('not-assigned').addClass('assigned');
       } else {
@@ -195,34 +260,93 @@
     $('.save-button').addClass('disabled');
   }
 
-  function recalculateSum() {
-    var sum = 0;
-    _.each($('.assign-row'), function(e) {
-      var $e = $(e);
-      var did = $e.data('did');
-      var cnt = $e.find('.assign-button.assigned').length;
-      var doneCnt = $e.find('.assign-button.done').length;
-      $e.toggleClass('done', cnt > 0 && cnt == doneCnt);
-      $e.find('.sum.row').text(cnt);
-      sum += cnt;
-    });
+  function toggleAssignMap(e, noChangeDOM) {
+    var $e = $(e);
+    var did = $e.data('did');
+    var uid = $e.data('uid');      
+    var dIdx = documentMap[did];
+    var uIdx = userMap[uid];
+    assignMap[dIdx][uIdx] = !assignMap[dIdx][uIdx];
+    toggleButton(e, assignMap[dIdx][uIdx] ? "on" : "off");
 
-    _.each($('.sum.col'), function(e) {
-      var uid = $(e).data('uid');
-      var cnt = $('.assign-button.assigned[data-uid='+uid+']').length;
-      $(e).text(cnt);
-    });
+    if (assignMap[dIdx][uIdx]) {
+      rowSum[dIdx]++;
+      colSum[uIdx]++;
+      totalSum++;
+    } else {
+      rowSum[dIdx]--;
+      colSum[uIdx]--;
+      totalSum--;
+    }
+
+    if (noChangeDOM) {
+      return;
+    }
+
+    $(".row-" + did)[0].innerText = rowSum[dIdx];
+    $(".col-" + uid)[0].innerText = colSum[uIdx];
+    $(".sum.total")[0].innerText = totalSum;
+
     <% if @project.status == "preparing" %>
-      $('.clear-assigns-button').toggleClass('disabled', sum == 0)
+      $('.clear-assigns-button').toggleClass('disabled', $(".assigned.assign-button").length == 0);
     <% end %>
-    $('.sum.total').text(sum);
+  }
+
+  function clearAllAssignMap() {
+    for(var y = 0; y < yMax; y++) {
+      for(var x = 0; x < xMax; x++) {
+        assignMap[y][x] = false;
+      }
+    }
+  }
+  function recalculateAssignMap() {
+    totalSum = 0;
+    var x, y;
+    for (y = 0; y < yMax; y++) {
+      rowSum[y] = 0;
+    }
+    for(x = 0; x < xMax; x++) {
+      colSum[x] = 0;
+    }
+    for (y = 0; y < yMax; y++) { 
+      for(x = 0; x < xMax; x++) {
+        if (assignMap[y][x]) {
+          colSum[x]++;
+          rowSum[y]++;
+          totalSum++;
+        }
+      }
+    }
+  }
+
+  function recalculateSumAll() {
+    recalculateAssignMap();
+    var rows = $(".row");
+    for (y = 0; y < yMax; y++) {
+      rows[y].innerText = rowSum[y];
+    }
+    var cols = $(".col");
+    for(x = 0; x < xMax; x++) {
+      cols[x].innerText = colSum[x];
+    }
+    <% if @project.status == "preparing" %>
+      $('.clear-assigns-button').toggleClass('disabled', $(".assigned.assign-button").length == 0);
+    <% end %>
+    $(".sum.total")[0].innerText = totalSum;
   }
 
   function clearAssign() {
     if (confirm("Are you sure to clear all?")) {
-      $('.assign-button').removeClass('assigned').addClass('not-assigned').data('state', 'off');
-      recalculateSum();
-      makeDirty();
+      $('#main-loader').addClass('active');
+      $('#main-loader .text.loader').text('Clearing...');
+      setTimeout(function() {
+        $('.assign-button').removeClass('assigned').addClass('not-assigned').data('state', 'off');
+        clearAllAssignMap();
+        recalculateSumAll();
+        makeDirty();
+        $('#main-loader').removeClass('active');
+        $('#main-loader .text.loader').text('Loading...');
+      }, 1);
     }
   }
 
@@ -231,7 +355,7 @@
     var cntDoc = $('.sum.row').length;
     var perDoc = parseInt(prompt('How many annotators do you want to assign per a document (1 to ' + cntUser + ')?'), "Title");
     var perUser = Math.ceil(perDoc * cntDoc / cntUser);
-
+    var x, y, i, u;
     if (!(perDoc >=1 && perDoc <= cntUser)) {
       alert('Please enter number between 1 to ' + cntUser);
       return;
@@ -240,42 +364,34 @@
     $('#main-loader .text.loader').text('Assigning...');
     setTimeout(function() {
       $('.assign-button').removeClass('assigned').addClass('not-assigned').data('state', 'off');
-      var docsPerUsers = _.map($('.sum.col'), function(e) {
-        var uid = $(e).data('uid');
-        var cnt = $('.assign-button.assigned[data-uid='+uid+']').length;
-        return {id: uid, cnt: cnt};
-      });
-
-      _.each($('.sum.row'), function(e) {
-        var $tr = $(e.closest('tr'));
-        var freeUsers = $tr.find('.assign-button.not-assigned');
-        var freeUserMap = {}, freeUserIds = [];
-        _.each(freeUsers, function(u) {
-          var id = $(u).data('uid');
-          freeUserMap[id] = u;
-          freeUserIds.push(id);
-        })
-        var availableUsers = _.filter(docsPerUsers, function(u) {
-          return freeUserIds.includes(u.id);
-        });
-        availableUsers.sort(function(a, b) { return a.cnt - b.cnt;});
-
-        var remains = perDoc - (cntUser - freeUsers.length);
-        while(remains > 0 && availableUsers.length > 0) {
-          var minimumCnt = availableUsers[0].cnt;
-          var candidates = _.map(_.filter(availableUsers, function(u) { return u.cnt == minimumCnt;}), function(e) {return e.id});
-          candidates = _.shuffle(candidates);
-          while(remains > 0 && candidates.length > 0) {
-            var id = candidates.pop();
-            toggleButton(freeUserMap[id]);
-            var docPerUser = docsPerUsers.find(function(e) {return e.id == id;});
-            docPerUser && docPerUser.cnt++;
-            var availableUsers = _.filter(availableUsers, function(e) {return e.id != id;});
-            remains--;
+      clearAllAssignMap();
+      for (y = 0; y < yMax; y++) {
+        rowSum[y] = 0;
+      }
+      for(x = 0; x < xMax; x++) {
+        colSum[x] = 0;
+      }
+      var availableUsers = [], doneUsers = [];
+      for(y = 0; y < yMax; y++) {
+        availableUsers = [];
+        for(x = 0; x < xMax; x++) {
+          if (colSum[x] <= perUser) {
+            availableUsers.push(x);     
+          } else {
+            doneUsers.push(x);
           }
         }
-      });
-      recalculateSum();
+        availableUsers = _.shuffle(availableUsers);
+        doneUsers = _.shuffle(doneUsers);
+        for (i = 0; i < perDoc; i++) {
+          u = availableUsers[i];
+          if (u == undefined) {
+            u = doneUsers.pop();
+          }
+          toggleAssignMap($("#btn-" + y + "-" + u), "No Update");
+        }
+      }
+      recalculateSumAll();
       makeDirty();
       $('#main-loader').removeClass('active');
       $('#main-loader .text.loader').text('Loading...');
