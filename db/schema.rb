@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_27_162815) do
+ActiveRecord::Schema.define(version: 2021_04_10_090218) do
 
   create_table "annotations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "a_id"
@@ -91,7 +91,7 @@ ActiveRecord::Schema.define(version: 2020_04_27_162815) do
     t.string "did"
     t.datetime "user_updated_at"
     t.datetime "tool_updated_at"
-    t.text "xml"
+    t.text "xml", limit: 4294967295
     t.text "title"
     t.string "key"
     t.integer "did_no"

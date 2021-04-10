@@ -10,10 +10,21 @@ class Assign < ApplicationRecord
     version = self.document.version
     prev_annotations = self.document.annotations.where("version = ?", version - 1).order('offset ASC, content ASC').all
     annotations = self.annotations.where("version = ?", version).order('offset ASC, content ASC').all
+
+    prev_annotation_map = {}
+    prev_annotations.each do |a|
+      key = "#{a.offset}|#{a.content}|#{a.a_type}|#{a.concept}"
+      if prev_annotation_map[key].nil?
+        prev_annotation_map[key] = [a]
+      else 
+        prev_annotation_map[key] << a
+      end
+    end
     agreed = []
     annotations.each do |a|
-      same_annotations = prev_annotations.select{|p| p.offset == a.offset && p.content == a.content && p.a_type == a.a_type && p.concept == a.concept}
-      if same_annotations.size == self.document.assigns.size || self.project.collaborates[version - 1]
+      key = "#{a.offset}|#{a.content}|#{a.a_type}|#{a.concept}"
+      same_annotations = prev_annotation_map[key]
+      if !same_annotations.nil? && (same_annotations.size == self.document.assigns.size || self.project.collaborates[version - 1])
         agreed << a.id
       end
     end
@@ -49,7 +60,7 @@ class Assign < ApplicationRecord
       if self.project.round > 0
         self.init_review_result
       end
-      Rails.logger.debug(ref_id_map.inspect)
+      # Rails.logger.debug(ref_id_map.inspect)
       max_id = self.document.relations.where('version=?', self.document.version).maximum('r_id_no') || 0;
       r_id_no = max_id
       self.document.relations.where('version=?', self.document.version - 1).each do |r|
