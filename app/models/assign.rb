@@ -27,29 +27,24 @@ class Assign < ApplicationRecord
       insert_values = []
       max_id = self.document.annotations.where('version=?', self.document.version).maximum('a_id_no') || 0;
       a_id_no = max_id
-      self.document.annotations.where('version=?', self.document.version - 1).each do |a|
+
+      self.document.annotations.where('version=?', self.document.version - 1).order("id ASC").each do |a|
         a_id_no += 1
         ref_id_map[a.a_id] = "#{a_id_no}"
-        annotation = self.document.annotations.create!({
-          a_id: a_id_no,
-          a_id_no: a_id_no,
-          a_type: a.a_type, 
-          concept: a.concept,
-          assign_id: self.id,
-          user_id: self.user_id,
-          content: a.content,
-          note: a.note,
-          offset: a.offset,
-          passage: a.passage,
-          annotator: a.annotator,
-          project_id: self.project_id,
-          version: self.document.version,
-          infons: a.infons,
-          review_result: 0,
-          created_at: a.created_at,
-          updated_at: a.updated_at
-        });
       end
+      Annotation.execute_sql("
+          INSERT INTO `annotations` (
+            `a_id`, `a_id_no`, `a_type`, `concept`, `assign_id`, `user_id`, `content`, `note`, `offset`, `passage`, `annotator`,
+            `document_id`, `project_id`, `version`, `infons`, `created_at`, `updated_at`)
+          SELECT 
+            @rownum := @rownum + 1, @rownum, a_type, concept, #{self.id}, #{self.user_id}, content, note, offset, passage, annotator,
+            #{self.document.id}, #{self.project_id}, #{self.document.version}, infons, created_at, updated_at
+          FROM
+            annotations, (SELECT @rownum := #{max_id}) TMP
+          WHERE
+            document_id = #{self.document.id} AND version = #{self.document.version - 1}
+          ORDER BY id
+        ")
 
       if self.project.round > 0
         self.init_review_result
