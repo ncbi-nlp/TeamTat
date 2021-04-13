@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   get 'statistics/index'
   get '/sessions/:session_str', to: 'users#sessions'
   get '/about' => "home#about"
+  get '/stat' => "home#stat"
   resources :relation_types
   resources :api_keys
   resources :relations

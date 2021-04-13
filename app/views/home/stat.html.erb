@@ -1,0 +1,39 @@
+<h1 class="ui header">Statistics</h1>
+
+
+<table class="ui definition table" style="width:50%">
+  <tbody>
+  <tr>
+    <td class="right aligned"> Number of users</td>
+    <td class="right aligned"><%=number_with_delimiter @owner_count %></td>
+  </tr>
+  <tr>
+    <td class="right aligned"> Number of projects</td>
+    <td class="right aligned"><%=number_with_delimiter @project_count %></td>
+  </tr>
+  <tr>
+    <td class="right aligned"> Number of documents</td>
+    <td class="right aligned"><%=number_with_delimiter @document_count %></td>
+  </tr>
+  <tr>
+    <td class="right aligned"> Number of annotations</td>
+    <td class="right aligned"><%=number_with_delimiter @annotation_count %></td>
+  </tr>
+  <tr>
+    <td class="right aligned"> Number of unique project managers</td>
+    <td class="right aligned"><%=number_with_delimiter @owner_count %></td>
+  </tr>
+  <tr>
+    <td class="right aligned"> Number of tasks (AI tool)</td>
+    <td class="right aligned"><%=number_with_delimiter @task_count %></td>
+  </tr>
+  <tr>
+    <td class="right aligned"> Number of rounds</td>
+    <td class="right aligned"><%=number_with_delimiter @round_count %></td>
+  </tr>
+  <tr>
+    <td class="right aligned"> Number of assigns</td>
+    <td class="right aligned"><%=number_with_delimiter @assign_count %></td>
+  </tr>
+</tbody>
+</table>
