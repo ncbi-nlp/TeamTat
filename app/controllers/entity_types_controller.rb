@@ -1,7 +1,8 @@
 class EntityTypesController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_user
   before_action :set_entity_type, only: [:show, :edit, :update, :destroy]
-  before_action :set_project, only: [:new, :create, :index, :import_default_color]
+  before_action :set_project, only: [:new, :create, :index, :import_default_color, :import]
   before_action :prepare_options, only: [:new, :create, :update, :edit]
   # GET /entity_types
   # GET /entity_types.json
@@ -10,6 +11,7 @@ class EntityTypesController < ApplicationController
     semantic_breadcrumb @project.name, @project
     semantic_breadcrumb "Entity Types"
     @entity_types = @project.entity_types
+    @projects = @user.projects.select('projects.*, project_users.role as role').where("projects.id != ?", @project.id).order("name ASC")
   end
 
   # GET /entity_types/1
@@ -53,6 +55,20 @@ class EntityTypesController < ApplicationController
         format.html { render :new }
         format.json { render json: @entity_type.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def import
+    exit_if_not_manager and return
+    EntityType.transaction do 
+      @from_project = Project.find(params[:from])
+      @from_project.entity_types.each do |e|
+        @project.entity_types.create({name: e.name, color: e.color, prefix:e.prefix})
+      end
+    end
+
+    respond_to do |format|
+      format.html { redirect_to project_entity_types_path(@project), notice: 'The entity type was successfully imported.' }
     end
   end
 
@@ -133,7 +149,13 @@ class EntityTypesController < ApplicationController
       @project = Project.find(params[:project_id])
       exit_if_not_member and return false
     end
-
+    def set_user
+      if params[:user_id].present? && current_user.super_admin?
+        @user = User.find(params[:user_id]) 
+      else
+        @user = current_user
+      end
+    end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def entity_type_params

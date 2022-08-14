@@ -57,6 +57,16 @@
   <% end %>
 <% if @project.manager?(current_user) %>
   <%= link_to 'New Relation Type', new_project_relation_type_path(@project), class: "ui button primary ajax-update-disbled-with-status #{'disabled' if @project.in_task?}" %>
+  <%= link_to 'Import Relation Type', "#", id: "toggle-type", class: "ui button olive ajax-update-disbled-with-status #{'disabled' if @project.in_task?}" %>
+
+  <div class="ui segment" id="import-type-section" style="display: none;">
+    <%= form_tag( import_project_relation_types_path(@project), method: "post", html: {class: "ui form"} ) do %>
+      <div class="inline field">
+        <label for='user_name'>Import Relation Types From Project</label>
+        <%= select_tag :from, options_from_collection_for_select(@projects, "id", "name"),  {class: 'ui search dropdown '}%>
+        <%= submit_tag "Execute", class: 'ui button'%>
+      </div>
+    <% end %>
 <% end %>
 </div>
 <br>
@@ -65,6 +75,9 @@
 <%= content_for :defer_js do -%>
 $(function() {
   $('table').tablesort();
+  $("#toggle-type").click(function() {
+    $("#import-type-section").toggle();
+  })
   <% if @project.manager?(current_user) %>
     $(".jscolor").change(function(e) {
       var $e = $(e.currentTarget);

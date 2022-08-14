@@ -77,10 +77,15 @@ Rails.application.routes.draw do
     resources :entity_types do
       collection do
         post 'import_default_color'
+        post 'import'
       end
     end
 
-    resources :relation_types
+    resources :relation_types do
+      collection do 
+        post 'import'
+      end
+    end
 
     resources :project_users
     resources :tasks do

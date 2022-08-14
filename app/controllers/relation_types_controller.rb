@@ -1,7 +1,8 @@
 class RelationTypesController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_user
   before_action :set_relation_type, only: [:show, :edit, :update, :destroy]
-  before_action :set_project, only: [:new, :create, :index]
+  before_action :set_project, only: [:new, :create, :index, :import]
 
   # GET /relation_types
   # GET /relation_types.json
@@ -10,6 +11,7 @@ class RelationTypesController < ApplicationController
     semantic_breadcrumb @project.name, @project
     semantic_breadcrumb "Relation Types"
     @relation_types = @project.relation_types
+    @projects = @user.projects.select('projects.*, project_users.role as role').where("projects.id != ?", @project.id).order("name ASC")
   end
 
   # GET /relation_types/1
@@ -85,6 +87,20 @@ class RelationTypesController < ApplicationController
     end
   end
 
+  def import
+    exit_if_not_manager and return
+    RelationType.transaction do 
+      @from_project = Project.find(params[:from])
+      @from_project.relation_types.each do |r|
+        @project.relation_types.create({name: r.name, color: r.color, num_nodes:r.num_nodes, entity_type: r.entity_type})
+      end
+    end
+
+    respond_to do |format|
+      format.html { redirect_to project_relation_types_path(@project), notice: 'The relation type was successfully imported.' }
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_relation_type
@@ -97,6 +113,13 @@ class RelationTypesController < ApplicationController
       exit_if_not_member and return false
     end
 
+    def set_user
+      if params[:user_id].present? && current_user.super_admin?
+        @user = User.find(params[:user_id]) 
+      else
+        @user = current_user
+      end
+    end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def relation_type_params

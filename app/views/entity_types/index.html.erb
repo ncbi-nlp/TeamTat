@@ -56,6 +56,16 @@
   <% end %>
 <% if @project.manager?(current_user) %>
   <%= link_to 'New Entity Type', new_project_entity_type_path(@project), class: "ui button primary ajax-update-disbled-with-status #{'disabled' if @project.in_task?}" %>
+  <%= link_to 'Import Entity Type', "#", id: "toggle-entity-type", class: "ui button olive ajax-update-disbled-with-status #{'disabled' if @project.in_task?}" %>
+
+  <div class="ui segment" id="import-entity-type-section" style="display: none;">
+    <%= form_tag( import_project_entity_types_path(@project), method: "post", html: {class: "ui form"} ) do %>
+      <div class="inline field">
+        <label for='user_name'>Import Entity Types From Project</label>
+        <%= select_tag :from, options_from_collection_for_select(@projects, "id", "name"),  {class: 'ui search dropdown '}%>
+        <%= submit_tag "Execute", class: 'ui button'%>
+      </div>
+    <% end %>
 <% end %>
 </div>
 <br>
@@ -64,6 +74,9 @@
 <%= content_for :defer_js do -%>
 $(function() {
   $('table').tablesort();
+  $("#toggle-entity-type").click(function() {
+    $("#import-entity-type-section").toggle();
+  })
   <% if @project.manager?(current_user) %>
     $(".jscolor").change(function(e) {
       var $e = $(e.currentTarget);
