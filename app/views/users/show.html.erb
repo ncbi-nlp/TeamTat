@@ -23,6 +23,7 @@
       </div>
     <% end %>
   </div>
+
   <div class="ui message info">
     Please save the URL below. You can re-use or share this session using the URL.
     (This message does not show to others)
@@ -43,6 +44,30 @@
       <li>We do not collect or store you email address here. </li>
     </ul>
   </div>
+
+  <div class="ui message">
+    <div class="header">Register your e-mail address</div>
+    <div class="ui segment">
+      <%=form_for(@user, html: {class: 'ui form inline'}) do |f| %>
+        <div class="field">
+          <label for='user_email'>E-mail</label>
+          <%= f.text_field :email, value: "" %>
+        </div>
+        <div class="field">
+          <label for='user_email'>Password</label>
+          <%= f.password_field :password %>
+        </div>
+        <div class="field">
+          <label for='user_email'>Password Confirmation</label>
+          <%= f.password_field :password_confirmation %>
+        </div>
+        <div class="actions">
+          <%= f.submit "Regisger E-mail", class: 'ui button'%>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
 <% end %>
 
 <% if @user.id == current_user.id || current_user.super_admin? %>
