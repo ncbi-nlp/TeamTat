@@ -107,6 +107,7 @@ class Document < ApplicationRecord
       }
     end
     self.xml = builder.to_xml({save_with: 1})
+    self.title = self.title.truncate(1000) if self.title.size > 1000
     self.save
     self.handle_update_xml(d)
     self.detach_annotations_relations

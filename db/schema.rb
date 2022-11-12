@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_10_090218) do
+ActiveRecord::Schema.define(version: 2022_11_12_134136) do
 
   create_table "annotations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "a_id"
@@ -94,9 +94,9 @@ ActiveRecord::Schema.define(version: 2021_04_10_090218) do
     t.text "xml", limit: 4294967295
     t.text "title"
     t.string "key"
-    t.integer "did_no"
-    t.integer "batch_id"
-    t.integer "batch_no"
+    t.bigint "did_no"
+    t.bigint "batch_id"
+    t.bigint "batch_no"
     t.integer "order_no"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
