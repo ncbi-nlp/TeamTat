@@ -92,7 +92,7 @@ class Document < ApplicationRecord
   
   def save_document(d, bioc, project)
     self.did = d.id
-    self.did_no = self.did.to_i
+    self.did_no = self.did.to_d
     self.project_id = project.id
     self.title = get_first_text_from_bioc(d)
     self.key = bioc.key

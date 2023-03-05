@@ -624,7 +624,7 @@ class Project < ApplicationRecord
 
     c = SimpleBioC::Collection.new
     d = SimpleBioC::Document.new(c)
-    d.id = Time.now.strftime("%y%m%d%H%M") + ((0...3).map { (65 + rand(26)).chr }.join)
+    d.id = Time.now.strftime("%y%m%d%H%M%S%L") + ((0..5).map { (65 + rand(9)).chr }.join)
     c.documents << d
     offset = 0
     txt.split(spliter).each do |l|
