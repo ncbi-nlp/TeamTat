@@ -109,7 +109,7 @@ function PMIDUploader(ids) {
       var id = this.idx;
       var self = this;
       var list = [];
-      while(list.length < 10 && id < self.ids.length ) {
+      while(list.length < 2 && id < self.ids.length ) {
         if (list.length > 0 && self.isPMC(self.ids[id]) !== self.isPMC(list[0])) {
           break;
         }
